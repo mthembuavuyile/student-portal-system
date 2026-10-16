@@ -1,0 +1,103 @@
+erDiagram
+    %% =========================================================================
+    %% STUDENT PORTAL SYSTEM - COMPLETE ENTITY RELATIONSHIP DIAGRAM (ERD)
+    %% Database: university_db (InnoDB | utf8mb4)
+    %% Prepared by: Mr Avuyile Mthembu (Intern: Software Developer)
+    %% Directorate: Information Technology Business Solutions (ITBS)
+    %% Department of Forestry, Fisheries and the Environment (DFFE)
+    %% =========================================================================
+
+    STUDENTS ||--o{ ENROLLMENTS : "maintains history"
+    COURSES ||--o{ ENROLLMENTS : "admits"
+    COURSES ||--o{ COURSE_MODULES : "curriculum includes"
+    MODULES ||--o{ COURSE_MODULES : "belongs to"
+    MODULES ||--|{ MODULE_LECTURERS : "taught by"
+    LECTURERS ||--o{ MODULE_LECTURERS : "instructs"
+    STUDENTS ||--o{ MODULE_RESULTS : "obtains"
+    MODULES ||--o{ MODULE_RESULTS : "evaluates"
+    STUDENTS ||--o| USERS : "authenticates via"
+
+    STUDENTS {
+        int id PK "AUTO_INCREMENT"
+        varchar student_number "VARCHAR(50), Indexed"
+        varchar first_name "VARCHAR(100)"
+        varchar surname "VARCHAR(100)"
+        varchar id_number "VARCHAR(50), National ID"
+        varchar full_name "VARCHAR(255), Legacy compatibility"
+        varchar student_id_number "UK, VARCHAR(50) UNIQUE"
+        varchar email "UK, VARCHAR(255) UNIQUE"
+        date date_of_birth "DATE"
+        varchar course_of_study "VARCHAR(255), Legacy active course"
+        date enrollment_date "DATE"
+        varchar academic_status "VARCHAR(50), Default 'Active'"
+        timestamp registration_timestamp "TIMESTAMP"
+    }
+
+    COURSES {
+        int course_id PK "AUTO_INCREMENT"
+        varchar course_code "UK, VARCHAR(50) UNIQUE"
+        varchar course_name "VARCHAR(255)"
+        varchar duration "VARCHAR(50), Default '3 Years'"
+        timestamp created_at "TIMESTAMP"
+    }
+
+    MODULES {
+        int module_id PK "AUTO_INCREMENT"
+        varchar module_code "UK, VARCHAR(50) UNIQUE"
+        varchar module_name "VARCHAR(255)"
+        int credits "INT(11), Default 15"
+        timestamp created_at "TIMESTAMP"
+    }
+
+    LECTURERS {
+        int lecturer_id PK "AUTO_INCREMENT"
+        varchar first_name "VARCHAR(100)"
+        varchar surname "VARCHAR(100)"
+        varchar email "UK, VARCHAR(255) UNIQUE"
+        timestamp created_at "TIMESTAMP"
+    }
+
+    COURSE_MODULES {
+        int id PK "AUTO_INCREMENT"
+        int course_id FK "INT(11) -> courses.course_id"
+        int module_id FK "INT(11) -> modules.module_id"
+        varchar semester "VARCHAR(50), Default 'Semester 1'"
+    }
+
+    MODULE_LECTURERS {
+        int id PK "AUTO_INCREMENT"
+        int module_id FK "INT(11) -> modules.module_id"
+        int lecturer_id FK "INT(11) -> lecturers.lecturer_id"
+        tinyint is_primary "TINYINT(1), 1=Lead, 0=Assistant"
+    }
+
+    ENROLLMENTS {
+        int enrollment_id PK "AUTO_INCREMENT"
+        int student_id FK "INT(11) -> students.id"
+        int course_id FK "INT(11) -> courses.course_id"
+        date registration_date "DATE"
+        varchar status "VARCHAR(50), Default 'Active'"
+        timestamp created_at "TIMESTAMP"
+    }
+
+    MODULE_RESULTS {
+        int mark_id PK "AUTO_INCREMENT"
+        int student_id FK "INT(11) -> students.id"
+        int module_id FK "INT(11) -> modules.module_id"
+        int academic_year "INT(11), e.g. 2026"
+        decimal quarter1 "DECIMAL(5,2)"
+        decimal quarter2 "DECIMAL(5,2)"
+        decimal quarter3 "DECIMAL(5,2)"
+        decimal quarter4 "DECIMAL(5,2)"
+        decimal average "DECIMAL(5,2)"
+        timestamp created_at "TIMESTAMP"
+        timestamp updated_at "TIMESTAMP"
+    }
+
+    USERS {
+        int id PK "AUTO_INCREMENT"
+        varchar username "UK, VARCHAR(100) UNIQUE"
+        varchar password "VARCHAR(255), Bcrypt hash"
+        enum role "ENUM('admin','student')"
+        varchar student_id_number FK "VARCHAR(50) -> students.student_id_number"
+    }
