@@ -53,30 +53,6 @@ By Avuyile Mthembu
 │   ├── search-filter.js (Search/sort/filter functionality)
 │   └── jspdf.min.js (PDF generation library - CDN or local)
 │
-├── react-components/
-│   ├── package.json (Node.js dependencies)
-│   ├── node_modules/ (Auto-generated)
-│   ├── public/
-│   │   └── index.html
-│   ├── src/
-│   │   ├── index.js (React entry point)
-│   │   ├── App.js (Main React component)
-│   │   ├── components/
-│   │   │   ├── StudentDashboard.js (Dashboard component)
-│   │   │   ├── StudentProfile.js (Profile component)
-│   │   │   ├── StudentForm.js (Registration form component)
-│   │   │   ├── StudentList.js (Student list component)
-│   │   │   └── StudentCard.js (Individual student card)
-│   │   ├── services/
-│   │   │   └── api.js (API service for backend calls)
-│   │   └── styles/
-│   │       └── components.css (React component styles)
-│   └── server/
-│       ├── server.js (Node.js Express server)
-│       ├── routes/
-│       │   └── api.js (API routes)
-│       └── package.json (Server dependencies)
-│
 ├── assets/
 │   ├── images/
 │   │   ├── logo.png
