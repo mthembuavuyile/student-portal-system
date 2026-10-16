@@ -14,13 +14,25 @@
 -- Temporarily disable FK checks to allow tables to be dropped in any order
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- Drop dependent (child) tables first to avoid FK constraint error #1451
+DROP TABLE IF EXISTS `module_results`;
+DROP TABLE IF EXISTS `enrollments`;
+DROP TABLE IF EXISTS `course_modules`;
+DROP TABLE IF EXISTS `module_lecturers`;
+DROP TABLE IF EXISTS `users`;
+
+-- Drop parent tables next
+DROP TABLE IF EXISTS `students`;
+DROP TABLE IF EXISTS `modules`;
+DROP TABLE IF EXISTS `courses`;
+DROP TABLE IF EXISTS `lecturers`;
+
 -- -----------------------------------------------------------------------------
 -- Table structure for table `students`
 -- Includes both new normalized attributes (student_number, first_name, surname, id_number)
 -- and legacy columns (full_name, student_id_number, course_of_study, academic_status)
 -- to ensure 100% backward compatibility.
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `students`;
 CREATE TABLE `students` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `student_number` varchar(50) DEFAULT NULL,
@@ -51,7 +63,6 @@ INSERT INTO `students` (`id`, `student_number`, `first_name`, `surname`, `id_num
 -- Table structure for table `courses`
 -- Course: courseId, courseName, courseCode, duration
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `courses`;
 CREATE TABLE `courses` (
   `course_id` int(11) NOT NULL AUTO_INCREMENT,
   `course_code` varchar(50) NOT NULL UNIQUE,
@@ -70,7 +81,6 @@ INSERT INTO `courses` (`course_id`, `course_code`, `course_name`, `duration`) VA
 -- Table structure for table `modules`
 -- Module: moduleId, moduleName, moduleCode, credits
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `modules`;
 CREATE TABLE `modules` (
   `module_id` int(11) NOT NULL AUTO_INCREMENT,
   `module_code` varchar(50) NOT NULL UNIQUE,
@@ -92,7 +102,6 @@ INSERT INTO `modules` (`module_id`, `module_code`, `module_name`, `credits`) VAL
 -- Table structure for table `lecturers`
 -- Lecturer: lecturerId, firstName, surname, email
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `lecturers`;
 CREATE TABLE `lecturers` (
   `lecturer_id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(100) NOT NULL,
@@ -112,7 +121,6 @@ INSERT INTO `lecturers` (`lecturer_id`, `first_name`, `surname`, `email`) VALUES
 -- Table structure for table `course_modules`
 -- Business Rule: Modules may be shared across courses (Many-to-Many)
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `course_modules`;
 CREATE TABLE `course_modules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `course_id` int(11) NOT NULL,
@@ -143,7 +151,6 @@ INSERT INTO `course_modules` (`course_id`, `module_id`, `semester`) VALUES
 -- Table structure for table `module_lecturers`
 -- Business Rule: Modules taught by multiple lecturers (Many-to-Many)
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `module_lecturers`;
 CREATE TABLE `module_lecturers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `module_id` int(11) NOT NULL,
@@ -171,7 +178,6 @@ INSERT INTO `module_lecturers` (`module_id`, `lecturer_id`, `is_primary`) VALUES
 -- Business Rule: A student may have only one active course enrollment at a time.
 -- The Enrollment class maintains registration history.
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `enrollments`;
 CREATE TABLE `enrollments` (
   `enrollment_id` int(11) NOT NULL AUTO_INCREMENT,
   `student_id` int(11) NOT NULL,
@@ -197,7 +203,6 @@ INSERT INTO `enrollments` (`enrollment_id`, `student_id`, `course_id`, `registra
 -- and one academic year. calculateAverage() calculates average.
 -- Mark validation: 0-100 permitted range.
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `module_results`;
 CREATE TABLE `module_results` (
   `mark_id` int(11) NOT NULL AUTO_INCREMENT,
   `student_id` int(11) NOT NULL,
@@ -226,7 +231,6 @@ INSERT INTO `module_results` (`mark_id`, `student_id`, `module_id`, `academic_ye
 -- -----------------------------------------------------------------------------
 -- Table structure for table `users`
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL UNIQUE,
