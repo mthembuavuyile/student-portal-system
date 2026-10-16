@@ -5,7 +5,7 @@
         <div class="footer-copyright">
             <div class="container">
             © <?php echo date("Y"); ?> Student Management System
-            <a class="grey-text text-lighten-4 right" href="../index.php">Home</a>
+            <a class="grey-text text-lighten-4 right" href="<?php echo BASE_URL; ?>index.php">Home</a>
             </div>
         </div>
     </footer>
@@ -29,6 +29,10 @@
             });
             var selects = document.querySelectorAll('select');
             M.FormSelect.init(selects);
+            var modals = document.querySelectorAll('.modal');
+            M.Modal.init(modals);
+            var tooltips = document.querySelectorAll('.tooltipped');
+            M.Tooltip.init(tooltips);
         });
     </script>
 </body>

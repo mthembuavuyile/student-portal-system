@@ -58,6 +58,31 @@ if ($student->getAcademicStatus() === STATUS_ACTIVE) {
                 <a href="results.php" class="btn waves-effect waves-light orange darken-3"><i class="material-icons left">assessment</i>Academic Results</a>
                 <a href="profile_report.php" class="btn waves-effect waves-light blue darken-2"><i class="material-icons left">print</i>Print Summary</a>
                 <a href="registration_slip.php" class="btn waves-effect waves-light teal darken-2"><i class="material-icons left">receipt</i>Registration Slip</a>
+                <a href="<?php echo BASE_URL; ?>change_password.php" class="btn waves-effect waves-light purple darken-2"><i class="material-icons left">lock</i>Change Password</a>
+            </div>
+        </div>
+
+        <!-- Security & Authentication Card -->
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title bold" style="font-weight: 600;">
+                    <i class="material-icons left blue-text">security</i>
+                    Security & Portal Credentials
+                </span>
+                <p class="grey-text" style="margin-bottom: 15px;">
+                    Manage your Student Portal login credentials and password.
+                </p>
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="col s12 m6">
+                        <p style="margin-bottom: 8px;"><i class="material-icons tiny left">account_circle</i><strong>Portal Username:</strong> <code><?php echo htmlspecialchars($_SESSION['username']); ?></code></p>
+                        <p style="margin-bottom: 8px;"><i class="material-icons tiny left">lock</i><strong>Password:</strong> &bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull; (Encrypted)</p>
+                    </div>
+                    <div class="col s12 m6 right-align">
+                        <a href="<?php echo BASE_URL; ?>change_password.php" class="btn waves-effect waves-light blue darken-3">
+                            <i class="material-icons left">vpn_key</i>Change Password
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

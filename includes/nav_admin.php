@@ -12,6 +12,7 @@
             <li><a href="<?php echo BASE_URL; ?>admin/modules.php"><i class="material-icons left">book</i>Modules</a></li>
             <li><a href="<?php echo BASE_URL; ?>admin/lecturers.php"><i class="material-icons left">supervisor_account</i>Lecturers</a></li>
             <li><a href="<?php echo BASE_URL; ?>admin/results.php"><i class="material-icons left">assessment</i>Results</a></li>
+            <li><a href="<?php echo BASE_URL; ?>change_password.php"><i class="material-icons left">lock</i>Password</a></li>
             <li><a href="<?php echo BASE_URL; ?>logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
         </ul>
 
@@ -32,6 +33,7 @@
             <li><a href="<?php echo BASE_URL; ?>admin/lecturers.php"><i class="material-icons">supervisor_account</i>Lecturers</a></li>
             <li><a href="<?php echo BASE_URL; ?>admin/results.php"><i class="material-icons">assessment</i>Quarterly Marks</a></li>
             <li><div class="divider"></div></li>
+            <li><a href="<?php echo BASE_URL; ?>change_password.php"><i class="material-icons">lock</i>Change Password</a></li>
             <li><a href="<?php echo BASE_URL; ?>logout.php"><i class="material-icons">exit_to_app</i>Logout</a></li>
         </ul>
     </div>

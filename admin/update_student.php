@@ -30,6 +30,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($surname)) $errors[] = "Surname cannot be empty.";
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "A valid email is required.";
     
+    $new_password     = $_POST['new_password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+
+    if (!empty($new_password)) {
+        if (strlen($new_password) < 6) {
+            $errors[] = "New password must be at least 6 characters long.";
+        } elseif ($new_password !== $confirm_password) {
+            $errors[] = "New password and confirmation do not match.";
+        }
+    }
+
     if (empty($errors)) {
         try {
             $full_name = trim($first_name . ' ' . $surname);
@@ -72,7 +83,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            $_SESSION['success_message'] = "Student record updated successfully!";
+            // Update user password if provided
+            if (!empty($new_password)) {
+                $currentStudent = get_student_by_id($pdo, $student_id);
+                $studentNumber = $currentStudent['student_number'] ?? $currentStudent['student_id_number'];
+                $pwdResult = User::adminResetPassword($pdo, $studentNumber, $new_password);
+                if (!$pwdResult['success']) {
+                    $_SESSION['error_message'] = "Student details updated, but password failed: " . $pwdResult['message'];
+                } else {
+                    $log_msg = "Admin '" . ($_SESSION['username'] ?? 'admin') . "' updated portal password for student {$studentNumber}.";
+                    log_action($log_msg, __DIR__ . '/deleted_logs.txt');
+                }
+            }
+
+            $_SESSION['success_message'] = "Student record " . (!empty($new_password) ? "and password " : "") . "updated successfully!";
             redirect('admin/student_profile.php?id=' . $student_id);
 
         } catch (PDOException $e) {
@@ -178,6 +202,28 @@ if (empty($firstNameVal) && !empty($student['full_name'])) {
                                 <option value="<?php echo STATUS_DROPPED; ?>" <?php echo ($student['academic_status'] == STATUS_DROPPED) ? 'selected' : ''; ?>><?php echo STATUS_DROPPED; ?></option>
                             </select>
                             <label>Academic Status</label>
+                        </div>
+                    </div>
+
+                    <div class="divider" style="margin: 25px 0 15px 0;"></div>
+                    <h6 class="blue-text text-darken-3" style="font-weight: 600; margin-bottom: 5px;">
+                        <i class="material-icons tiny left">lock</i>Portal Login & Password Reset
+                    </h6>
+                    <p class="grey-text" style="font-size: 0.85rem; margin-top: 0; margin-bottom: 15px;">
+                        Leave blank to keep the student's existing password unchanged.
+                    </p>
+
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">vpn_key</i>
+                            <input type="password" id="new_password" name="new_password" minlength="6">
+                            <label for="new_password">New Password (optional)</label>
+                            <span class="helper-text">Minimum 6 characters</span>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">check_circle_outline</i>
+                            <input type="password" id="confirm_password" name="confirm_password" minlength="6">
+                            <label for="confirm_password">Confirm New Password</label>
                         </div>
                     </div>
 

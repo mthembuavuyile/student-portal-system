@@ -22,6 +22,30 @@ $activeEnrollment = $student->getActiveEnrollment($pdo);
 $enrollmentHistory = $student->getEnrollmentHistory($pdo);
 $moduleResults = $student->getModuleResults($pdo);
 
+// Handle Admin Reset Student Password
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'reset_student_password') {
+    $new_password = $_POST['new_password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+
+    if (empty($new_password)) {
+        $_SESSION['error_message'] = "Please enter a new password.";
+    } elseif (strlen($new_password) < 6) {
+        $_SESSION['error_message'] = "New password must be at least 6 characters long.";
+    } elseif ($new_password !== $confirm_password) {
+        $_SESSION['error_message'] = "Passwords do not match.";
+    } else {
+        $studentNumber = $student->getStudentNumber();
+        $res = User::adminResetPassword($pdo, $studentNumber, $new_password);
+        if ($res['success']) {
+            $_SESSION['success_message'] = "Password for student " . htmlspecialchars($studentNumber) . " updated successfully!";
+            log_action("Admin '" . ($_SESSION['username'] ?? 'admin') . "' reset portal password for student {$studentNumber}.", __DIR__ . '/deleted_logs.txt');
+        } else {
+            $_SESSION['error_message'] = $res['message'];
+        }
+    }
+    redirect('admin/student_profile.php?id=' . $student_id);
+}
+
 $status_class = 'grey';
 if ($student->getAcademicStatus() === STATUS_ACTIVE) {
     $status_class = 'green';
@@ -36,6 +60,9 @@ if ($student->getAcademicStatus() === STATUS_ACTIVE) {
     <div class="col s12 m10 offset-m1 l10 offset-l1">
         <a href="student_list.php" class="btn-flat waves-effect"><i class="material-icons left">arrow_back</i>Back to Student List</a>
         
+        <?php display_session_message('success_message'); ?>
+        <?php display_session_message('error_message', 'red'); ?>
+
         <!-- Profile Overview Card -->
         <div class="card" style="margin-top: 15px;">
             <div class="card-content">
@@ -74,6 +101,9 @@ if ($student->getAcademicStatus() === STATUS_ACTIVE) {
             <div class="card-action">
                 <a href="update_student.php?id=<?php echo $student->getId(); ?>" class="btn waves-effect waves-light orange darken-2">
                     <i class="material-icons left">edit</i>Edit Details
+                </a>
+                <a href="#modal-reset-password" class="btn waves-effect waves-light indigo darken-1 modal-trigger">
+                    <i class="material-icons left">vpn_key</i>Reset Password
                 </a>
                 <a href="results.php" class="btn waves-effect waves-light blue darken-2">
                     <i class="material-icons left">assessment</i>Manage Marks
@@ -201,6 +231,47 @@ if ($student->getAcademicStatus() === STATUS_ACTIVE) {
         </div>
 
     </div>
+</div>
+
+<!-- Reset Password Modal -->
+<div id="modal-reset-password" class="modal">
+    <form method="POST" action="student_profile.php?id=<?php echo $student_id; ?>">
+        <input type="hidden" name="action" value="reset_student_password">
+        <div class="modal-content">
+            <h5 class="blue-text text-darken-3" style="display: flex; align-items: center;">
+                <i class="material-icons left">vpn_key</i>Reset Student Portal Password
+            </h5>
+            <p>
+                Updating credentials for: <strong><?php echo htmlspecialchars($student->getFullName()); ?></strong> 
+                (Student No: <code><?php echo htmlspecialchars($student->getStudentNumber()); ?></code>)
+            </p>
+            <div class="divider" style="margin: 15px 0;"></div>
+
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">lock</i>
+                    <input type="password" id="modal_new_password" name="new_password" required minlength="6">
+                    <label for="modal_new_password">New Password</label>
+                    <span class="helper-text">Minimum 6 characters</span>
+                </div>
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">check_circle_outline</i>
+                    <input type="password" id="modal_confirm_password" name="confirm_password" required minlength="6">
+                    <label for="modal_confirm_password">Confirm New Password</label>
+                </div>
+            </div>
+            <div class="card-panel grey lighten-4" style="padding: 10px 15px; font-size: 0.85rem; margin-top: 0;">
+                <i class="material-icons tiny left blue-text">info</i>
+                This will immediately update the student's password in the portal authentication database.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close btn-flat waves-effect">Cancel</a>
+            <button type="submit" class="btn waves-effect waves-light blue darken-3">
+                <i class="material-icons left">save</i>Save New Password
+            </button>
+        </div>
+    </form>
 </div>
 
 <script src="../js/confirmation.js"></script>

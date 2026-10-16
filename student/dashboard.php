@@ -120,6 +120,9 @@ $cumulativeAverage = $avgCount > 0 ? round($totalAvg / $avgCount, 2) : null;
                     <a href="profile_report.php" class="collection-item waves-effect blue-text text-darken-2">
                         <i class="material-icons left">description</i>Download Profile Summary Report
                     </a>
+                    <a href="<?php echo BASE_URL; ?>change_password.php" class="collection-item waves-effect blue-text text-darken-2">
+                        <i class="material-icons left">vpn_key</i>Update / Change Account Password
+                    </a>
                 </div>
             </div>
         </div>

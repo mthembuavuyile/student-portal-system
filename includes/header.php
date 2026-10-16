@@ -33,9 +33,9 @@ require_login($allowed_roles);
         // Include the correct navigation bar based on the user's role
         if (isset($_SESSION['role'])) {
             if ($_SESSION['role'] === 'admin') {
-                include 'nav_admin.php';
+                include __DIR__ . '/nav_admin.php';
             } else {
-                include 'nav_student.php';
+                include __DIR__ . '/nav_student.php';
             }
         }
         ?>
