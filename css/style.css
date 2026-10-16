@@ -207,6 +207,7 @@ nav a.sidenav-trigger i {
     font-weight: 500 !important;
     margin: 2px 4px 2px 0 !important;
     box-sizing: border-box !important;
+    white-space: nowrap !important;
 }
 
 .chip i.material-icons,
@@ -227,9 +228,10 @@ nav a.sidenav-trigger i {
 .chip.tiny {
     height: 24px !important;
     line-height: 1 !important;
-    padding: 0 8px !important;
+    padding: 0 10px !important;
     font-size: 0.75rem !important;
     border-radius: 12px !important;
+    white-space: nowrap !important;
 }
 
 .chip.tiny i.material-icons {
@@ -264,5 +266,18 @@ span.badge.green,
 .active-students-badge.green {
     background-color: #43a047 !important;
     color: #ffffff !important;
+}
+
+span.badge.new {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: auto !important;
+    min-height: 22px !important;
+    line-height: 1 !important;
+    padding: 3px 8px !important;
+    border-radius: 10px !important;
+    font-size: 0.75rem !important;
+    vertical-align: middle !important;
 }
 
