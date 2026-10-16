@@ -1,0 +1,268 @@
+/* css/style.css - Main stylesheet for Student Management System */
+
+:root {
+    --primary-color: #1565c0;
+    --primary-color-dark: #0d47a1;
+    --primary-color-light: #1e88e5;
+    --accent-color: #26a69a;
+    --surface-color: #ffffff;
+    --background-color: #f5f5f5;
+    --text-color: #212121;
+    --text-secondary: #757575;
+    --border-radius: 6px;
+    --shadow-1: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-2: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --error-color: #c62828;
+    --success-color: #2e7d32;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: #f8f9fa;
+}
+
+main {
+    flex: 1 0 auto;
+    padding-bottom: 30px;
+}
+
+/* ==========================================================================
+   Navigation Bar & Header Styles (Fixes start-side overlap bug)
+   ========================================================================== */
+
+nav {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+nav .nav-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 1.5rem;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Brand Logo (Start Side of Header) */
+nav .brand-logo,
+nav #logo-container {
+    position: static !important;
+    display: inline-flex !important;
+    align-items: center;
+    font-size: 1.3rem !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #ffffff !important;
+    white-space: nowrap;
+    text-decoration: none;
+    flex-shrink: 0;
+    margin-right: 1.5rem;
+    transform: none !important;
+    left: auto !important;
+    height: 100%;
+}
+
+nav .brand-logo i.material-icons,
+nav #logo-container i.material-icons {
+    float: none !important;
+    margin-right: 10px !important;
+    font-size: 1.6rem !important;
+    height: auto !important;
+    line-height: 1 !important;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Nav Menu Items (Right Side) */
+nav ul.right {
+    display: flex !important;
+    align-items: center;
+    float: none !important;
+    margin: 0 !important;
+    margin-left: auto;
+    height: 100%;
+}
+
+nav ul.right li {
+    float: none !important;
+    height: 100%;
+}
+
+nav ul.right li a {
+    display: inline-flex !important;
+    align-items: center;
+    height: 100% !important;
+    padding: 0 13px !important;
+    font-size: 0.95rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+nav ul.right li a i.material-icons,
+nav ul.right li a i.material-icons.left {
+    float: none !important;
+    margin-right: 6px !important;
+    font-size: 1.25rem !important;
+    height: auto !important;
+    line-height: 1 !important;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Sidenav Trigger */
+nav a.sidenav-trigger {
+    display: none;
+    align-items: center;
+    height: 100%;
+    margin: 0 12px 0 0 !important;
+    float: none !important;
+    order: -1;
+}
+
+nav a.sidenav-trigger i {
+    height: auto !important;
+    line-height: 1 !important;
+    font-size: 1.6rem !important;
+}
+
+/* Responsive adjustments for laptop & intermediate desktop displays (993px - 1280px) */
+@media only screen and (min-width: 993px) and (max-width: 1280px) {
+    nav .nav-wrapper {
+        padding: 0 1rem;
+    }
+    nav .brand-logo,
+    nav #logo-container {
+        font-size: 1.15rem !important;
+        margin-right: 0.75rem;
+    }
+    nav .brand-logo i.material-icons,
+    nav #logo-container i.material-icons {
+        margin-right: 6px !important;
+        font-size: 1.4rem !important;
+    }
+    nav ul.right li a {
+        padding: 0 8px !important;
+        font-size: 0.88rem;
+    }
+    nav ul.right li a i.material-icons,
+    nav ul.right li a i.material-icons.left {
+        margin-right: 4px !important;
+        font-size: 1.1rem !important;
+    }
+}
+
+/* Mobile & Tablet Displays (<= 992px) */
+@media only screen and (max-width: 992px) {
+    nav .nav-wrapper {
+        padding: 0 1rem;
+        justify-content: flex-start;
+    }
+    nav a.sidenav-trigger {
+        display: inline-flex !important;
+    }
+    nav .brand-logo,
+    nav #logo-container {
+        position: static !important;
+        transform: none !important;
+        left: auto !important;
+        font-size: 1.2rem !important;
+        margin: 0;
+    }
+}
+
+/* ==========================================================================
+   Login Page Styles
+   ========================================================================== */
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container .card {
+    width: 400px;
+}
+
+/* ==========================================================================
+   Badges, Chips & Pills Centering (Fixes text and icon vertical centering)
+   ========================================================================== */
+
+.chip {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    height: 30px !important;
+    line-height: 1 !important;
+    padding: 0 12px !important;
+    border-radius: 15px !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    margin: 2px 4px 2px 0 !important;
+    box-sizing: border-box !important;
+}
+
+.chip i.material-icons,
+.chip i.material-icons.left,
+.chip i.material-icons.tiny {
+    float: none !important;
+    margin: 0 6px 0 0 !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+    height: 16px !important;
+    width: 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+}
+
+.chip.tiny {
+    height: 24px !important;
+    line-height: 1 !important;
+    padding: 0 8px !important;
+    font-size: 0.75rem !important;
+    border-radius: 12px !important;
+}
+
+.chip.tiny i.material-icons {
+    font-size: 13px !important;
+    height: 13px !important;
+    width: 13px !important;
+    margin-right: 4px !important;
+}
+
+/* Badges (such as Active Students green pill) */
+span.badge,
+.badge-pill,
+.active-students-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: auto !important;
+    min-height: 28px !important;
+    line-height: 1 !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    float: none !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+    white-space: nowrap;
+}
+
+span.badge.green,
+.badge-pill.green,
+.active-students-badge.green {
+    background-color: #43a047 !important;
+    color: #ffffff !important;
+}
+

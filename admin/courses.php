@@ -89,15 +89,17 @@ $allModules = Module::getAll($pdo);
         <div class="col s12 l6">
             <div class="card hoverable">
                 <div class="card-content">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
                         <div>
-                            <span class="card-title bold" style="font-weight: 600; margin-bottom: 5px;">
+                            <span class="card-title bold" style="font-weight: 600; margin-bottom: 8px; display: block;">
                                 <?php echo htmlspecialchars($courseObj->getCourseName()); ?>
                             </span>
-                            <span class="chip blue lighten-4 blue-text text-darken-3">Code: <?php echo htmlspecialchars($courseObj->getCourseCode()); ?></span>
-                            <span class="chip grey lighten-3"><i class="material-icons tiny left">schedule</i><?php echo htmlspecialchars($courseObj->getDuration()); ?></span>
+                            <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                <span class="chip blue lighten-4 blue-text text-darken-3">Code: <?php echo htmlspecialchars($courseObj->getCourseCode()); ?></span>
+                                <span class="chip grey lighten-3"><i class="material-icons">schedule</i><?php echo htmlspecialchars($courseObj->getDuration()); ?></span>
+                            </div>
                         </div>
-                        <span class="badge green white-text" style="font-size: 0.9rem; padding: 4px 10px; border-radius: 12px;">
+                        <span class="badge green white-text active-students-badge">
                             <?php echo count($enrolledStudents); ?> Active Students
                         </span>
                     </div>

@@ -23,7 +23,9 @@ require_login($allowed_roles);
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/material-design.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/dashboard.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/forms.css">
 </head>
 <body>
     <header>

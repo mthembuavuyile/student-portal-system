@@ -1,8 +1,9 @@
 <?php // nav_admin.php ?>
 <nav class="blue darken-3" role="navigation">
-    <div class="nav-wrapper container">
-        <a id="logo-container" href="<?php echo BASE_URL; ?>admin/dashboard.php" class="brand-logo" style="font-size: 1.3rem;">
-            <i class="material-icons left">account_balance</i>SMS Admin
+    <div class="nav-wrapper">
+        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <a id="logo-container" href="<?php echo BASE_URL; ?>admin/dashboard.php" class="brand-logo">
+            <i class="material-icons">account_balance</i>SMS Admin
         </a>
         <ul class="right hide-on-med-and-down">
             <li><a href="<?php echo BASE_URL; ?>admin/dashboard.php"><i class="material-icons left">dashboard</i>Dashboard</a></li>
@@ -33,6 +34,5 @@
             <li><div class="divider"></div></li>
             <li><a href="<?php echo BASE_URL; ?>logout.php"><i class="material-icons">exit_to_app</i>Logout</a></li>
         </ul>
-        <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
 </nav>
