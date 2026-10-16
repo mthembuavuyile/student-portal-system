@@ -28,7 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['password'])) {
-                // Password is correct, start session
+                // Password is correct, regenerate session ID to prevent session fixation
+                session_regenerate_id(true);
+
+                // Set session variables
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role'] = $user['role'];
@@ -74,7 +77,7 @@ $page_title = "Login";
             <div class="row">
                 <?php if (!empty($error_message)): ?>
                     <div class="col s12">
-                        <div class="card-panel red white-text"><?php echo $error_message; ?></div>
+                        <div class="card-panel red white-text"><?php echo htmlspecialchars($error_message); ?></div>
                     </div>
                 <?php endif; ?>
                 <form class="col s12" method="POST" action="index.php">

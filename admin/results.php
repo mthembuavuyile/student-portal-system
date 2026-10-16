@@ -7,6 +7,7 @@ $errors = [];
 
 // Handle Record / Update Quarterly Marks
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'save_marks') {
+    if (!validate_csrf_token('admin/results.php')) { exit(); }
     $studentId    = (int)($_POST['student_id'] ?? 0);
     $moduleId     = (int)($_POST['module_id'] ?? 0);
     $academicYear = (int)($_POST['academic_year'] ?? date('Y'));
@@ -152,6 +153,7 @@ $results = $resultsStmt->fetchAll();
 <div id="captureMarksModal" class="modal">
     <form method="POST" action="results.php" id="marksForm">
         <input type="hidden" name="action" value="save_marks">
+        <?php csrf_token_field(); ?>
         <div class="modal-content">
             <h5>Capture / Update Quarterly Marks</h5>
             <p class="grey-text">Enter marks between 0.00 and 100.00. The average is automatically calculated and stored.</p>

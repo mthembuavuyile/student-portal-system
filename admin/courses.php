@@ -8,6 +8,7 @@ $success_message = '';
 
 // Handle Add Course
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_course') {
+    if (!validate_csrf_token('admin/courses.php')) { exit(); }
     $courseName = sanitize_input($_POST['course_name'] ?? '');
     $courseCode = strtoupper(sanitize_input($_POST['course_code'] ?? ''));
     $duration   = sanitize_input($_POST['duration'] ?? '3 Years');
@@ -28,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 // Handle Assign Module to Course
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'assign_module') {
+    if (!validate_csrf_token('admin/courses.php')) { exit(); }
     $courseId = (int)($_POST['course_id'] ?? 0);
     $moduleId = (int)($_POST['module_id'] ?? 0);
     $semester = sanitize_input($_POST['semester'] ?? 'Semester 1');
@@ -148,6 +150,7 @@ $allModules = Module::getAll($pdo);
         <div id="assignModal<?php echo $courseObj->getCourseId(); ?>" class="modal">
             <form method="POST" action="courses.php">
                 <input type="hidden" name="action" value="assign_module">
+                <?php csrf_token_field(); ?>
                 <input type="hidden" name="course_id" value="<?php echo $courseObj->getCourseId(); ?>">
                 <div class="modal-content">
                     <h5>Assign Module to <?php echo htmlspecialchars($courseObj->getCourseName()); ?></h5>
@@ -188,6 +191,7 @@ $allModules = Module::getAll($pdo);
 <div id="addCourseModal" class="modal">
     <form method="POST" action="courses.php">
         <input type="hidden" name="action" value="add_course">
+        <?php csrf_token_field(); ?>
         <div class="modal-content">
             <h5>Create New Course</h5>
             <div class="row">

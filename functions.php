@@ -58,6 +58,48 @@ function sanitize_input($data) {
 }
 
 /**
+ * Generates or retrieves a CSRF token stored in the session.
+ *
+ * @return string The CSRF token.
+ */
+function generate_csrf_token() {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['csrf_token'];
+}
+
+/**
+ * Outputs a hidden input field containing the CSRF token.
+ *
+ * @return void
+ */
+function csrf_token_field() {
+    echo '<input type="hidden" name="csrf_token" value="' . generate_csrf_token() . '">';
+}
+
+/**
+ * Validates a submitted CSRF token against the session token.
+ * On failure, sets an error message and redirects to the referrer.
+ *
+ * @param string|null $redirectUrl Optional URL to redirect to on failure.
+ * @return bool True if valid.
+ */
+function validate_csrf_token($redirectUrl = null) {
+    $submitted = $_POST['csrf_token'] ?? '';
+    if (empty($submitted) || !hash_equals($_SESSION['csrf_token'] ?? '', $submitted)) {
+        $_SESSION['error_message'] = 'Invalid or expired form submission. Please try again.';
+        if ($redirectUrl) {
+            redirect($redirectUrl);
+        }
+        return false;
+    }
+    // Regenerate token after successful validation to prevent reuse
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    return true;
+}
+
+/**
  * Fetches all student records from the database.
  *
  * @param PDO $pdo The PDO database connection object.
@@ -69,7 +111,8 @@ function get_all_students($pdo) {
         $stmt = $pdo->query($sql);
         return $stmt->fetchAll();
     } catch (PDOException $e) {
-        die("ERROR: Could not execute query. " . $e->getMessage());
+        error_log("ERROR: Could not execute query. " . $e->getMessage());
+        return [];
     }
 }
 

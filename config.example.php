@@ -4,6 +4,12 @@
  * Instructions: Copy this file to config.php and update your credentials.
  */
 
+// -- Output Buffering --
+// Prevents "headers already sent" warnings on redirects
+if (!ob_get_level()) {
+    ob_start();
+}
+
 // -- Error Reporting --
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

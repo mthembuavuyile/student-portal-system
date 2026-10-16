@@ -7,6 +7,7 @@ $errors = [];
 
 // Handle Add Lecturer
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_lecturer') {
+    if (!validate_csrf_token('admin/lecturers.php')) { exit(); }
     $firstName = sanitize_input($_POST['first_name'] ?? '');
     $surname   = sanitize_input($_POST['surname'] ?? '');
     $email     = filter_var(sanitize_input($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
@@ -100,6 +101,7 @@ $lecturers = Lecturer::getAll($pdo);
 <div id="addLecturerModal" class="modal">
     <form method="POST" action="lecturers.php">
         <input type="hidden" name="action" value="add_lecturer">
+        <?php csrf_token_field(); ?>
         <div class="modal-content">
             <h5>Register Academic Staff / Lecturer</h5>
             <div class="row">

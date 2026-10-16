@@ -12,10 +12,14 @@ require_login(['admin']);
 $log_file = 'deleted_logs.txt';
 
 // Check if it's a POST request and if 'id' is set.
-// Using POST prevents deletion via a simple link click (CSRF protection).
 if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['id']) || !is_numeric($_POST['id'])) {
     $_SESSION['error_message'] = "Invalid delete request.";
     redirect('student_list.php');
+}
+
+// Validate CSRF token
+if (!validate_csrf_token('admin/student_list.php')) {
+    exit();
 }
 
 $student_id = intval($_POST['id']);

@@ -7,6 +7,7 @@ $errors = [];
 
 // Handle Add Module
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_module') {
+    if (!validate_csrf_token('admin/modules.php')) { exit(); }
     $moduleName = sanitize_input($_POST['module_name'] ?? '');
     $moduleCode = strtoupper(sanitize_input($_POST['module_code'] ?? ''));
     $credits    = (int)($_POST['credits'] ?? 15);
@@ -27,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 // Handle Assign Lecturer to Module
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'assign_lecturer') {
+    if (!validate_csrf_token('admin/modules.php')) { exit(); }
     $moduleId   = (int)($_POST['module_id'] ?? 0);
     $lecturerId = (int)($_POST['lecturer_id'] ?? 0);
     $isPrimary  = isset($_POST['is_primary']) ? 1 : 0;
@@ -148,6 +150,7 @@ $allLecturers = Lecturer::getAll($pdo);
         <div id="assignLecModal<?php echo $moduleObj->getModuleId(); ?>" class="modal">
             <form method="POST" action="modules.php">
                 <input type="hidden" name="action" value="assign_lecturer">
+                <?php csrf_token_field(); ?>
                 <input type="hidden" name="module_id" value="<?php echo $moduleObj->getModuleId(); ?>">
                 <div class="modal-content">
                     <h5>Assign Lecturer to <?php echo htmlspecialchars($moduleObj->getModuleCode() . ' - ' . $moduleObj->getModuleName()); ?></h5>
@@ -188,6 +191,7 @@ $allLecturers = Lecturer::getAll($pdo);
 <div id="addModuleModal" class="modal">
     <form method="POST" action="modules.php">
         <input type="hidden" name="action" value="add_module">
+        <?php csrf_token_field(); ?>
         <div class="modal-content">
             <h5>Create New Module</h5>
             <div class="row">

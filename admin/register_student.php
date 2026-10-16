@@ -8,6 +8,9 @@ $generatedNumberPreview = RegistrationService::generateStudentNumber($pdo);
 $courses = Course::getAll($pdo);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf_token('admin/register_student.php')) {
+        exit();
+    }
     // Gather and sanitize input
     $first_name = sanitize_input($_POST['first_name'] ?? '');
     $surname    = sanitize_input($_POST['surname'] ?? '');
@@ -87,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <form method="POST" action="register_student.php" id="studentRegForm">
+                    <?php csrf_token_field(); ?>
                     <!-- Name & ID Details -->
                     <div class="row">
                         <div class="input-field col s12 m6">

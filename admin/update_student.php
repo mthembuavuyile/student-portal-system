@@ -17,6 +17,9 @@ $courses = Course::getAll($pdo);
 
 // 2. Handle the form submission (POST request)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf_token('admin/update_student.php?id=' . $student_id)) {
+        exit();
+    }
     $first_name = sanitize_input($_POST['first_name'] ?? '');
     $surname    = sanitize_input($_POST['surname'] ?? '');
     $id_number  = sanitize_input($_POST['id_number'] ?? '');
@@ -146,6 +149,7 @@ include '../includes/header.php';
                 <?php endif; ?>
 
                 <form method="POST" action="update_student.php?id=<?php echo $student_id; ?>">
+                    <?php csrf_token_field(); ?>
                     <div class="row">
                         <div class="input-field col s12 m6">
                             <i class="material-icons prefix">person</i>

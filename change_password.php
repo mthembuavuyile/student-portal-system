@@ -7,6 +7,11 @@ $error_message = '';
 $success_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf_token('change_password.php')) {
+        // validate_csrf_token will redirect on failure
+        exit();
+    }
+
     $current_password = $_POST['current_password'] ?? '';
     $new_password     = $_POST['new_password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
@@ -15,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result['success']) {
         // Log security action
-        $log_dir = __DIR__ . '/admin/deleted_logs.txt';
+        $log_dir = __DIR__ . '/admin/security_audit.log';
         $log_msg = "User '" . ($_SESSION['username'] ?? 'unknown') . "' (Role: " . ($_SESSION['role'] ?? 'user') . ", ID: " . $_SESSION['user_id'] . ") successfully changed their password.";
         log_action($log_msg, $log_dir);
 
@@ -62,6 +67,7 @@ $dashboard_link = ($_SESSION['role'] === 'admin') ? BASE_URL . 'admin/dashboard.
                 <?php endif; ?>
 
                 <form method="POST" action="change_password.php" id="changePasswordForm">
+                    <?php csrf_token_field(); ?>
                     <!-- Current Password -->
                     <div class="row">
                         <div class="input-field col s12" style="position: relative;">

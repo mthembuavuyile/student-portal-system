@@ -33,7 +33,14 @@ function confirmDelete(studentId) {
             hiddenInput.name = 'id';
             hiddenInput.value = studentId;
 
+            // Include CSRF token for security
+            var csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrf_token';
+            csrfInput.value = typeof csrfToken !== 'undefined' ? csrfToken : '';
+
             form.appendChild(hiddenInput);
+            form.appendChild(csrfInput);
             document.body.appendChild(form);
             form.submit();
 

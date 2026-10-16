@@ -110,5 +110,6 @@ function searchTable() {
 }
 </script>
 
+<script>var csrfToken = '<?php echo generate_csrf_token(); ?>';</script>
 <script src="../js/confirmation.js"></script>
 <?php include '../includes/footer.php'; ?>
