@@ -1,0 +1,120 @@
+/* css/material-design.css */
+
+/* --- Card Styles --- */
+.card {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-1);
+    transition: box-shadow 0.3s ease-in-out;
+    margin: 1rem 0;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-2);
+}
+
+.card .card-content {
+    padding: 24px;
+}
+
+.card .card-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.card .card-action {
+    background-color: transparent;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 16px 24px;
+}
+
+.card-panel {
+    border-radius: var(--border-radius);
+    box-shadow: none;
+}
+
+/* --- Button Styles --- */
+.btn, .btn-large, .btn-small {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-1);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover, .btn-large:hover, .btn-small:hover {
+    background-color: var(--primary-color-dark);
+    box-shadow: var(--shadow-2);
+}
+
+.btn-flat {
+    box-shadow: none;
+    background-color: transparent;
+    color: var(--primary-color);
+}
+
+.btn-flat:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.btn i, .btn-large i, .btn-small i {
+    line-height: inherit;
+}
+
+/* --- Table Styles --- */
+.responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.responsive-table th {
+    font-weight: 700;
+    text-align: left;
+    padding: 15px 10px;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.responsive-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.responsive-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive handling for tables */
+@media (max-width: 768px) {
+    .responsive-table thead {
+        display: none;
+    }
+    .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td {
+        display: block;
+        width: 100%;
+    }
+    .responsive-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+    }
+    .responsive-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    .responsive-table td::before {
+        content: attr(data-label); /* Requires data-label attributes on td elements */
+        position: absolute;
+        left: 10px;
+        width: calc(50% - 20px);
+        text-align: left;
+        font-weight: bold;
+    }
+}

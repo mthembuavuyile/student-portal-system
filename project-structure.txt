@@ -1,0 +1,92 @@
+university_system/
+By Avuyile Mthembu
+│
+├── index.php (Landing/Login page)
+├── config.php (Database configuration)
+├── functions.php (Reusable PHP functions & class autoloader)
+├── logout.php (Session logout handler)
+├── hash.php (Password hashing utility)
+│
+├── classes/ (OOP Domain Model & Services)
+│   ├── Student.php (Student domain entity with backward compatibility)
+│   ├── Course.php (Course entity with modules & enrollment associations)
+│   ├── Module.php (Module entity with many-to-many courses & lecturers)
+│   ├── Lecturer.php (Lecturer entity with teaching assignments)
+│   ├── Enrollment.php (Enrollment entity enforcing single active course rule)
+│   ├── ModuleResult.php (Module results, quarterly marks, calculateAverage() & validation)
+│   └── RegistrationService.php (Automatic student number generator & transaction service)
+│
+├── database/
+│   ├── database.sql (Complete database schema and initial data v2.0)
+│   └── migration_v2.sql (Incremental upgrade migration script)
+│
+├── admin/
+│   ├── dashboard.php (Admin main dashboard with comprehensive metrics)
+│   ├── register_student.php (Student registration with RegistrationService auto-numbering)
+│   ├── student_list.php (View all students with live search & multi-attribute filter)
+│   ├── student_profile.php (View student profile, active course, history, and marks)
+│   ├── update_student.php (Edit student information with backward compatibility)
+│   ├── delete_student.php (Delete student handler)
+│   ├── courses.php (Curriculum management & module assignment)
+│   ├── modules.php (Module management & lecturer assignment)
+│   ├── lecturers.php (Academic faculty directory & management)
+│   ├── results.php (Capture & manage quarterly marks, live average calculation)
+│   └── deleted_logs.txt (Log file for deleted records)
+│
+├── student/
+│   ├── dashboard.php (Student dashboard with average & module snapshot)
+│   ├── profile.php (Student profile view with ID & enrollment details)
+│   ├── modules.php (Student's enrolled modules & assigned lecturers)
+│   ├── results.php (Official Academic Transcript with quarterly marks & averages)
+│   ├── profile_report.php (Profile Summary Report with PDF export)
+│   └── registration_slip.php (Registration Confirmation with PDF export)
+│
+├── css/
+│   ├── style.css (Main stylesheet)
+│   ├── material-design.css (Material Design components)
+│   ├── dashboard.css (Dashboard specific styles)
+│   └── forms.css (Form styling)
+│
+├── js/
+│   ├── validation.js (Form validation)
+│   ├── confirmation.js (Delete confirmations)
+│   ├── search-filter.js (Search/sort/filter functionality)
+│   └── jspdf.min.js (PDF generation library - CDN or local)
+│
+├── react-components/
+│   ├── package.json (Node.js dependencies)
+│   ├── node_modules/ (Auto-generated)
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── index.js (React entry point)
+│   │   ├── App.js (Main React component)
+│   │   ├── components/
+│   │   │   ├── StudentDashboard.js (Dashboard component)
+│   │   │   ├── StudentProfile.js (Profile component)
+│   │   │   ├── StudentForm.js (Registration form component)
+│   │   │   ├── StudentList.js (Student list component)
+│   │   │   └── StudentCard.js (Individual student card)
+│   │   ├── services/
+│   │   │   └── api.js (API service for backend calls)
+│   │   └── styles/
+│   │       └── components.css (React component styles)
+│   └── server/
+│       ├── server.js (Node.js Express server)
+│       ├── routes/
+│       │   └── api.js (API routes)
+│       └── package.json (Server dependencies)
+│
+├── assets/
+│   ├── images/
+│   │   ├── logo.png
+│
+├── includes/
+│   ├── header.php (Common header)
+│   ├── footer.php (Common footer)
+│   ├── nav_admin.php (Admin navigation with Courses, Modules, Lecturers, Results)
+│   └── nav_student.php (Student navigation with Modules & Academic Results)
+│
+└── documentation/
+    ├── STUDENT_PORTAL_SYSTEM_DESIGN.md (Comprehensive System Design & UML Document)
+    └── screenshots.docx (MS Word with screenshots)

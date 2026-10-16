@@ -1,0 +1,21 @@
+# Database configuration & credentials (DO NOT COMMIT)
+config.php
+
+# Node dependencies
+node_modules/
+react-components/node_modules/
+react-components/server/node_modules/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs and temporary files
+*.log
+admin/deleted_logs.txt
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,86 @@
+/* css/forms.css */
+
+/* --- Input Field Wrapper --- */
+.input-field {
+    position: relative;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Input Styles (Text, Email, Date) --- */
+.input-field input[type=text],
+.input-field input[type=email],
+.input-field input[type=password],
+.input-field input[type=date],
+.input-field input[type=number] {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1rem;
+    border: none;
+    border-bottom: 1px solid #9e9e9e;
+    outline: none;
+    background-color: transparent;
+    transition: border-bottom-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field input:focus {
+    border-bottom: 2px solid var(--primary-color);
+    box-shadow: 0 1px 0 0 var(--primary-color);
+}
+
+/* --- Floating Labels --- */
+.input-field label {
+    color: #9e9e9e;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    font-size: 1rem;
+    cursor: text;
+    transition: transform 0.2s ease-out, color 0.2s ease-out;
+}
+
+.input-field input:focus + label,
+.input-field input:valid + label {
+    transform: translateY(-20px) scale(0.8);
+    color: var(--primary-color);
+    transform-origin: 0 0;
+}
+
+/* --- Prefix Icons --- */
+.input-field .prefix {
+    position: absolute;
+    top: 10px;
+    font-size: 2rem;
+    color: #9e9e9e;
+    transition: color 0.3s;
+}
+
+.input-field input:focus ~ .prefix {
+    color: var(--primary-color);
+}
+
+/* Adjust input padding when a prefix is used */
+.input-field .prefix ~ input,
+.input-field .prefix ~ label {
+    margin-left: 3rem;
+}
+
+/* --- Select (Dropdown) Styling --- */
+/* This requires Materialize JS to fully function, but here's the CSS */
+.select-wrapper input.select-dropdown {
+    border-bottom: 1px solid #9e9e9e;
+}
+
+/* --- Error & Success Messages --- */
+.card-panel.red {
+    background-color: #ffebee !important;
+    color: var(--error-color) !important;
+    border-radius: var(--border-radius);
+    padding: 15px;
+}
+.card-panel.green {
+     background-color: #e8f5e9 !important;
+    color: var(--success-color) !important;
+    border-radius: var(--border-radius);
+    padding: 15px;
+}

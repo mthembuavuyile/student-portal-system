@@ -1,0 +1,67 @@
+/* css/dashboard.css */
+
+/* --- Stats Cards (Admin Dashboard) --- */
+.card.white-text .card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+}
+
+.card.white-text i.large {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.card.white-text h5 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card.white-text h3 {
+    margin: 5px 0 0 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.card.white-text .card-action {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* --- Quick Links / Actions (Student Dashboard) --- */
+.collection {
+    border: none;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.collection .collection-item {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.collection .collection-item:last-child {
+    border-bottom: none;
+}
+
+.collection .collection-item i {
+    margin-right: 20px;
+    font-size: 1.8rem;
+    color: var(--primary-color-dark);
+}
+
+/* --- Report View Styles --- */
+.report-container {
+    background: var(--surface-color);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-1);
+}
