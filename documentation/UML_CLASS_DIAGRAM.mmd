@@ -1,0 +1,239 @@
+classDiagram
+    direction TB
+
+    %% =========================================================================
+    %% STUDENT PORTAL SYSTEM - UML CLASS DIAGRAM
+    %% Prepared by: Mr Avuyile Mthembu (Intern: Software Developer)
+    %% Directorate: Information Technology Business Solutions (ITBS)
+    %% Unit: ICT Services: Infrastructure & Security Support
+    %% Branch: Corporate Management Services (CMS)
+    %% Department: Department of Forestry, Fisheries and the Environment (DFFE)
+    %% =========================================================================
+
+    class Student {
+        -int id
+        -string studentNumber
+        -string firstName
+        -string surname
+        -string idNumber
+        -string email
+        -date dateOfBirth
+        -string fullName
+        -string studentIdNumber
+        -string courseOfStudy
+        -date enrollmentDate
+        -string academicStatus
+        -timestamp registrationTimestamp
+        +__construct(data: array)
+        +getId(): int
+        +getStudentNumber(): string
+        +setStudentNumber(num: string): void
+        +getFirstName(): string
+        +setFirstName(fn: string): void
+        +getSurname(): string
+        +setSurname(sn: string): void
+        +getFullName(): string
+        +getIdNumber(): string
+        +setIdNumber(idNum: string): void
+        +getEmail(): string
+        +setEmail(email: string): void
+        +getDateOfBirth(): date
+        +setDateOfBirth(dob: date): void
+        +getStudentIdNumber(): string
+        +getCourseOfStudy(): string
+        +setCourseOfStudy(course: string): void
+        +getAcademicStatus(): string
+        +setAcademicStatus(status: string): void
+        +getEnrollmentDate(): date
+        +setEnrollmentDate(date: date): void
+        +getRegistrationTimestamp(): timestamp
+        +getActiveEnrollment(pdo: PDO): array
+        +getEnrollmentHistory(pdo: PDO): array
+        +getModuleResults(pdo: PDO, year: int): array
+        +toArray(): array
+        +static findById(pdo: PDO, id: int): Student
+        +static findByStudentNumber(pdo: PDO, num: string): Student
+    }
+
+    class Course {
+        -int courseId
+        -string courseCode
+        -string courseName
+        -string duration
+        +__construct(data: array)
+        +getCourseId(): int
+        +getCourseCode(): string
+        +setCourseCode(code: string): void
+        +getCourseName(): string
+        +setCourseName(name: string): void
+        +getDuration(): string
+        +setDuration(duration: string): void
+        +getModules(pdo: PDO): array
+        +getStudents(pdo: PDO, status: string): array
+        +addModule(pdo: PDO, moduleId: int, semester: string): bool
+        +toArray(): array
+        +static getAll(pdo: PDO): array
+        +static findById(pdo: PDO, id: int): Course
+        +static findByCode(pdo: PDO, code: string): Course
+    }
+
+    class Module {
+        -int moduleId
+        -string moduleCode
+        -string moduleName
+        -int credits
+        +__construct(data: array)
+        +getModuleId(): int
+        +getModuleCode(): string
+        +setModuleCode(code: string): void
+        +getModuleName(): string
+        +setModuleName(name: string): void
+        +getCredits(): int
+        +setCredits(credits: int): void
+        +getLecturers(pdo: PDO): array
+        +getCourses(pdo: PDO): array
+        +assignLecturer(pdo: PDO, lecturerId: int, isPrimary: int): bool
+        +toArray(): array
+        +static getAll(pdo: PDO): array
+        +static findById(pdo: PDO, id: int): Module
+        +static findByCode(pdo: PDO, code: string): Module
+    }
+
+    class Lecturer {
+        -int lecturerId
+        -string firstName
+        -string surname
+        -string email
+        +__construct(data: array)
+        +getLecturerId(): int
+        +getFirstName(): string
+        +setFirstName(fn: string): void
+        +getSurname(): string
+        +setSurname(sn: string): void
+        +getFullName(): string
+        +getEmail(): string
+        +setEmail(email: string): void
+        +getModules(pdo: PDO): array
+        +toArray(): array
+        +static getAll(pdo: PDO): array
+        +static findById(pdo: PDO, id: int): Lecturer
+    }
+
+    class Enrollment {
+        -int enrollmentId
+        -int studentId
+        -int courseId
+        -date registrationDate
+        -string status
+        +__construct(data: array)
+        +getEnrollmentId(): int
+        +getStudentId(): int
+        +setStudentId(sid: int): void
+        +getCourseId(): int
+        +setCourseId(cid: int): void
+        +getRegistrationDate(): date
+        +setRegistrationDate(date: date): void
+        +getStatus(): string
+        +setStatus(status: string): void
+        +validateSingleActive(pdo: PDO): bool
+        +save(pdo: PDO): bool
+        +toArray(): array
+        +static getActiveForStudent(pdo: PDO, studentId: int): array
+        +static getHistoryForStudent(pdo: PDO, studentId: int): array
+        +static findById(pdo: PDO, id: int): Enrollment
+    }
+
+    class ModuleResult {
+        -int markId
+        -int studentId
+        -int moduleId
+        -int academicYear
+        -float quarter1
+        -float quarter2
+        -float quarter3
+        -float quarter4
+        -float average
+        +__construct(data: array)
+        +getMarkId(): int
+        +getStudentId(): int
+        +setStudentId(sid: int): void
+        +getModuleId(): int
+        +setModuleId(mid: int): void
+        +getAcademicYear(): int
+        +setAcademicYear(year: int): void
+        +getQuarter1(): float
+        +setQuarter1(mark: float): void
+        +getQuarter2(): float
+        +setQuarter2(mark: float): void
+        +getQuarter3(): float
+        +setQuarter3(mark: float): void
+        +getQuarter4(): float
+        +setQuarter4(mark: float): void
+        +getAverage(): float
+        +calculateAverage(): float
+        +getGradeStatus(): array
+        +save(pdo: PDO): bool
+        +toArray(): array
+        +static validateMark(mark: float, field: string): void
+        +static getResultsForStudent(pdo: PDO, studentId: int, year: int): array
+        +static find(pdo: PDO, studentId: int, moduleId: int, year: int): ModuleResult
+    }
+
+    class CourseModule {
+        -int id
+        -int courseId
+        -int moduleId
+        -string semester
+    }
+
+    class ModuleLecturer {
+        -int id
+        -int moduleId
+        -int lecturerId
+        -bool isPrimary
+    }
+
+    class User {
+        -int id
+        -string username
+        -string password
+        -string role
+        -string studentIdNumber
+        +verifyPassword(plainPassword: string): bool
+    }
+
+    class RegistrationService {
+        <<service>>
+        +static generateStudentNumber(pdo: PDO, prefix: string): string
+        +static registerStudent(pdo: PDO, data: array): array
+    }
+
+    %% =========================================================================
+    %% RELATIONSHIPS AND MULTIPLICITIES
+    %% =========================================================================
+
+    %% Student has Enrollments (Rule: Only 1 active course enrollment at a time)
+    Student "1" *-- "1..*" Enrollment : maintains history
+
+    %% Course admits enrollments
+    Course "1" o-- "0..*" Enrollment : registers
+
+    %% Many-to-Many: Modules shared across Courses via CourseModule
+    Course "1" *-- "0..*" CourseModule : offers
+    Module "1" *-- "0..*" CourseModule : included in
+
+    %% Many-to-Many: Modules taught by multiple Lecturers via ModuleLecturer
+    Module "1" *-- "1..*" ModuleLecturer : assigned
+    Lecturer "1" *-- "0..*" ModuleLecturer : instructs
+
+    %% Quarterly Marks per Student per Module per Academic Year
+    Student "1" *-- "0..*" ModuleResult : obtains
+    Module "1" o-- "0..*" ModuleResult : evaluated in
+
+    %% Authentication account for Student
+    Student "1" -- "0..1" User : authenticates as
+
+    %% Service orchestrations
+    RegistrationService ..> Student : instantiates & numbers
+    RegistrationService ..> Enrollment : formalizes single active
+    RegistrationService ..> User : provisions credentials
