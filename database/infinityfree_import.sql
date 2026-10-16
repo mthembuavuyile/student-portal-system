@@ -239,7 +239,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `student_id_number`) VALUES
-(1, 'admin', '$2y$10$Ie/I.B5p2Wd9/q5L4p.d.eW.S3Lg2oYk5fQxJzC6mR7b8G9f0a1b2', 'admin', NULL),
+(1, 'admin', '$2y$10$.lhUAi5QXlp8jieOeIm/VuNcYXkMdocdfdRoy9SnWO3tOZQJhnTlW', 'admin', NULL),
 (2, '10ha2304014', '$2y$10$jL0n0ZpD3MFxvIJRxbPNzuo32cLKnm5W1ClHwnpvn9b.ASQKnHk2G', 'student', '10ha2304014');
 
 -- Re-enable foreign key checks
