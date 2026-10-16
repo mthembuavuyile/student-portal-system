@@ -10,16 +10,35 @@ if (!ob_get_level()) {
     ob_start();
 }
 
-// -- Error Reporting --
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// -- Environment & Database Credentials --
+$host_header = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$is_local = (
+    $host_header === 'localhost' ||
+    strpos($host_header, 'localhost:') === 0 ||
+    $host_header === '127.0.0.1' ||
+    strpos($host_header, '127.0.0.1:') === 0 ||
+    $host_header === '::1'
+);
 
-// -- Database Credentials --
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', 'your_db_password_here');
-define('DB_NAME', 'university_db');
+if ($is_local) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+    define('DB_SERVER', 'localhost');
+    define('DB_USERNAME', 'root');
+    define('DB_PASSWORD', 'your_local_password');
+    define('DB_NAME', 'university_db');
+} else {
+    ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);
+    error_reporting(0);
+
+    define('DB_SERVER', 'sqlXXX.infinityfree.com');
+    define('DB_USERNAME', 'epiz_XXXXXXXX');
+    define('DB_PASSWORD', 'your_hosting_password');
+    define('DB_NAME', 'epiz_XXXXXXXX_university_db');
+}
 
 // -- Application URL --
 $fixed_base = '';
