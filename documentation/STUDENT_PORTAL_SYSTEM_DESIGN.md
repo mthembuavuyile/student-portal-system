@@ -187,14 +187,31 @@ classDiagram
         +static registerStudent(pdo: PDO, data: array): array
     }
 
+    class User {
+        -int id
+        -string username
+        -string password
+        -string role
+        -string studentIdNumber
+        +verifyPassword(plainPassword: string): bool
+        +updatePassword(pdo: PDO, newPassword: string): bool
+        +static findById(pdo: PDO, id: int): User
+        +static findByUsername(pdo: PDO, username: string): User
+        +static findByStudentNumber(pdo: PDO, num: string): User
+        +static changePassword(pdo: PDO, userId: int, curr: string, new: string, conf: string): array
+        +static adminResetPassword(pdo: PDO, studentNumber: string, new: string): array
+    }
+
     Student "1" --> "1..*" Enrollment : has history
     Course "1" --> "0..*" Enrollment : admits
     Course "1..*" <--> "1..*" Module : shares (CourseModule)
     Module "1..*" <--> "1..*" Lecturer : taught by (ModuleLecturer)
     Student "1" --> "0..*" ModuleResult : obtains
     Module "1" --> "0..*" ModuleResult : evaluates
+    Student "1" --> "0..1" User : authenticates as
     RegistrationService ..> Student : registers & generates ID
     RegistrationService ..> Enrollment : creates initial active
+    RegistrationService ..> User : provisions credentials
 ```
 
 ---
@@ -261,6 +278,20 @@ Stores quarterly assessments and calculated overall academic outcomes.
     *   `quarter3` *(decimal 5,2)*: Quarter 3 assessment score (0 - 100%).
     *   `quarter4` *(decimal 5,2)*: Quarter 4 assessment score (0 - 100%).
     *   `average` *(decimal 5,2)*: Calculated composite average of quarterly marks.
+
+### 3.7 `User`
+Manages system authentication credentials, role-based authorization, and secure password updates.
+*   **Attributes**:
+    *   `id` *(int, Primary Key)*: Unique account identifier.
+    *   `username` *(string, unique)*: Login identifier (admin name or student number).
+    *   `password` *(string)*: Secure Bcrypt cryptographic hash.
+    *   `role` *(string)*: Institutional role (`admin`, `student`).
+    *   `studentIdNumber` *(string, Foreign Key, nullable)*: Associated student number for student accounts.
+*   **Methods**:
+    *   `verifyPassword(string $plainPassword): bool`: Validates credential against bcrypt hash.
+    *   `updatePassword(PDO $pdo, string $newPassword): bool`: Updates password hash with complexity enforcement.
+    *   `static changePassword(PDO $pdo, int $userId, ...): array`: Self-service password modification.
+    *   `static adminResetPassword(PDO $pdo, string $studentNumber, ...): array`: Administrative reset mechanism.
 
 ---
 

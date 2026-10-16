@@ -1,7 +1,7 @@
 <?php
-$page_title = "Update Student Information";
-$allowed_roles = ['admin'];
-include '../includes/header.php';
+require_once '../config.php';
+require_once '../functions.php';
+require_login(['admin']);
 
 $errors = [];
 
@@ -120,6 +120,10 @@ if (empty($firstNameVal) && !empty($student['full_name'])) {
     $firstNameVal = $parts[0] ?? '';
     $surnameVal = $parts[1] ?? 'Student';
 }
+
+$page_title = "Update Student Information";
+$allowed_roles = ['admin'];
+include '../includes/header.php';
 ?>
 
 <div class="row">

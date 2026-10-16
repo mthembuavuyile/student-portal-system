@@ -199,7 +199,19 @@ classDiagram
         -string password
         -string role
         -string studentIdNumber
+        +__construct(data: array)
+        +getId(): int
+        +getUsername(): string
+        +getRole(): string
+        +getStudentIdNumber(): string
+        +getPasswordHash(): string
         +verifyPassword(plainPassword: string): bool
+        +updatePassword(pdo: PDO, newPassword: string): bool
+        +static findById(pdo: PDO, id: int): User
+        +static findByUsername(pdo: PDO, username: string): User
+        +static findByStudentNumber(pdo: PDO, num: string): User
+        +static changePassword(pdo: PDO, userId: int, curr: string, new: string, conf: string): array
+        +static adminResetPassword(pdo: PDO, studentNumber: string, new: string): array
     }
 
     class RegistrationService {

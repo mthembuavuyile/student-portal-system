@@ -1,7 +1,7 @@
 <?php
-$page_title = "Student Profile";
-$allowed_roles = ['admin'];
-include '../includes/header.php';
+require_once '../config.php';
+require_once '../functions.php';
+require_login(['admin']);
 
 // Check if an ID is provided via GET request
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -54,6 +54,10 @@ if ($student->getAcademicStatus() === STATUS_ACTIVE) {
 } elseif ($student->getAcademicStatus() === STATUS_GRADUATED) {
     $status_class = 'blue';
 }
+
+$page_title = "Student Profile";
+$allowed_roles = ['admin'];
+include '../includes/header.php';
 ?>
 
 <div class="row">

@@ -16,6 +16,11 @@
     --success-color: #2e7d32;
 }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 body {
     display: flex;
     min-height: 100vh;
@@ -26,6 +31,19 @@ body {
 main {
     flex: 1 0 auto;
     padding-bottom: 30px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+main.container {
+    box-sizing: border-box;
+}
+
+@media only screen and (max-width: 600px) {
+    main.container {
+        width: 95% !important;
+        padding: 0 4px;
+    }
 }
 
 /* ==========================================================================
@@ -79,7 +97,7 @@ nav #logo-container i.material-icons {
 
 /* Nav Menu Items (Right Side) */
 nav ul.right {
-    display: flex !important;
+    display: flex;
     align-items: center;
     float: none !important;
     margin: 0 !important;
@@ -159,8 +177,13 @@ nav a.sidenav-trigger i {
 /* Mobile & Tablet Displays (<= 992px) */
 @media only screen and (max-width: 992px) {
     nav .nav-wrapper {
-        padding: 0 1rem;
+        padding: 0 0.75rem;
         justify-content: flex-start;
+    }
+    nav ul.right,
+    nav ul.right.hide-on-med-and-down,
+    .hide-on-med-and-down {
+        display: none !important;
     }
     nav a.sidenav-trigger {
         display: inline-flex !important;
@@ -170,8 +193,12 @@ nav a.sidenav-trigger i {
         position: static !important;
         transform: none !important;
         left: auto !important;
-        font-size: 1.2rem !important;
+        font-size: 1.15rem !important;
         margin: 0;
+        max-width: calc(100% - 48px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 

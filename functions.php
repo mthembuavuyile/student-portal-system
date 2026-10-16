@@ -10,8 +10,15 @@
  * @return void
  */
 function redirect($url) {
-    header("Location: " . BASE_URL . $url);
-    exit();
+    $target = BASE_URL . $url;
+    if (!headers_sent()) {
+        header("Location: " . $target);
+        exit();
+    } else {
+        echo '<script type="text/javascript">window.location.href="' . htmlspecialchars($target, ENT_QUOTES, 'UTF-8') . '";</script>';
+        echo '<noscript><meta http-equiv="refresh" content="0;url=' . htmlspecialchars($target, ENT_QUOTES, 'UTF-8') . '"></noscript>';
+        exit();
+    }
 }
 
 /**
