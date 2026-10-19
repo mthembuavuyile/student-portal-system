@@ -5,7 +5,8 @@
 
 | **Institutional Metadata** | **Specification Details** |
 | :--- | :--- |
-| **System Name** | Student Portal System (Institutional Academic Management) |
+| **System Name** | Student Portal System (Academic Management Assessment Task) |
+| **Project Nature** | **Internship Technical Practical Assessment / Competency Evaluation** |
 | **Document Title** | Entity Relationship Diagram (ERD) Text Specification & Data Dictionary |
 | **Database Name** | `university_db` (MySQL 8.0+ / MariaDB 10.4+, InnoDB Storage Engine) |
 | **Character Set / Collation** | `utf8mb4` / `utf8mb4_unicode_ci` |
@@ -14,14 +15,17 @@
 | **Directorate** | **Information Technology Business Solutions (ITBS)** |
 | **Unit** | **ICT Services: Infrastructure & Security Support** |
 | **Branch** | **Corporate Management Services (CMS)** |
-| **Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
+| **Host Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
 | **Architecture Version** | 2.0 (Relational Normalization with 100% Backward Compatibility) |
+| **Live Production URL** | [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) |
 
 ---
 
-## 1. System Overview & Data Architecture
+## 1. System Overview & Assessment Aim
 
-The **Student Portal System** database (`university_db`) is an enterprise-grade relational academic data repository designed to replace the legacy flat student directory. It separates institutional domain entities into fully normalized tables while providing non-breaking backward compatibility for legacy queries, PDF generation scripts, and authentication modules.
+The **Student Portal System** database (`university_db`) was architected as part of an **internship technical assessment task** assigned by the development mentor within the Directorate: Information Technology Business Solutions (ITBS). (Live instance: [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)).
+
+The purpose of the task is to demonstrate database modeling and engineering competencies: taking a legacy flat student directory and normalizing it into a robust relational database schema with referential integrity, while providing zero-downtime, non-breaking backward compatibility for existing queries, PDF generation scripts, and authentication modules.
 
 ### Architectural Tenets
 1. **Third Normal Form (3NF)**: Redundant course names, module titles, and lecturer details are decomposed into independent entities linked via associative junction tables.

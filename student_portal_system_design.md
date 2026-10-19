@@ -6,14 +6,20 @@
 > **Directorate:** Information Technology Business Solutions (ITBS)  
 > **Unit:** ICT Services: Infrastructure & Security Support  
 > **Branch:** Corporate Management Services (CMS)  
-> **Department:** Department of Forestry, Fisheries and the Environment (DFFE)  
+> **Host Department:** Department of Forestry, Fisheries and the Environment (DFFE)  
+> **Project Nature:** Internship Practical Assessment / Competency Evaluation Task  
 > **Architecture Status:** Implemented & Verified with 100% Backward Compatibility  
+> **Live Production URL:** [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)  
 
 ---
 
-### Executive Summary
+### Executive Summary & Assessment Aim
 
-The Student Portal System has been expanded from a single-table student directory into an enterprise-grade academic management system. The design normalizes curriculum modules, lecturers, course programs, active enrollments, and quarterly performance marks while maintaining **complete backward compatibility** with existing records, queries, authentication, and reporting templates.
+This project was developed as a comprehensive **internship technical assessment task** assigned by the development mentor within the Directorate: Information Technology Business Solutions (ITBS).
+
+The objective is to demonstrate full-stack software development competencies by expanding a single-table student directory into an object-oriented academic management system. The design normalizes curriculum modules, lecturers, course programs, active enrollments, and quarterly performance marks while maintaining **complete backward compatibility** with existing records, queries, authentication, and reporting templates.
+
+The live application is accessible at: **[https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)**.
 
 ---
 

@@ -6,20 +6,28 @@
 | **Metadata** | **Details** |
 | :--- | :--- |
 | **Document Title** | Student Portal System - System Design and Class Relationships |
+| **Project Nature** | **Internship Technical Practical Assessment / Competency Evaluation** |
 | **Prepared by** | **Mr Avuyile Mthembu** |
 | **Position** | **Intern: Software Developer** |
 | **Directorate** | **Information Technology Business Solutions (ITBS)** |
 | **Unit** | **ICT Services: Infrastructure & Security Support** |
 | **Branch** | **Corporate Management Services (CMS)** |
-| **Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
+| **Host Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
 | **Version** | 2.0 (With 100% Backward Compatibility) |
-| **Status** | Approved & Implemented |
+| **Status** | Completed, Tested & Implemented |
+| **Live Production URL** | [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) |
 
 ---
 
-## 1. System Overview
+## 1. System Overview & Assessment Aim
 
-The proposed **Student Portal System** is engineered to manage student records, course registrations, academic modules, lecturers, and quarterly performance results. Developed under the Corporate Management Services (CMS) branch within the Directorate: Information Technology Business Solutions (ITBS), this system transitions the institution from a single-tier student directory into an enterprise-grade, relational academic management architecture.
+The **Student Portal System** (Live demo: [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)) is an academic records management system developed as a **practical assessment task** assigned by the technical mentor in the Directorate: Information Technology Business Solutions (ITBS). 
+
+The goal of the assignment is to demonstrate practical software engineering competencies:
+- **System Analysis & Modeling**: Translating academic management requirements into formal UML diagrams.
+- **Relational Architecture**: Decomposing a legacy flat student table into a normalized 3NF relational database.
+- **Object-Oriented Programming (OOP)**: Building encapsulated PHP domain models (`Student`, `Course`, `Module`, `Lecturer`, `Enrollment`, `ModuleResult`) and transactional services (`RegistrationService`).
+- **Zero-Regressive Backward Compatibility**: Ensuring existing queries, session logic, and login credentials continue functioning without interruption.
 
 ### Key Architectural Tenets
 1. **Separation of Concerns**: Domain models represent distinct institutional entities (`Student`, `Course`, `Module`, `Lecturer`, `Enrollment`, `ModuleResult`), coordinated by dedicated services (`RegistrationService`).
@@ -423,16 +431,18 @@ To protect existing data and avoid breaking legacy code or reports, the followin
 
 ---
 
-## 7. Sign-off and Institutional Endorsement
+## 7. Submission & Assessment Verification
 
-This technical design artifact and implementation have been verified against institutional standards and tested for regression resilience, backward compatibility, and mathematical accuracy.
+This technical design artifact, UML diagrams, and corresponding codebase have been implemented and submitted for internship technical evaluation, demonstrating full-stack competency, relational integrity, regression resilience, and mathematical accuracy.
 
 ```
-Prepared by:
+Submitted by:
 Mr Avuyile Mthembu
 Intern: Software Developer
 Directorate: Information Technology Business Solutions (ITBS)
 Unit: ICT Services: Infrastructure & Security Support
 Branch: Corporate Management Services (CMS)
-Department of Forestry, Fisheries and the Environment (DFFE)
+Host Department: Department of Forestry, Fisheries and the Environment (DFFE)
+
+Assessment Task: Mentor Evaluation – UML Design, Relational Normalization & OOP Implementation
 ```

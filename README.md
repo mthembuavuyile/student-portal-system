@@ -1,22 +1,38 @@
 # Student Portal System
+### Object-Oriented Architecture, UML Modeling & Full-Stack Implementation
 
-System Design, Class Architecture, and Academic Management
-
-Prepared by: Mr Avuyile Mthembu  
-Position: Intern: Software Developer  
-Directorate: Information Technology Business Solutions (ITBS)  
-Unit: ICT Services: Infrastructure and Security Support  
-Branch: Corporate Management Services (CMS)  
-Department: Department of Forestry, Fisheries and the Environment (DFFE)  
-Version: 2.0  
+**Developer:** Mr Avuyile Mthembu  
+**Role:** Intern: Software Developer  
+**Directorate:** Information Technology Business Solutions (ITBS)  
+**Unit:** ICT Services: Infrastructure and Security Support  
+**Branch:** Corporate Management Services (CMS)  
+**Host Department:** Department of Forestry, Fisheries and the Environment (DFFE)  
+**Project Nature:** Internship Practical Assessment & Technical Competency Demonstration  
+**Version:** 2.0  
 
 ---
 
-## Overview
+## 🌐 Live System Deployment
 
-The Student Portal System is a web-based academic records platform designed to manage student registrations, courses, curriculum modules, teaching allocations, and quarterly academic results.
+The system is hosted and actively accessible at:  
+👉 **[https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)**
 
-The system expands on an earlier single-table student directory by introducing a normalized relational database and object-oriented domain classes, while preserving full backward compatibility with existing student records and login credentials.
+### Quick Access Demo Credentials
+- **Admin Portal**: Username `admin` | Password `admin123`
+- **Student Portal**: Username `10ha2304014` | Password `bitcoin`
+
+---
+
+## Project Overview & Assessment Aim
+
+This project was developed as a comprehensive **internship technical assessment task** assigned by the development mentor within the Directorate: Information Technology Business Solutions (ITBS). 
+
+The primary objective of this assessment is to evaluate and demonstrate practical software engineering competencies across the full development lifecycle:
+1. **Requirements Analysis**: Analyzing legacy requirements and modeling institutional business rules.
+2. **Object-Oriented Design (UML)**: Designing formal UML Class diagrams and relationship architectures.
+3. **Database Architecture**: Transforming a flat, single-table schema into a normalized 3NF relational database.
+4. **Backend Programming**: Implementing clean, reusable OOP domain models and service layers in PHP.
+5. **Security & Backward Compatibility**: Ensuring 100% backward compatibility with pre-existing student data, hashes, and session logic.
 
 ---
 
@@ -66,12 +82,13 @@ The system expands on an earlier single-table student directory by introducing a
 ## Architecture and Documentation
 
 Detailed technical documentation, class specifications, and database schemas are available in:
+- [Software Requirements Specification (SRS)](documentation/SOFTWARE_REQUIREMENTS_SPECIFICATION.md)
 - [System Design and Class Relationships](documentation/STUDENT_PORTAL_SYSTEM_DESIGN.md)
 - [Entity Relationship Specification and Data Dictionary](documentation/ENTITY_RELATIONSHIP_SPECIFICATION.md)
 
 ---
 
-## Attribution
+## Project Background & Attribution
 
-Developed for the Directorate: Information Technology Business Solutions (ITBS), Department of Forestry, Fisheries and the Environment (DFFE).
+Developed by **Mr Avuyile Mthembu** as a technical assessment and practical evaluation project during the software development internship program within the Directorate: Information Technology Business Solutions (ITBS), Department of Forestry, Fisheries and the Environment (DFFE). Mentor evaluation task.
 
