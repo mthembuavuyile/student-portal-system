@@ -10,6 +10,9 @@
         </div>
     </footer>
 
+    <!-- Passive Event Listeners Patch for Materialize Touch/Scroll Violations -->
+    <script src="<?php echo BASE_URL; ?>js/passive-listeners.js"></script>
+
     <!-- Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     
@@ -21,7 +24,22 @@
         // Initialize Materialize components
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('.sidenav');
-            M.Sidenav.init(elems);
+            var sidenavInstances = M.Sidenav.init(elems, {
+                draggable: true,
+                preventScrolling: true
+            });
+
+            // Ensure sidenav closes and overlay clears when a link is clicked
+            elems.forEach(function(sidenavEl) {
+                sidenavEl.querySelectorAll('li > a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        var inst = M.Sidenav.getInstance(sidenavEl);
+                        if (inst && inst.isOpen) {
+                            inst.close();
+                        }
+                    });
+                });
+            });
             var datepickers = document.querySelectorAll('.datepicker');
             M.Datepicker.init(datepickers, {
                 format: 'yyyy-mm-dd',

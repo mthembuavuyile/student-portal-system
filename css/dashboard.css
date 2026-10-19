@@ -1,4 +1,5 @@
 /* css/dashboard.css */
+/* Dashboard Styles — Responsive for Desktop, Tablet & Mobile */
 
 /* --- Stats Cards (Admin Dashboard) --- */
 .card.white-text .card-content {
@@ -6,24 +7,26 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 180px;
+    min-height: 160px;
+    text-align: center;
 }
 
 .card.white-text i.large {
-    font-size: 4rem;
+    font-size: 3.5rem;
     margin-bottom: 10px;
+    opacity: 0.9;
 }
 
 .card.white-text h5 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.9);
 }
 
 .card.white-text h3 {
     margin: 5px 0 0 0;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: white;
 }
@@ -32,36 +35,176 @@
     border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+@media only screen and (max-width: 600px) {
+    .card.white-text .card-content {
+        min-height: 120px;
+        padding: 16px 12px !important;
+    }
+    .card.white-text i.large {
+        font-size: 2.5rem;
+        margin-bottom: 6px;
+    }
+    .card.white-text h5 {
+        font-size: 0.88rem;
+    }
+    .card.white-text h3 {
+        font-size: 1.8rem;
+    }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+    .card.white-text .card-content {
+        min-height: 140px;
+    }
+    .card.white-text h3 {
+        font-size: 2rem;
+    }
+}
+
+/* --- Student Dashboard Cards --- */
+.card-panel.blue.lighten-1,
+.card-panel.green.lighten-1,
+.card-panel.indigo.lighten-1,
+.card-panel.teal.lighten-1,
+.card-panel.orange.lighten-1 {
+    border-radius: 12px !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-panel.blue.lighten-1:hover,
+.card-panel.green.lighten-1:hover,
+.card-panel.indigo.lighten-1:hover,
+.card-panel.teal.lighten-1:hover,
+.card-panel.orange.lighten-1:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .card-panel.white-text.center-align {
+        padding: 14px 10px !important;
+    }
+    .card-panel.white-text.center-align .material-icons.medium {
+        font-size: 2rem !important;
+    }
+    .card-panel.white-text.center-align h6 {
+        font-size: 0.82rem !important;
+    }
+    .card-panel.white-text.center-align p {
+        font-size: 0.85rem !important;
+    }
+}
+
 /* --- Quick Links / Actions (Student Dashboard) --- */
 .collection {
-    border: none;
-    border-radius: var(--border-radius);
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
     overflow: hidden;
 }
 
 .collection .collection-item {
     display: flex;
     align-items: center;
-    font-size: 1.1rem;
-    padding: 15px;
-    transition: background-color 0.3s ease;
-    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.95rem;
+    padding: 14px 16px;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+    border-bottom: 1px solid #f1f5f9;
+    font-weight: 500;
 }
 
 .collection .collection-item:last-child {
     border-bottom: none;
 }
 
+.collection .collection-item:hover {
+    background-color: #f8fafc;
+    transform: translateX(3px);
+}
+
 .collection .collection-item i {
-    margin-right: 20px;
-    font-size: 1.8rem;
+    margin-right: 14px;
+    font-size: 1.5rem;
     color: var(--primary-color-dark);
+    flex-shrink: 0;
+}
+
+@media only screen and (max-width: 600px) {
+    .collection .collection-item {
+        padding: 12px 14px;
+        font-size: 0.88rem;
+    }
+    .collection .collection-item i {
+        margin-right: 12px;
+        font-size: 1.3rem;
+    }
+}
+
+/* --- AI Banner Card — Responsive --- */
+.card[style*="linear-gradient"] {
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+@media only screen and (max-width: 600px) {
+    .card[style*="linear-gradient"] .card-content {
+        padding: 16px !important;
+    }
+    .card[style*="linear-gradient"] h5 {
+        font-size: 1.05rem !important;
+    }
+    .card[style*="linear-gradient"] p {
+        font-size: 0.82rem !important;
+    }
+    .card[style*="linear-gradient"] .btn-large {
+        width: 100% !important;
+        margin-top: 12px;
+    }
 }
 
 /* --- Report View Styles --- */
 .report-container {
     background: var(--surface-color);
     padding: 40px;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-lg, 12px);
     box-shadow: var(--shadow-1);
+}
+
+@media only screen and (max-width: 600px) {
+    .report-container {
+        padding: 16px;
+    }
+}
+
+/* --- Dense Academic Table (Snapshot) --- */
+.dense-table {
+    width: 100%;
+}
+
+.dense-table th,
+.dense-table td {
+    padding: 10px 12px;
+}
+
+@media only screen and (max-width: 600px) {
+    .dense-table th,
+    .dense-table td {
+        padding: 8px 6px;
+        font-size: 0.78rem;
+    }
+    .dense-table .chip.tiny {
+        font-size: 0.65rem !important;
+        height: 20px !important;
+        padding: 0 6px !important;
+    }
+}
+
+/* --- Dashboard Welcome Section --- */
+@media only screen and (max-width: 600px) {
+    .row > .col.s12 > h4 {
+        font-size: 1.3rem !important;
+        margin-top: 12px;
+    }
+    .row > .col.s12 > p.grey-text {
+        font-size: 0.82rem;
+    }
 }

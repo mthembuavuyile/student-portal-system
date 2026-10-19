@@ -41,7 +41,7 @@ $overallAverage = $resultCount > 0 ? round($totalAverageSum / $resultCount, 2) :
 $studentContext = [
     'name' => $student->getFullName(),
     'student_number' => $student->getStudentNumber() ?: $student->getStudentIdNumber(),
-    'course' => $activeEnrollment ? $activeEnrollment->getCourseName() : $student->getCourseOfStudy(),
+    'course' => is_array($activeEnrollment) ? ($activeEnrollment['course_name'] ?? $student->getCourseOfStudy()) : $student->getCourseOfStudy(),
     'overall_average' => $overallAverage,
     'results' => $moduleResults
 ];
@@ -67,6 +67,10 @@ try {
         }
         $history = is_array($inputData['history'] ?? null) ? $inputData['history'] : [];
         $result = $aiService->chatWithStudent($studentContext, $history, $message);
+        echo json_encode($result);
+        exit();
+    } elseif ($action === 'insights') {
+        $result = $aiService->getQuickInsights($studentContext);
         echo json_encode($result);
         exit();
     } else {
