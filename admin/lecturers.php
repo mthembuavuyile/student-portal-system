@@ -7,10 +7,12 @@ $errors = [];
 
 // Handle Add Lecturer
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_lecturer') {
-    if (!validate_csrf_token('admin/lecturers.php')) { exit(); }
+    if (!validate_csrf_token('admin/lecturers.php')) {
+        exit();
+    }
     $firstName = sanitize_input($_POST['first_name'] ?? '');
-    $surname   = sanitize_input($_POST['surname'] ?? '');
-    $email     = filter_var(sanitize_input($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+    $surname = sanitize_input($_POST['surname'] ?? '');
+    $email = filter_var(sanitize_input($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
 
     if (empty($firstName) || empty($surname) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "First name, surname, and a valid email address are required.";
@@ -37,7 +39,8 @@ $lecturers = Lecturer::getAll($pdo);
                 <i class="material-icons left">person_add</i>New Lecturer
             </a>
         </div>
-        <p class="grey-text">Lecturers: lecturerId, firstName, surname, email. Modules may be taught by multiple lecturers, supporting many-to-many relationships.</p>
+        <p class="grey-text">Lecturers: lecturerId, firstName, surname, email. Modules may be taught by multiple
+            lecturers, supporting many-to-many relationships.</p>
 
         <?php display_session_message('success_message'); ?>
         <?php display_session_message('error_message', 'red'); ?>
@@ -72,10 +75,17 @@ $lecturers = Lecturer::getAll($pdo);
                         <?php if (!empty($lecturers)): ?>
                             <?php foreach ($lecturers as $lec): ?>
                                 <tr>
-                                    <td><span class="chip grey lighten-3">LEC-<?php echo str_pad($lec['lecturer_id'], 4, '0', STR_PAD_LEFT); ?></span></td>
-                                    <td><strong><?php echo htmlspecialchars($lec['first_name'] . ' ' . $lec['surname']); ?></strong></td>
-                                    <td><a href="mailto:<?php echo htmlspecialchars($lec['email']); ?>"><?php echo htmlspecialchars($lec['email']); ?></a></td>
-                                    <td><span class="badge blue white-text" style="float:none;"><?php echo htmlspecialchars($lec['module_count']); ?> Modules</span></td>
+                                    <td><span
+                                            class="chip grey lighten-3">LEC-<?php echo str_pad($lec['lecturer_id'], 4, '0', STR_PAD_LEFT); ?></span>
+                                    </td>
+                                    <td><strong><?php echo htmlspecialchars($lec['first_name'] . ' ' . $lec['surname']); ?></strong>
+                                    </td>
+                                    <td><a
+                                            href="mailto:<?php echo htmlspecialchars($lec['email']); ?>"><?php echo htmlspecialchars($lec['email']); ?></a>
+                                    </td>
+                                    <td><span class="badge blue white-text"
+                                            style="float:none;"><?php echo htmlspecialchars($lec['module_count']); ?>
+                                            Modules</span></td>
                                     <td>
                                         <?php if (!empty($lec['module_codes'])): ?>
                                             <?php foreach (explode(',', $lec['module_codes']) as $code): ?>
@@ -88,7 +98,9 @@ $lecturers = Lecturer::getAll($pdo);
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <tr><td colspan="5" class="center-align">No lecturers registered in system.</td></tr>
+                            <tr>
+                                <td colspan="5" class="center-align">No lecturers registered in system.</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -128,10 +140,10 @@ $lecturers = Lecturer::getAll($pdo);
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var modals = document.querySelectorAll('.modal');
-    M.Modal.init(modals);
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        var modals = document.querySelectorAll('.modal');
+        M.Modal.init(modals);
+    });
 </script>
 
 <?php include '../includes/footer.php'; ?>
