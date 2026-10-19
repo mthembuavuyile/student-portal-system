@@ -147,6 +147,7 @@ classDiagram
 | **`Lecturer`** | `lecturerId`, `firstName`, `surname`, `email` | Faculty members; tracks teaching allocations across multiple modules. |
 | **`Enrollment`** | `enrollmentId`, `registrationDate`, `status` | Governs course enrollment lifecycle; enforces the **single active course** institutional constraint. |
 | **`ModuleResult`** | `markId`, `quarter1`, `quarter2`, `quarter3`, `quarter4`, `average` | Captures quarterly performance (0-100%); calculates composite average via `calculateAverage()`. |
+| **`User`** | `id`, `username`, `password`, `role`, `studentIdNumber` | Authentication entity; secures credentials with Bcrypt using automatic 22-char random salts per account to protect against rainbow table attacks. |
 | **`RegistrationService`** | Static Orchestrator | Automatically generates unique student numbers and coordinates atomic student/user/enrollment registration. |
 
 ---

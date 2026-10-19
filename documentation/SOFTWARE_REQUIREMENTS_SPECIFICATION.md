@@ -79,8 +79,8 @@ The system evolves an existing, flat-file style student records directory into a
 ## 3. Specific Functional Requirements (FR)
 
 ### Module 1: Authentication & Access Control
-* **FR-01: Secure Authentication**  
-  The system shall verify user credentials against the database using Bcrypt cryptographic hashing (`password_verify`).
+* **FR-01: Cryptographic Authentication with Unique Random Salt**  
+  The system shall verify user credentials against stored hashes in the database using Bcrypt (`password_verify`). Every password hash is generated using PHP's native `password_hash()` algorithm which automatically produces a cryptographically secure 22-character pseudorandom salt (`$2y$10$[random_salt][hash]`). The random salt ensures that identical passwords yield distinct hashes, completely mitigating rainbow table lookups and pre-computed dictionary attacks.
 * **FR-02: Role-Based Redirection**  
   Upon successful authentication, administrators shall be redirected to `admin/dashboard.php` and students shall be redirected to `student/dashboard.php`.
 * **FR-03: Session Management & Security**  
@@ -156,10 +156,10 @@ The system evolves an existing, flat-file style student records directory into a
 ## 5. Non-Functional Requirements (NFR)
 
 ### 5.1 Security Requirements (NFR-01)
-* Passwords must be hashed using PHP's native `password_hash()` with the `PASSWORD_BCRYPT` algorithm.
-* All database interactions must use PDO prepared statements with bound parameters to eliminate SQL injection vulnerabilities.
-* State-changing forms must incorporate CSRF token verification.
-* All user output rendered in HTML must be sanitized using `htmlspecialchars()` to prevent Cross-Site Scripting (XSS).
+* **Cryptographic Hashing with Random Salt**: Passwords must be hashed using PHP's native `password_hash()` with the `PASSWORD_BCRYPT` algorithm (cost factor 10). Each generated hash automatically embeds a unique, cryptographically secure 22-character pseudorandom salt (`$2y$10$[22-char-salt][hash]`). This ensures that identical plain-text passwords produce completely distinct hash strings, neutralizing rainbow table and pre-computed hash lookup attacks. Password verification must use timing-attack resilient `password_verify()`.
+* **SQL Injection Prevention**: All database interactions must use PDO prepared statements with bound parameters (`bindParam` / `execute([params])`).
+* **Cross-Site Request Forgery (CSRF)**: State-changing HTTP POST operations must enforce CSRF token validation via `validate_csrf_token()`.
+* **Cross-Site Scripting (XSS)**: All user-supplied output rendered in HTML views must be escaped using `htmlspecialchars($data, ENT_QUOTES, 'UTF-8')`.
 
 ### 5.2 Backward Compatibility (NFR-02)
 * The relational schema must maintain legacy columns in the `students` table (`full_name`, `student_id_number`, `course_of_study`, `academic_status`).

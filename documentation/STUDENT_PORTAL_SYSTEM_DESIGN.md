@@ -292,12 +292,12 @@ Manages system authentication credentials, role-based authorization, and secure 
 *   **Attributes**:
     *   `id` *(int, Primary Key)*: Unique account identifier.
     *   `username` *(string, unique)*: Login identifier (admin name or student number).
-    *   `password` *(string)*: Secure Bcrypt cryptographic hash.
+    *   `password` *(string)*: Secure Bcrypt cryptographic hash containing an automatic, cryptographically secure 22-character pseudorandom salt (`$2y$10$[random_salt][hash]`). Even identical plain-text passwords produce different stored hashes, protecting against rainbow table attacks.
     *   `role` *(string)*: Institutional role (`admin`, `student`).
     *   `studentIdNumber` *(string, Foreign Key, nullable)*: Associated student number for student accounts.
 *   **Methods**:
-    *   `verifyPassword(string $plainPassword): bool`: Validates credential against bcrypt hash.
-    *   `updatePassword(PDO $pdo, string $newPassword): bool`: Updates password hash with complexity enforcement.
+    *   `verifyPassword(string $plainPassword): bool`: Validates plain-text credential against the stored bcrypt hash using PHP's timing-attack safe `password_verify()`, extracting the embedded salt automatically.
+    *   `updatePassword(PDO $pdo, string $newPassword): bool`: Hashes new password with a fresh random salt (`PASSWORD_DEFAULT` / `PASSWORD_BCRYPT`) and updates the database.
     *   `static changePassword(PDO $pdo, int $userId, ...): array`: Self-service password modification.
     *   `static adminResetPassword(PDO $pdo, string $studentNumber, ...): array`: Administrative reset mechanism.
 

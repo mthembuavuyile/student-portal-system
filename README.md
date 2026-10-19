@@ -49,6 +49,7 @@ The primary objective of this assessment is to evaluate and demonstrate practica
   - **Administrator**: Manage students, qualifications, modules, lecturer assignments, and quarterly mark entries.
   - **Student**: View personal profiles, enrolled modules, lecturers, and academic transcripts.
 - **Reporting and Document Generation**: Generates printable registration confirmation slips and academic transcripts with direct PDF export support.
+- **Security & Cryptographic Salting**: Secures user passwords using Bcrypt hashing (`PASSWORD_BCRYPT`) with an automatic, cryptographically secure 22-character pseudorandom salt per account. This ensures identical plain-text passwords produce completely distinct hashes, protecting stored credentials against rainbow table lookups and offline dictionary attacks.
 - **Backward Compatibility**: Maintains legacy table columns alongside normalized relational tables so existing queries, scripts, and imports continue to function without interruption.
 
 ---
