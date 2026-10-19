@@ -99,6 +99,7 @@ $results = $resultsStmt->fetchAll();
                             <th>Student</th>
                             <th>Student Number</th>
                             <th>Module</th>
+                            <th>Assigned Educator</th>
                             <th>Year</th>
                             <th>Q1 (25%)</th>
                             <th>Q2 (25%)</th>
@@ -122,6 +123,15 @@ $results = $resultsStmt->fetchAll();
                                         <strong><?php echo htmlspecialchars($res['module_code']); ?></strong><br>
                                         <small class="grey-text"><?php echo htmlspecialchars($res['module_name']); ?></small>
                                     </td>
+                                    <td>
+                                        <?php if (!empty($res['lecturers'])): ?>
+                                            <span class="chip tiny indigo lighten-5 indigo-text font-weight-bold">
+                                                <i class="material-icons left tiny">person</i><?php echo htmlspecialchars($res['lecturers']); ?>
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="grey-text">Unassigned</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?php echo htmlspecialchars($res['academic_year']); ?></td>
                                     <td><?php echo $res['quarter1'] !== null ? number_format($res['quarter1'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
                                     <td><?php echo $res['quarter2'] !== null ? number_format($res['quarter2'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
@@ -140,7 +150,7 @@ $results = $resultsStmt->fetchAll();
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
-                            <tr><td colspan="10" class="center-align">No academic marks recorded yet. Click "Record Marks" to capture student quarterly results.</td></tr>
+                            <tr><td colspan="11" class="center-align">No academic marks recorded yet. Click "Record Marks" to capture student quarterly results.</td></tr>
                         <?php endif; ?>
                     </tbody>
                 </table>

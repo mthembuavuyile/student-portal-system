@@ -98,6 +98,35 @@ $cumulativeAverage = $avgCount > 0 ? round($totalAvg / $avgCount, 2) : null;
     <?php endif; ?>
 </div>
 
+<!-- AI Academic Success Advisor Banner -->
+<div class="row">
+    <div class="col s12">
+        <div class="card hoverable z-depth-2" style="background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%); color: white; border-radius: 10px;">
+            <div class="card-content" style="padding: 24px;">
+                <div class="row valign-wrapper" style="margin-bottom: 0; flex-wrap: wrap;">
+                    <div class="col s12 m8">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span class="chip tiny amber lighten-4 amber-text text-darken-4 font-weight-bold">
+                                <i class="material-icons left tiny">auto_awesome</i>Smart AI Success Engine
+                            </span>
+                            <span class="chip tiny white blue-text text-darken-4">OpenRouter Powered</span>
+                        </div>
+                        <h5 style="margin: 4px 0 8px 0; font-weight: 600;">Personalized AI Performance Advisor &amp; Study Coach</h5>
+                        <p style="color: #e3f2fd; font-size: 0.95rem; margin: 0; line-height: 1.4;">
+                            Get instant diagnostic feedback on your quarterly marks! Find out which modules need immediate intervention, receive custom revision timetables, and chat live with an academic coach.
+                        </p>
+                    </div>
+                    <div class="col s12 m4 right-align" style="margin-top: 15px;">
+                        <a href="#aiAdvisorModal" class="btn-large waves-effect waves-light amber darken-3 modal-trigger z-depth-2" style="border-radius: 8px; font-weight: 600;">
+                            <i class="material-icons left">psychology</i>Analyze My Performance
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Quick Links & Actions -->
 <div class="row">
     <div class="col s12 m6">
@@ -105,14 +134,17 @@ $cumulativeAverage = $avgCount > 0 ? round($totalAvg / $avgCount, 2) : null;
             <div class="card-content">
                 <span class="card-title bold" style="font-weight: 600;"><i class="material-icons left blue-text">touch_app</i>Quick Actions</span>
                 <div class="collection" style="margin-top: 15px;">
+                    <a href="#aiAdvisorModal" class="collection-item waves-effect amber lighten-5 amber-text text-darken-4 font-weight-bold modal-trigger">
+                        <i class="material-icons left amber-text text-darken-4">auto_awesome</i>AI Academic Success Advisor &amp; Chat
+                    </a>
                     <a href="profile.php" class="collection-item waves-effect blue-text text-darken-2">
-                        <i class="material-icons left">person</i>View My Profile & Identification
+                        <i class="material-icons left">person</i>View My Profile &amp; Identification
                     </a>
                     <a href="modules.php" class="collection-item waves-effect blue-text text-darken-2">
-                        <i class="material-icons left">book</i>My Enrolled Modules & Lecturers
+                        <i class="material-icons left">book</i>My Enrolled Modules &amp; Lecturers
                     </a>
                     <a href="results.php" class="collection-item waves-effect blue-text text-darken-2">
-                        <i class="material-icons left">assessment</i>View Quarterly Marks & Academic Results
+                        <i class="material-icons left">assessment</i>View Quarterly Marks &amp; Academic Results
                     </a>
                     <a href="registration_slip.php" class="collection-item waves-effect blue-text text-darken-2">
                         <i class="material-icons left">receipt</i>View / Print Registration Slip
@@ -171,5 +203,10 @@ $cumulativeAverage = $avgCount > 0 ? round($totalAvg / $avgCount, 2) : null;
         </div>
     </div>
 </div>
+
+<?php 
+// Include AI Success Advisor Modal
+include __DIR__ . '/../includes/ai_advisor_modal.php'; 
+?>
 
 <?php include '../includes/footer.php'; ?>

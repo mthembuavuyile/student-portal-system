@@ -18,11 +18,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $errors[] = "First name, surname, and a valid email address are required.";
     } else {
         try {
+            $pdo->beginTransaction();
             $stmt = $pdo->prepare("INSERT INTO lecturers (first_name, surname, email) VALUES (:fn, :sn, :em)");
             $stmt->execute([':fn' => $firstName, ':sn' => $surname, ':em' => $email]);
-            $_SESSION['success_message'] = "Lecturer '{$firstName} {$surname}' registered successfully!";
+            $newLecturerId = (int)$pdo->lastInsertId();
+
+            // Auto-provision lecturer user login
+            $usernameBase = explode('@', $email)[0];
+            $username = $usernameBase;
+            $counter = 1;
+            while (User::findByUsername($pdo, $username)) {
+                $username = $usernameBase . $counter;
+                $counter++;
+            }
+            $hash = password_hash('password123', PASSWORD_DEFAULT);
+            $userStmt = $pdo->prepare("INSERT INTO users (username, password, role, lecturer_id) VALUES (:u, :pwd, 'lecturer', :lid)");
+            $userStmt->execute([':u' => $username, ':pwd' => $hash, ':lid' => $newLecturerId]);
+
+            $pdo->commit();
+            $_SESSION['success_message'] = "Lecturer '{$firstName} {$surname}' registered successfully! Educator login created: Username '{$username}' | Default Password 'password123'.";
             redirect('admin/lecturers.php');
         } catch (PDOException $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
             $errors[] = "Database error: " . $e->getMessage();
         }
     }
@@ -66,6 +85,7 @@ $lecturers = Lecturer::getAll($pdo);
                         <tr>
                             <th>Lecturer ID</th>
                             <th>Full Name</th>
+                            <th>Login Account</th>
                             <th>Email Address</th>
                             <th>Modules Taught</th>
                             <th>Assigned Module Codes</th>
@@ -73,12 +93,23 @@ $lecturers = Lecturer::getAll($pdo);
                     </thead>
                     <tbody>
                         <?php if (!empty($lecturers)): ?>
-                            <?php foreach ($lecturers as $lec): ?>
+                            <?php foreach ($lecturers as $lec): 
+                                $userAcc = User::findByLecturerId($pdo, (int)$lec['lecturer_id']);
+                            ?>
                                 <tr>
                                     <td><span
                                             class="chip grey lighten-3">LEC-<?php echo str_pad($lec['lecturer_id'], 4, '0', STR_PAD_LEFT); ?></span>
                                     </td>
                                     <td><strong><?php echo htmlspecialchars($lec['first_name'] . ' ' . $lec['surname']); ?></strong>
+                                    </td>
+                                    <td>
+                                        <?php if ($userAcc): ?>
+                                            <span class="chip indigo lighten-5 indigo-text font-weight-bold">
+                                                <i class="material-icons left tiny">account_circle</i><?php echo htmlspecialchars($userAcc->getUsername()); ?>
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="grey-text" style="font-size: 0.85rem;">Not provisioned</span>
+                                        <?php endif; ?>
                                     </td>
                                     <td><a
                                             href="mailto:<?php echo htmlspecialchars($lec['email']); ?>"><?php echo htmlspecialchars($lec['email']); ?></a>

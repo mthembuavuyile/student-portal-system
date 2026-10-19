@@ -77,6 +77,68 @@ class Lecturer {
         return $row ? new self($row) : null;
     }
 
+    /**
+     * Find by Email
+     */
+    public static function findByEmail(PDO $pdo, string $email): ?Lecturer {
+        $stmt = $pdo->prepare("SELECT * FROM lecturers WHERE email = :email LIMIT 1");
+        $stmt->execute([':email' => $email]);
+        $row = $stmt->fetch();
+        return $row ? new self($row) : null;
+    }
+
+    /**
+     * Get associated user account
+     */
+    public function getUser(PDO $pdo): ?User {
+        if (!$this->lecturerId) return null;
+        return User::findByLecturerId($pdo, $this->lecturerId);
+    }
+
+    /**
+     * Get students enrolled in courses offering modules taught by this lecturer
+     */
+    public function getStudents(PDO $pdo): array {
+        if (!$this->lecturerId) return [];
+        $stmt = $pdo->prepare("
+            SELECT DISTINCT s.*, c.course_name, c.course_code
+            FROM students s
+            JOIN enrollments e ON e.student_id = s.id AND e.status = 'Active'
+            JOIN courses c ON c.course_id = e.course_id
+            JOIN course_modules cm ON cm.course_id = c.course_id
+            JOIN module_lecturers ml ON ml.module_id = cm.module_id
+            WHERE ml.lecturer_id = :lid
+            ORDER BY s.full_name ASC
+        ");
+        $stmt->execute([':lid' => $this->lecturerId]);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Get all module results for modules taught by this lecturer
+     */
+    public function getModuleResults(PDO $pdo, ?int $moduleId = null): array {
+        if (!$this->lecturerId) return [];
+        $sql = "
+            SELECT r.*, s.full_name, s.student_number, s.student_id_number,
+                   m.module_code, m.module_name, m.credits, ml.is_primary
+            FROM module_results r
+            JOIN students s ON s.id = r.student_id
+            JOIN modules m ON m.module_id = r.module_id
+            JOIN module_lecturers ml ON ml.module_id = m.module_id
+            WHERE ml.lecturer_id = :lid
+        ";
+        $params = [':lid' => $this->lecturerId];
+        if ($moduleId !== null) {
+            $sql .= " AND r.module_id = :mid";
+            $params[':mid'] = $moduleId;
+        }
+        $sql .= " ORDER BY r.academic_year DESC, m.module_code ASC, s.full_name ASC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
     public function toArray(): array {
         return [
             'lecturerId' => $this->lecturerId,

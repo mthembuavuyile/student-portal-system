@@ -11,6 +11,7 @@
             <li><a href="<?php echo BASE_URL; ?>student/modules.php"><i class="material-icons left">book</i>My Modules</a></li>
             <li><a href="<?php echo BASE_URL; ?>student/results.php"><i class="material-icons left">assessment</i>Academic Results</a></li>
             <li><a href="<?php echo BASE_URL; ?>student/registration_slip.php"><i class="material-icons left">receipt</i>Slip</a></li>
+            <li><a href="#aiAdvisorModal" class="modal-trigger" style="color: #ffd54f; font-weight: 600;"><i class="material-icons left" style="color: #ffd54f;">auto_awesome</i>AI Coach</a></li>
             <li><a href="<?php echo BASE_URL; ?>change_password.php"><i class="material-icons left">lock</i>Password</a></li>
             <li><a href="<?php echo BASE_URL; ?>logout.php"><i class="material-icons left">exit_to_app</i>Logout</a></li>
         </ul>
@@ -23,6 +24,7 @@
                 <a href="#email"><span class="white-text email">Department of Forestry, Fisheries & the Environment</span></a>
             </div></li>
             <li><a href="<?php echo BASE_URL; ?>student/dashboard.php"><i class="material-icons">dashboard</i>Dashboard</a></li>
+            <li><a href="#aiAdvisorModal" class="modal-trigger"><i class="material-icons amber-text text-darken-3">auto_awesome</i>AI Academic Coach</a></li>
             <li><a href="<?php echo BASE_URL; ?>student/profile.php"><i class="material-icons">person</i>My Profile</a></li>
             <li><a href="<?php echo BASE_URL; ?>student/modules.php"><i class="material-icons">book</i>My Enrolled Modules</a></li>
             <li><a href="<?php echo BASE_URL; ?>student/results.php"><i class="material-icons">assessment</i>Quarterly Marks & Results</a></li>

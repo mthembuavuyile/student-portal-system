@@ -6,7 +6,7 @@ require_once __DIR__ . '/../functions.php';
 
 // Default allowed roles can be overridden by the page including this file.
 if (!isset($allowed_roles)) {
-    $allowed_roles = ['admin', 'student']; // Default allows both
+    $allowed_roles = ['admin', 'student', 'lecturer']; // Default allows all authenticated roles
 }
 require_login($allowed_roles);
 ?>
@@ -34,6 +34,8 @@ require_login($allowed_roles);
         if (isset($_SESSION['role'])) {
             if ($_SESSION['role'] === 'admin') {
                 include __DIR__ . '/nav_admin.php';
+            } elseif ($_SESSION['role'] === 'lecturer') {
+                include __DIR__ . '/nav_lecturer.php';
             } else {
                 include __DIR__ . '/nav_student.php';
             }

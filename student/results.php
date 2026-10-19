@@ -179,6 +179,9 @@ $weightedGpa = ($resultCount > 0 && $totalCredits > 0) ? round($weightedSum / $t
         <div class="no-print results-actions-bar">
             <a href="dashboard.php" class="btn-flat waves-effect"><i class="material-icons left">arrow_back</i>Dashboard</a>
             <div class="results-btn-group">
+                <a href="#aiAdvisorModal" class="btn waves-effect waves-light amber darken-3 modal-trigger" style="font-weight: 600;">
+                    <i class="material-icons left">auto_awesome</i>AI Performance Insights
+                </a>
                 <button onclick="window.print();" class="btn waves-effect waves-light blue darken-2"><i class="material-icons left">print</i>Print Transcript</button>
                 <button id="downloadPdf" class="btn waves-effect waves-light green darken-2"><i class="material-icons left">download</i>Download PDF</button>
             </div>
@@ -315,5 +318,10 @@ document.getElementById('downloadPdf').addEventListener('click', function () {
     });
 });
 </script>
+
+<?php 
+// Include AI Success Advisor Modal
+include __DIR__ . '/../includes/ai_advisor_modal.php'; 
+?>
 
 <?php include '../includes/footer.php'; ?>

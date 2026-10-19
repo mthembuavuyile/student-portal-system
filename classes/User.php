@@ -17,6 +17,7 @@ class User {
     private ?string $password;
     private ?string $role;
     private ?string $studentIdNumber;
+    private ?int $lecturerId;
 
     public function __construct(array $data = []) {
         $this->id = isset($data['id']) ? (int)$data['id'] : null;
@@ -24,6 +25,7 @@ class User {
         $this->password = $data['password'] ?? null;
         $this->role = $data['role'] ?? 'student';
         $this->studentIdNumber = $data['student_id_number'] ?? null;
+        $this->lecturerId = isset($data['lecturer_id']) ? (int)$data['lecturer_id'] : null;
     }
 
     // Getters
@@ -31,6 +33,7 @@ class User {
     public function getUsername(): ?string { return $this->username; }
     public function getRole(): ?string { return $this->role; }
     public function getStudentIdNumber(): ?string { return $this->studentIdNumber; }
+    public function getLecturerId(): ?int { return $this->lecturerId; }
     public function getPasswordHash(): ?string { return $this->password; }
 
     /**
@@ -100,6 +103,16 @@ class User {
             LIMIT 1
         ");
         $stmt->execute([':num' => $studentNumber, ':num2' => $studentNumber]);
+        $data = $stmt->fetch();
+        return $data ? new self($data) : null;
+    }
+
+    /**
+     * Find a lecturer's user account by lecturer ID.
+     */
+    public static function findByLecturerId(PDO $pdo, int $lecturerId): ?User {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE lecturer_id = :lid LIMIT 1");
+        $stmt->execute([':lid' => $lecturerId]);
         $data = $stmt->fetch();
         return $data ? new self($data) : null;
     }

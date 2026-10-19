@@ -1,6 +1,6 @@
 <?php
 $page_title = "Change Password";
-$allowed_roles = ['admin', 'student'];
+$allowed_roles = ['admin', 'student', 'lecturer'];
 require_once __DIR__ . '/includes/header.php';
 
 $error_message = '';
@@ -31,7 +31,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$dashboard_link = ($_SESSION['role'] === 'admin') ? BASE_URL . 'admin/dashboard.php' : BASE_URL . 'student/dashboard.php';
+$dashboard_link = BASE_URL . 'student/dashboard.php';
+if ($_SESSION['role'] === 'admin') {
+    $dashboard_link = BASE_URL . 'admin/dashboard.php';
+} elseif ($_SESSION['role'] === 'lecturer') {
+    $dashboard_link = BASE_URL . 'lecturer/dashboard.php';
+}
+
+$role_badge_class = 'green darken-2';
+if ($_SESSION['role'] === 'admin') {
+    $role_badge_class = 'blue darken-3';
+} elseif ($_SESSION['role'] === 'lecturer') {
+    $role_badge_class = 'indigo darken-2';
+}
 ?>
 
 <div class="row" style="margin-top: 30px;">
@@ -49,7 +61,7 @@ $dashboard_link = ($_SESSION['role'] === 'admin') ? BASE_URL . 'admin/dashboard.
                         </div>
                     </div>
                     <div>
-                        <span class="chip <?php echo $_SESSION['role'] === 'admin' ? 'blue darken-3' : 'green darken-2'; ?> white-text">
+                        <span class="chip <?php echo $role_badge_class; ?> white-text">
                             <?php echo ucfirst($_SESSION['role']); ?>
                         </span>
                     </div>

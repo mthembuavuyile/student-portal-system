@@ -67,6 +67,11 @@ define('STATUS_PENDING', 'Pending');
 define('STATUS_GRADUATED', 'Graduated');
 define('STATUS_DROPPED', 'Dropped');
 
+// -- OpenRouter API Configuration for AI Academic Success Advisor --
+define('OPENROUTER_API_KEY', getenv('OPENROUTER_API_KEY') ?: '');
+define('OPENROUTER_MODEL', getenv('OPENROUTER_MODEL') ?: 'google/gemini-2.0-flash-exp:free');
+define('OPENROUTER_SITE_NAME', 'Student Portal System - AI Success Advisor');
+
 // -- Data Source Name (DSN) for PDO --
 $dsn = "mysql:host=" . DB_SERVER . ";dbname=" . DB_NAME . ";charset=utf8mb4";
 

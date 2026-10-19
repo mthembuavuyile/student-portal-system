@@ -236,16 +236,20 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(100) NOT NULL UNIQUE,
   `password` varchar(255) NOT NULL,
-  `role` enum('admin','student') NOT NULL DEFAULT 'student',
+  `role` enum('admin','lecturer','student') NOT NULL DEFAULT 'student',
   `student_id_number` varchar(50) DEFAULT NULL,
+  `lecturer_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `student_id_number` (`student_id_number`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`student_id_number`) REFERENCES `students` (`student_id_number`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `fk_user_lecturer` (`lecturer_id`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`student_id_number`) REFERENCES `students` (`student_id_number`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_user_lecturer` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturers` (`lecturer_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `users` (`id`, `username`, `password`, `role`, `student_id_number`) VALUES
-(1, 'admin', '$2y$10$F/Xv7ZLquQCl4b6WVoIhfuaXFeazUD6eTcOL4yo6lc4lE9Xt3a066', 'admin', NULL),
-(2, '10ha2304014', '$2y$10$jL0n0ZpD3MFxvIJRxbPNzuo32cLKnm5W1ClHwnpvn9b.ASQKnHk2G', 'student', '10ha2304014');
+INSERT INTO `users` (`id`, `username`, `password`, `role`, `student_id_number`, `lecturer_id`) VALUES
+(1, 'admin', '$2y$10$F/Xv7ZLquQCl4b6WVoIhfuaXFeazUD6eTcOL4yo6lc4lE9Xt3a066', 'admin', NULL, NULL),
+(2, '10ha2304014', '$2y$10$jL0n0ZpD3MFxvIJRxbPNzuo32cLKnm5W1ClHwnpvn9b.ASQKnHk2G', 'student', '10ha2304014', NULL),
+(3, 'lecturer', '$2y$10$jL0n0ZpD3MFxvIJRxbPNzuo32cLKnm5W1ClHwnpvn9b.ASQKnHk2G', 'lecturer', NULL, 1);
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS = 1;

@@ -33,10 +33,11 @@ function require_login($allowed_roles = null) {
     }
 
     if ($allowed_roles !== null && !in_array($_SESSION['role'], $allowed_roles)) {
-        // Optional: Redirect to an 'unauthorized' page or back to their dashboard.
         $_SESSION['error_message'] = "You are not authorized to view that page.";
         if ($_SESSION['role'] === 'admin') {
             redirect('admin/dashboard.php');
+        } elseif ($_SESSION['role'] === 'lecturer') {
+            redirect('lecturer/dashboard.php');
         } else {
             redirect('student/dashboard.php');
         }
