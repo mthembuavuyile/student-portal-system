@@ -67,9 +67,19 @@ define('STATUS_PENDING', 'Pending');
 define('STATUS_GRADUATED', 'Graduated');
 define('STATUS_DROPPED', 'Dropped');
 
-// -- OpenRouter API Configuration for AI Academic Success Advisor --
+// -- AI Academic Success Advisor Configuration (Multi-Provider Live AI) --
+// 1. Google Gemini API (Recommended: 1,500 free requests/day at https://aistudio.google.com/app/apikey)
+define('GEMINI_API_KEY', getenv('GEMINI_API_KEY') ?: '');
+
+// 2. OpenRouter API Configuration
 define('OPENROUTER_API_KEY', getenv('OPENROUTER_API_KEY') ?: '');
-define('OPENROUTER_MODEL', getenv('OPENROUTER_MODEL') ?: 'google/gemini-2.0-flash-exp:free');
+define('OPENROUTER_DEFAULT_MODEL', getenv('OPENROUTER_DEFAULT_MODEL') ?: 'minimax/minimax-m3.1-flash:free');
+define('OPENROUTER_MODEL', getenv('OPENROUTER_MODEL') ?: OPENROUTER_DEFAULT_MODEL);
+define('OPENROUTER_FALLBACK_MODELS', [
+    'minimax/minimax-m3.1-flash:free',
+    'poolside/laguna-s-2.1:free',
+    'poolside/laguna-xs-2.1:free'
+]);
 define('OPENROUTER_SITE_NAME', 'Student Portal System - AI Success Advisor');
 
 // -- Data Source Name (DSN) for PDO --

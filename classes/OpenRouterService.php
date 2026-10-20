@@ -26,7 +26,7 @@ class OpenRouterService {
 
     public function __construct(?string $apiKey = null, ?string $model = null) {
         $this->apiKey = $apiKey ?? (defined('OPENROUTER_API_KEY') ? OPENROUTER_API_KEY : '');
-        $this->model = $model ?? (defined('OPENROUTER_MODEL') ? OPENROUTER_MODEL : 'google/gemini-2.0-flash-exp:free');
+        $this->model = $model ?? (defined('OPENROUTER_MODEL') ? OPENROUTER_MODEL : 'minimax/minimax-m3.1-flash:free');
         $this->siteUrl = defined('BASE_URL') ? BASE_URL : 'http://localhost';
         $this->siteName = defined('OPENROUTER_SITE_NAME') ? OPENROUTER_SITE_NAME : 'SMS University Portal';
     }
@@ -92,7 +92,7 @@ PROMPT;
     }
 
     /**
-     * Executes a chat completion call to OpenRouter.
+     * Executes a chat completion call to OpenRouter with automatic multi-model fallback.
      */
     public function callOpenRouter(array $messages, ?string $modelOverride = null): array {
         if (!$this->hasApiKey()) {
@@ -102,15 +102,13 @@ PROMPT;
             ];
         }
 
-        $model = $modelOverride ?: $this->model;
-        $url = 'https://openrouter.ai/api/v1/chat/completions';
+        $fallbackList = defined('OPENROUTER_FALLBACK_MODELS') && is_array(OPENROUTER_FALLBACK_MODELS)
+            ? OPENROUTER_FALLBACK_MODELS
+            : ['minimax/minimax-m3.1-flash:free', 'poolside/laguna-s-2.1:free', 'poolside/laguna-xs-2.1:free'];
 
-        $payload = [
-            'model' => $model,
-            'messages' => $messages,
-            'temperature' => 0.5,
-            'max_tokens' => 1200
-        ];
+        $primary = $modelOverride ?: $this->model;
+        $models = array_slice(array_values(array_unique(array_merge([$primary], $fallbackList))), 0, 3);
+        $url = 'https://openrouter.ai/api/v1/chat/completions';
 
         $headers = [
             'Authorization: Bearer ' . trim($this->apiKey),
@@ -119,42 +117,83 @@ PROMPT;
             'X-Title: ' . $this->siteName
         ];
 
+        // Attempt 1: Multi-model array
+        $payload = [
+            'models' => $models,
+            'messages' => $messages,
+            'temperature' => 0.5,
+            'max_tokens' => 1600
+        ];
+
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         $response = curl_exec($ch);
         $curlError = curl_error($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        unset($ch); // Automatic cleanup (curl_close is deprecated in PHP 8.5+)
+        unset($ch);
 
-        if ($curlError) {
-            return [
-                'success' => false,
-                'error' => 'Network error connecting to OpenRouter: ' . $curlError
-            ];
+        if (!$curlError && $httpCode >= 200 && $httpCode < 300) {
+            $data = json_decode($response, true);
+            $content = trim((string)($data['choices'][0]['message']['content'] ?? ''));
+            $usedModel = $data['model'] ?? ($models[0] ?? 'OpenRouter AI');
+
+            if (!empty($content) && stripos($content, 'User Safety:') === false && strlen($content) > 40 && !preg_match('/^(We need|I need to|Thinking Process|Drafting)/i', $content)) {
+                return [
+                    'success' => true,
+                    'content' => $content,
+                    'model' => $usedModel,
+                    'source' => 'OpenRouter AI (' . $usedModel . ')'
+                ];
+            }
         }
 
-        $data = json_decode($response, true);
-
-        if ($httpCode >= 200 && $httpCode < 300 && isset($data['choices'][0]['message']['content'])) {
-            return [
-                'success' => true,
-                'content' => $data['choices'][0]['message']['content'],
-                'model' => $data['model'] ?? $model,
-                'source' => 'openrouter'
+        // Attempt 2: Sequential model fallback
+        foreach ($models as $singleModel) {
+            $singlePayload = [
+                'model' => $singleModel,
+                'messages' => $messages,
+                'temperature' => 0.5,
+                'max_tokens' => 1600
             ];
+
+            $ch2 = curl_init($url);
+            curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch2, CURLOPT_POST, true);
+            curl_setopt($ch2, CURLOPT_POSTFIELDS, json_encode($singlePayload));
+            curl_setopt($ch2, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch2, CURLOPT_TIMEOUT, 15);
+            curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
+
+            $singleResp = curl_exec($ch2);
+            $singleHttp = curl_getinfo($ch2, CURLINFO_HTTP_CODE);
+            $singleErr = curl_error($ch2);
+            unset($ch2);
+
+            if (!$singleErr && $singleHttp >= 200 && $singleHttp < 300) {
+                $singleData = json_decode($singleResp, true);
+                $content = trim((string)($singleData['choices'][0]['message']['content'] ?? ''));
+                $usedModel = $singleData['model'] ?? $singleModel;
+
+                if (!empty($content) && stripos($content, 'User Safety:') === false && strlen($content) > 40 && !preg_match('/^(We need|I need to|Thinking Process|Drafting)/i', $content)) {
+                    return [
+                        'success' => true,
+                        'content' => $content,
+                        'model' => $usedModel,
+                        'source' => 'OpenRouter AI (' . $usedModel . ')'
+                    ];
+                }
+            }
         }
 
-        $errorMsg = $data['error']['message'] ?? "OpenRouter returned HTTP {$httpCode}";
         return [
             'success' => false,
-            'error' => $errorMsg,
-            'http_code' => $httpCode
+            'error' => 'All OpenRouter AI candidate endpoints failed or timed out.'
         ];
     }
 

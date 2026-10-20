@@ -662,7 +662,14 @@ async function runAiCoach(customQuestion = '') {
         if (data.success && data.advice) {
             contentDiv.innerHTML = formatAiMarkdown(data.advice);
             if (modelTag) {
-                modelTag.textContent = data.source || (data.model ? 'AI (' + data.model + ')' : 'AI Active');
+                let displayModel = data.model || 'Live AI';
+                if (displayModel.indexOf('/') !== -1) {
+                    displayModel = displayModel.split('/').pop().replace(':free', '');
+                }
+                const isOffline = (data.source && data.source.indexOf('Offline') !== -1);
+                modelTag.textContent = isOffline ? 'Offline Diagnostic Mode' : 'Live AI (' + displayModel + ')';
+                modelTag.style.background = isOffline ? '#fff3e0' : '#e8f5e9';
+                modelTag.style.color = isOffline ? '#e65100' : '#2e7d32';
             }
         } else {
             contentDiv.innerHTML = '<span style="color:#dc2626; font-weight:600;"><i class="material-icons tiny" style="vertical-align:middle;">error</i> ' + (data.error || 'Unable to generate analysis') + '</span>';
