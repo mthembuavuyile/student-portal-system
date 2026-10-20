@@ -662,20 +662,30 @@ async function runAiCoach(customQuestion = '') {
         if (data.success && data.advice) {
             contentDiv.innerHTML = formatAiMarkdown(data.advice);
             if (modelTag) {
-                let displayModel = data.model || 'Live AI';
+                let displayModel = data.model || 'OpenRouter AI';
                 if (displayModel.indexOf('/') !== -1) {
                     displayModel = displayModel.split('/').pop().replace(':free', '');
                 }
-                const isOffline = (data.source && data.source.indexOf('Offline') !== -1);
-                modelTag.textContent = isOffline ? 'Offline Diagnostic Mode' : 'Live AI (' + displayModel + ')';
-                modelTag.style.background = isOffline ? '#fff3e0' : '#e8f5e9';
-                modelTag.style.color = isOffline ? '#e65100' : '#2e7d32';
+                modelTag.textContent = 'Live AI (' + displayModel + ')';
+                modelTag.style.background = '#e8f5e9';
+                modelTag.style.color = '#2e7d32';
             }
         } else {
-            contentDiv.innerHTML = '<span style="color:#dc2626; font-weight:600;"><i class="material-icons tiny" style="vertical-align:middle;">error</i> ' + (data.error || 'Unable to generate analysis') + '</span>';
+            const errorMsg = data.error || 'AI Academic Success Coach is currently unavailable. Please try again later.';
+            contentDiv.innerHTML = '<div style="padding: 14px 16px; background: #ffebee; border: 1px solid #ffcdd2; border-radius: 6px; color: #c62828; font-weight: 500; display: flex; align-items: center; gap: 8px;"><i class="material-icons" style="font-size: 20px;">error_outline</i> ' + escapeHtml(errorMsg) + '</div>';
+            if (modelTag) {
+                modelTag.textContent = 'Unavailable';
+                modelTag.style.background = '#ffebee';
+                modelTag.style.color = '#c62828';
+            }
         }
     } catch (err) {
-        contentDiv.innerHTML = '<span style="color:#dc2626; font-weight:600;"><i class="material-icons tiny" style="vertical-align:middle;">wifi_off</i> Network error: ' + err.message + '</span>';
+        contentDiv.innerHTML = '<div style="padding: 14px 16px; background: #ffebee; border: 1px solid #ffcdd2; border-radius: 6px; color: #c62828; font-weight: 500; display: flex; align-items: center; gap: 8px;"><i class="material-icons" style="font-size: 20px;">error_outline</i> AI Academic Success Coach is currently unavailable. Please try again later.</div>';
+        if (modelTag) {
+            modelTag.textContent = 'Unavailable';
+            modelTag.style.background = '#ffebee';
+            modelTag.style.color = '#c62828';
+        }
     } finally {
         if (btn) btn.classList.remove('disabled');
         if (askBtn) askBtn.classList.remove('disabled');
