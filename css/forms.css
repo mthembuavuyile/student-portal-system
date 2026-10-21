@@ -114,9 +114,9 @@
         font-size: 0.92rem;
     }
 
-    /* Stack form buttons vertically on mobile */
-    .row .col .btn[type="submit"],
-    .row .col input[type="submit"] {
+    /* Stack form buttons vertically on mobile (except inline/chat buttons) */
+    .row .col .btn[type="submit"]:not(.btn-inline):not(.btn-ask-ai),
+    .row .col input[type="submit"]:not(.btn-inline) {
         width: 100%;
         margin-top: 8px;
     }

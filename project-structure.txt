@@ -14,11 +14,13 @@ By Avuyile Mthembu
 │   ├── Lecturer.php (Lecturer entity with teaching assignments)
 │   ├── Enrollment.php (Enrollment entity enforcing single active course rule)
 │   ├── ModuleResult.php (Module results, quarterly marks, calculateAverage() & validation)
+│   ├── OpenRouterService.php (AI Academic Success Coach relay & heuristic fallback engine)
 │   └── RegistrationService.php (Automatic student number generator & transaction service)
 │
 ├── database/
 │   ├── database.sql (Complete database schema and initial data v2.0)
-│   └── migration_v2.sql (Incremental upgrade migration script)
+│   ├── migration_v2.sql (Incremental upgrade migration script for 3NF)
+│   └── migration_v3_lecturer_ai.sql (Migration script for Lecturer portal & AI tables)
 │
 ├── admin/
 │   ├── dashboard.php (Admin main dashboard with comprehensive metrics)
@@ -33,11 +35,16 @@ By Avuyile Mthembu
 │   ├── results.php (Capture & manage quarterly marks, live average calculation)
 │   └── deleted_logs.txt (Log file for deleted records)
 │
+├── lecturer/
+│   ├── dashboard.php (Lecturer dashboard with assigned modules & class metrics)
+│   ├── modules.php (Assigned teaching modules & enrolled student rosters)
+│   └── results.php (Capture & update quarterly marks Q1-Q4 for assigned modules)
+│
 ├── student/
 │   ├── dashboard.php (Student dashboard with average & module snapshot)
 │   ├── profile.php (Student profile view with ID & enrollment details)
 │   ├── modules.php (Student's enrolled modules & assigned lecturers)
-│   ├── results.php (Official Academic Transcript with quarterly marks & averages)
+│   ├── results.php (Official Academic Transcript with quarterly marks, averages & AI Coach)
 │   ├── profile_report.php (Profile Summary Report with PDF export)
 │   └── registration_slip.php (Registration Confirmation with PDF export)
 │
@@ -61,8 +68,15 @@ By Avuyile Mthembu
 │   ├── header.php (Common header)
 │   ├── footer.php (Common footer)
 │   ├── nav_admin.php (Admin navigation with Courses, Modules, Lecturers, Results)
+│   ├── nav_lecturer.php (Lecturer navigation with Modules & Academic Results)
 │   └── nav_student.php (Student navigation with Modules & Academic Results)
 │
 └── documentation/
-    ├── STUDENT_PORTAL_SYSTEM_DESIGN.md (Comprehensive System Design & UML Document)
+    ├── PROJECT_MANAGEMENT_PLAN.md (Comprehensive PMP: Scope, Time, Cost, People, WBS, CPM Gantt, EVM, RACI)
+    ├── SYSTEMS_ANALYSIS_AND_DESIGN_SDLC.md (Complete SA&D Manual: 7-Phase SDLC, TELOS, DFDs, 3-Tier, RTM)
+    ├── SOFTWARE_REQUIREMENTS_SPECIFICATION.md (IEEE 830 SRS with FR-01 to FR-18 & Use Cases)
+    ├── STUDENT_PORTAL_SYSTEM_DESIGN.md (Comprehensive System Design & UML 2.5 Class Architecture)
+    ├── ENTITY_RELATIONSHIP_SPECIFICATION.md (3NF Data Dictionary, Schema Constraints & ERD)
+    ├── ENTITY_RELATIONSHIP_DIAGRAM.mmd (Mermaid ERD source definition)
+    ├── UML_CLASS_DIAGRAM.mmd (Mermaid UML Class Diagram source definition)
     └── screenshots.docx (MS Word with screenshots)

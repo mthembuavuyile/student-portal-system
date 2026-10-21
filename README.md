@@ -97,12 +97,15 @@ The primary objective of this assessment is to evaluate and demonstrate practica
 
 ---
 
-## Architecture and Documentation
+## Architecture, SDLC & Project Management Documentation
 
-Detailed technical documentation, class specifications, and database schemas are available in:
-- [Software Requirements Specification (SRS)](documentation/SOFTWARE_REQUIREMENTS_SPECIFICATION.md)
-- [System Design and Class Relationships](documentation/STUDENT_PORTAL_SYSTEM_DESIGN.md)
-- [Entity Relationship Specification and Data Dictionary](documentation/ENTITY_RELATIONSHIP_SPECIFICATION.md)
+Comprehensive engineering documentation conforming to international standards (IEEE 830, ISO/IEC/IEEE 12207, PMBOK 7th Ed., ISO 21500) is structured within the `/documentation/` directory:
+
+- 📋 **[Project Management Plan (PMP)](documentation/PROJECT_MANAGEMENT_PLAN.md)**: Full project charter, Scope Management (WBS & WBS Dictionary), Time Management (16-week CPM & Gantt timeline), Cost Management (R 428,750 ZAR budget baseline & EVM metrics), and People Management (OBS, Staffing, RACI Matrix & Stakeholder register).
+- 🔄 **[Systems Analysis, Design & SDLC Manual](documentation/SYSTEMS_ANALYSIS_AND_DESIGN_SDLC.md)**: End-to-end 7-phase SDLC framework, TELOS Feasibility Study, As-Is vs To-Be business processes, DFD Level 0 (Context) & Level 1 diagrams, 3-Tier topology, and Requirements Traceability Matrix (RTM).
+- 📜 **[Software Requirements Specification (SRS)](documentation/SOFTWARE_REQUIREMENTS_SPECIFICATION.md)**: IEEE 830-1998 formal functional (FR-01 to FR-18) and non-functional requirements with use case specifications.
+- 📐 **[System Design and Class Architecture](documentation/STUDENT_PORTAL_SYSTEM_DESIGN.md)**: Object-Oriented design, formal UML 2.5 Class Diagram, entity decomposition, design patterns, and sequence diagrams.
+- 🗄️ **[Entity Relationship Specification & Data Dictionary](documentation/ENTITY_RELATIONSHIP_SPECIFICATION.md)**: 3NF relational data dictionary, schema constraints, indexes, ASCII entity relationship map, and cascading rules.
 
 ---
 

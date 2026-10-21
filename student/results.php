@@ -172,13 +172,16 @@ $studentPayloadJson = json_encode([
             width: 100%;
             gap: 8px;
         }
-        .results-btn-group button {
-            width: 100%;
+        .results-btn-group button,
+        .results-btn-group a.btn {
+            width: 100% !important;
             justify-content: center;
             display: flex;
             align-items: center;
             font-size: 0.88rem;
             padding: 0 12px;
+            box-sizing: border-box;
+            margin: 0;
         }
     }
 
@@ -303,22 +306,22 @@ $studentPayloadJson = json_encode([
                 </div>
 
                 <!-- Consolidated AI Academic Success Coach Section (Material Design) -->
-                <div id="aiCoachCard" class="card-panel z-depth-1 no-print" style="margin-top: 25px; padding: 22px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 44px; height: 44px; border-radius: 8px; background: #1565c0; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(21, 101, 192, 0.25);">
+                <div id="aiCoachCard" class="card-panel z-depth-1 no-print ai-coach-card">
+                    <div class="ai-coach-header">
+                        <div class="ai-coach-title-area">
+                            <div class="ai-coach-avatar">
                                 <i class="material-icons white-text">psychology</i>
                             </div>
-                            <div>
-                                <h6 style="margin: 0; font-weight: 700; color: #212121; font-size: 1.15rem;">
+                            <div class="ai-coach-title-text">
+                                <h6 class="ai-coach-title">
                                     AI Academic Success Coach
                                 </h6>
-                                <span style="font-size: 0.8rem; color: #757575;">
+                                <span class="ai-coach-subtitle">
                                     Direct diagnostic & module coaching powered by OpenRouter AI relay
                                 </span>
                             </div>
                         </div>
-                        <div>
+                        <div class="ai-coach-btn-area">
                             <button id="runAiAdvisorBtn" onclick="runAiCoach('')" class="btn waves-effect waves-light blue darken-2" style="font-weight: 600; text-transform: none; border-radius: 6px; box-shadow: 0 2px 6px rgba(21, 101, 192, 0.25);">
                                 <i class="material-icons left">analytics</i>Run Performance Diagnosis
                             </button>
@@ -326,45 +329,45 @@ $studentPayloadJson = json_encode([
                     </div>
 
                     <!-- Quick Prompt Chips (Material Design with Vector Icons) -->
-                    <div style="margin-bottom: 12px;">
-                        <span style="font-size: 0.72rem; font-weight: 700; color: #757575; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px;">
+                    <div class="ai-quick-topics-section">
+                        <span class="ai-quick-topics-label">
                             Quick Coaching Topics:
                         </span>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <div class="ai-quick-chips-wrapper">
                             <a href="#!" class="ai-quick-chip waves-effect" onclick="askAiQuestion('How can I boost my marks in my lowest module?')">
-                                <i class="material-icons">trending_up</i> Boost lowest module
+                                <i class="material-icons">trending_up</i> <span>Boost lowest module</span>
                             </a>
                             <a href="#!" class="ai-quick-chip waves-effect" onclick="askAiQuestion('Create a 2-week daily revision schedule for my modules')">
-                                <i class="material-icons">event</i> 2-Week timetable
+                                <i class="material-icons">event</i> <span>2-Week timetable</span>
                             </a>
                             <a href="#!" class="ai-quick-chip waves-effect" onclick="askAiQuestion('What active recall study techniques work best for technical modules?')">
-                                <i class="material-icons">school</i> Best study techniques
+                                <i class="material-icons">school</i> <span>Best study techniques</span>
                             </a>
                             <a href="#!" class="ai-quick-chip waves-effect" onclick="askAiQuestion('How do I prepare for upcoming final assessments?')">
-                                <i class="material-icons">flag</i> Exam prep advice
+                                <i class="material-icons">flag</i> <span>Exam prep advice</span>
                             </a>
                         </div>
                     </div>
 
                     <!-- Interactive Coach Question Input -->
-                    <form id="aiCoachForm" onsubmit="handleAiFormSubmit(event)" style="margin: 0; display: flex; gap: 8px;">
-                        <div style="flex: 1; position: relative;">
-                            <input type="text" id="aiQuestionInput" placeholder="Ask your coach anything about your marks, revision, or modules..." style="width: 100%; border: 1.5px solid #bdbdbd; border-radius: 6px; padding: 10px 14px; font-size: 0.9rem; margin: 0; box-sizing: border-box; background: #fafafa; transition: border-color 0.2s;" onfocus="this.style.borderColor='#1565c0'; this.style.background='#fff';" onblur="this.style.borderColor='#bdbdbd'; this.style.background='#fafafa';">
+                    <form id="aiCoachForm" class="ai-coach-form" onsubmit="handleAiFormSubmit(event)">
+                        <div class="ai-coach-input-container">
+                            <input type="text" id="aiQuestionInput" class="browser-default ai-coach-input" placeholder="Ask your coach anything about marks or revision...">
                         </div>
-                        <button type="submit" id="btnAskAi" class="btn waves-effect waves-light grey darken-3" style="border-radius: 6px; text-transform: none; font-weight: 600; padding: 0 18px;">
-                            <i class="material-icons right">send</i>Ask
+                        <button type="submit" id="btnAskAi" class="btn waves-effect waves-light grey darken-3 btn-ask-ai">
+                            <span>Ask</span><i class="material-icons right">send</i>
                         </button>
                     </form>
 
                     <!-- AI Coach Output Box -->
-                    <div id="aiAdvisorOutput" class="card-panel z-depth-1" style="display:none; margin-top: 18px; padding: 18px; background: #fafafa; border: 1px solid #e0e0e0; border-radius: 6px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #e0e0e0; padding-bottom: 8px;">
-                            <span id="aiAdvisorTitle" style="font-weight: 700; color: #212121; font-size: 0.92rem; display: flex; align-items: center; gap: 6px;">
+                    <div id="aiAdvisorOutput" class="card-panel z-depth-1 ai-advisor-output" style="display:none;">
+                        <div class="ai-advisor-output-header">
+                            <span id="aiAdvisorTitle" class="ai-advisor-title">
                                 <i class="material-icons" style="color: #1565c0; font-size: 20px;">psychology</i> Coach Feedback
                             </span>
                             <span id="aiAdvisorModelTag" class="chip tiny" style="background: #e3f2fd; color: #0d47a1; font-weight: 600; margin: 0; height: 24px; line-height: 24px; font-size: 0.75rem;">AI Active</span>
                         </div>
-                        <div id="aiContent" style="line-height: 1.7; font-size: 0.92rem; color: #424242;">
+                        <div id="aiContent" class="ai-content-box">
                             <em>Consulting coach...</em>
                         </div>
                     </div>
@@ -372,6 +375,77 @@ $studentPayloadJson = json_encode([
 
                 <style>
                     /* AI Academic Coach Card & Material Output Styling */
+                    .ai-coach-card {
+                        margin-top: 25px;
+                        padding: 22px;
+                        border: 1px solid #e0e0e0;
+                        border-radius: 8px;
+                        background: #fff;
+                        box-sizing: border-box;
+                    }
+
+                    .ai-coach-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 12px;
+                        margin-bottom: 16px;
+                    }
+
+                    .ai-coach-title-area {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    }
+
+                    .ai-coach-avatar {
+                        width: 44px;
+                        height: 44px;
+                        border-radius: 8px;
+                        background: #1565c0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 2px 6px rgba(21, 101, 192, 0.25);
+                        flex-shrink: 0;
+                    }
+
+                    .ai-coach-title {
+                        margin: 0;
+                        font-weight: 700;
+                        color: #212121;
+                        font-size: 1.15rem;
+                        line-height: 1.3;
+                    }
+
+                    .ai-coach-subtitle {
+                        font-size: 0.8rem;
+                        color: #757575;
+                        display: block;
+                        margin-top: 2px;
+                    }
+
+                    .ai-quick-topics-section {
+                        margin-bottom: 14px;
+                    }
+
+                    .ai-quick-topics-label {
+                        font-size: 0.72rem;
+                        font-weight: 700;
+                        color: #757575;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        display: block;
+                        margin-bottom: 8px;
+                    }
+
+                    .ai-quick-chips-wrapper {
+                        display: flex;
+                        gap: 8px;
+                        flex-wrap: wrap;
+                    }
+
                     .ai-quick-chip {
                         background: #f5f5f5;
                         border: 1px solid #e0e0e0;
@@ -385,6 +459,7 @@ $studentPayloadJson = json_encode([
                         gap: 6px;
                         text-decoration: none;
                         transition: all 0.2s ease;
+                        box-sizing: border-box;
                     }
                     .ai-quick-chip i {
                         font-size: 16px;
@@ -396,6 +471,198 @@ $studentPayloadJson = json_encode([
                         color: #0d47a1;
                         transform: translateY(-1px);
                     }
+
+                    /* Interactive Coach Form */
+                    .ai-coach-form {
+                        margin: 0;
+                        display: flex;
+                        gap: 8px;
+                        align-items: center;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+
+                    .ai-coach-input-container {
+                        flex: 1 1 auto;
+                        min-width: 0; /* CRITICAL: prevents flex child from collapsing or overflowing */
+                        position: relative;
+                    }
+
+                    .ai-coach-input {
+                        width: 100% !important;
+                        height: 44px !important;
+                        line-height: 44px !important;
+                        border: 1.5px solid #bdbdbd !important;
+                        border-radius: 6px !important;
+                        padding: 0 14px !important;
+                        font-size: 0.9rem !important;
+                        margin: 0 !important;
+                        box-sizing: border-box !important;
+                        background: #fafafa !important;
+                        color: #212121 !important;
+                        outline: none !important;
+                        transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s !important;
+                    }
+
+                    .ai-coach-input:focus {
+                        border-color: #1565c0 !important;
+                        background: #fff !important;
+                        box-shadow: 0 0 0 2px rgba(21, 101, 192, 0.15) !important;
+                    }
+
+                    .btn-ask-ai {
+                        flex: 0 0 auto !important;
+                        width: auto !important;
+                        margin: 0 !important;
+                        margin-top: 0 !important;
+                        height: 44px !important;
+                        line-height: 44px !important;
+                        border-radius: 6px !important;
+                        text-transform: none !important;
+                        font-weight: 600 !important;
+                        padding: 0 18px !important;
+                        display: inline-flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        gap: 6px !important;
+                        white-space: nowrap !important;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+                    }
+
+                    .btn-ask-ai i.material-icons.right {
+                        margin-left: 0 !important;
+                        font-size: 18px !important;
+                        float: none !important;
+                    }
+
+                    /* Output Panel */
+                    .ai-advisor-output {
+                        margin-top: 18px;
+                        padding: 18px;
+                        background: #fafafa;
+                        border: 1px solid #e0e0e0;
+                        border-radius: 6px;
+                        box-sizing: border-box;
+                    }
+
+                    .ai-advisor-output-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 8px;
+                        margin-bottom: 12px;
+                        border-bottom: 1px solid #e0e0e0;
+                        padding-bottom: 8px;
+                    }
+
+                    .ai-advisor-title {
+                        font-weight: 700;
+                        color: #212121;
+                        font-size: 0.92rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        flex-wrap: wrap;
+                        word-break: break-word;
+                    }
+
+                    .ai-content-box {
+                        line-height: 1.7;
+                        font-size: 0.92rem;
+                        color: #424242;
+                        overflow-x: auto;
+                        word-break: break-word;
+                    }
+
+                    /* Responsive Mobile Breakpoint (<= 600px) */
+                    @media only screen and (max-width: 600px) {
+                        .ai-coach-card {
+                            margin-top: 16px;
+                            padding: 16px 12px;
+                        }
+                        .ai-coach-header {
+                            flex-direction: column;
+                            align-items: stretch;
+                            gap: 12px;
+                        }
+                        .ai-coach-title {
+                            font-size: 1.05rem;
+                        }
+                        .ai-coach-subtitle {
+                            font-size: 0.76rem;
+                        }
+                        .ai-coach-btn-area {
+                            width: 100%;
+                        }
+                        .ai-coach-btn-area #runAiAdvisorBtn {
+                            width: 100% !important;
+                            display: flex !important;
+                            align-items: center !important;
+                            justify-content: center !important;
+                            margin: 0 !important;
+                            height: 42px;
+                            line-height: 42px;
+                            font-size: 0.88rem;
+                        }
+                        .ai-quick-chips-wrapper {
+                            display: grid;
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 8px;
+                        }
+                        .ai-quick-chip {
+                            font-size: 0.76rem;
+                            padding: 8px 6px;
+                            border-radius: 8px;
+                            justify-content: center;
+                            text-align: center;
+                            min-height: 40px;
+                            width: 100%;
+                        }
+                        .ai-quick-chip i {
+                            font-size: 15px;
+                        }
+                        .ai-coach-form {
+                            display: flex;
+                            flex-direction: row;
+                            gap: 8px;
+                            align-items: center;
+                        }
+                        .ai-coach-input {
+                            font-size: 16px !important; /* Prevents auto zoom on iOS Safari */
+                            height: 42px !important;
+                            line-height: 42px !important;
+                            padding: 0 10px !important;
+                        }
+                        .btn-ask-ai {
+                            height: 42px !important;
+                            line-height: 42px !important;
+                            padding: 0 14px !important;
+                            width: auto !important;
+                            margin-top: 0 !important;
+                        }
+                        .ai-advisor-output {
+                            padding: 14px 10px;
+                        }
+                    }
+
+                    /* Ultra-compact phone screens (<= 380px) */
+                    @media only screen and (max-width: 380px) {
+                        .ai-quick-chips-wrapper {
+                            grid-template-columns: 1fr;
+                        }
+                        .ai-coach-form {
+                            flex-direction: column;
+                            align-items: stretch;
+                        }
+                        .ai-coach-input-container {
+                            width: 100%;
+                        }
+                        .btn-ask-ai {
+                            width: 100% !important;
+                        }
+                    }
+
                     .ai-rendered-output {
                         line-height: 1.75;
                         font-size: 0.93rem;
@@ -502,7 +769,7 @@ $studentPayloadJson = json_encode([
             <?php endif; ?>
 
             <div class="divider" style="margin: 25px 0 15px 0;"></div>
-            <div class="row center-align grey-text" style="font-size: 0.8rem; margin-bottom: 0;">
+            <div class="row center-align grey-text transcript-footer-notice" style="font-size: 0.8rem; margin-bottom: 0; padding: 0 8px;">
                 <p style="margin: 4px 0;">This is an official system transcript issued by the Student Portal System &bull; System Design by Mr Avuyile Mthembu</p>
                 <p style="margin: 4px 0;">Generated on <?php echo date("F j, Y, g:i A T"); ?></p>
             </div>
