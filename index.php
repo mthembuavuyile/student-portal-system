@@ -437,6 +437,11 @@ $page_title = "Portal Login - Student Management System";
     <!-- Attribution -->
     <div class="system-attribution">
         Developed by Mr Avuyile Mthembu &bull; ICT Services: Infrastructure &amp; Security Support
+        <div style="margin-top: 8px;">
+            <a href="presentation.php" style="color: #fde047; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(253,224,71,0.4);">
+                <i class="material-icons tiny">slideshow</i> DFFE Technical Assessment Presentation
+            </a>
+        </div>
     </div>
 </div>
 
