@@ -5,7 +5,7 @@
 ---
 
 > **Sequential Documentation Pipeline**  
-> ← Previous: [02. Systems Analysis & SDLC Specification](SYSTEMS_ANALYSIS_AND_DESIGN_SDLC.md) | **Document 3 of 5** | Next: [04. System Design & Class Architecture](STUDENT_PORTAL_SYSTEM_DESIGN.md) →
+> ← Previous: [02. Systems Analysis & Process Specification](02_SYSTEMS_ANALYSIS_AND_PROCESS_SPECIFICATION.md) | **Document 3 of 5** | Next: [04. Software Architecture & Design](04_SOFTWARE_ARCHITECTURE_AND_DESIGN.md) ->
 
 ---
 
@@ -15,7 +15,7 @@
 | **System Name** | Student Portal System |
 | **Project Nature** | **Internship Technical Assessment / Practical Competency Evaluation Task** |
 | **Project Sprint Duration** | **2 Calendar Weeks** (10 Intensive Working Days) |
-| **Project Team** | • **Avuyile Mthembu**: Full Stack Software Developer (Project Lead & System Architect)<br>• **Nomthandazo Khoza**: Database Administrator (DBA & Relational Modeler)<br>• **Qhama Nodada**: Frontend Developer (UI/UX & Client Logic) |
+| **Project Team** | • **Mr Avuyile Mthembu**: Full Stack Software Developer (Project Lead & System Architect)<br>• **Ms Nomthandazo Khoza**: Database Administrator (DBA & Relational Modeler)<br>• **Ms Qhama Nodada**: Frontend Developer (UI/UX & Client Logic) |
 | **Host Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
 | **Branch & Directorate** | Corporate Management Services (CMS) — Directorate: IT Business Solutions (ITBS) |
 | **Unit** | ICT Services: Infrastructure & Security Support |
@@ -203,15 +203,15 @@ The system evolves a legacy single-table student directory into an enterprise-gr
 
 | Requirement | Implemented Architecture / Class | Database Table(s) | Primary Team Member | Verification Endpoint |
 | :--- | :--- | :--- | :--- | :--- |
-| **UML Modeling** | Formal Class Diagram & Multiplicities | N/A | Avuyile Mthembu | `documentation/STUDENT_PORTAL_SYSTEM_DESIGN.md` |
-| **Relational ERD** | 3NF Relational Data Dictionary | `university_db` (8 tables) | Nomthandazo Khoza | `documentation/ENTITY_RELATIONSHIP_SPECIFICATION.md` |
-| **Authentication & RBAC** | `classes/User.php`, `functions.php` | `users` | Avuyile Mthembu | `index.php` |
-| **Auto Student Numbering** | `classes/RegistrationService.php` | `students` (`UNIQUE`) | Avuyile Mthembu | `admin/register_student.php` |
-| **Lecturer Portal** | `lecturer/*.php`, `module_lecturers` | `lecturers`, `module_lecturers` | Avuyile & Qhama | `lecturer/dashboard.php` |
-| **Quarterly Mark Capture** | `classes/ModuleResult.php` | `module_results` | Nomthandazo & Avuyile| `lecturer/results.php` |
-| **AI Academic Success Coach** | `classes/OpenRouterService.php` | `module_results` | Avuyile Mthembu | `student/results.php` |
-| **Frontend Layout & Switcher**| Materialize CSS, custom styling | N/A | Qhama Nodada | `index.php`, all portal views |
-| **PDF Document Generation** | JavaScript `jspdf.min.js` | N/A | Qhama Nodada | `student/results.php` |
+| **UML Modeling** | Formal Class Diagram & Multiplicities | N/A | Mr Avuyile Mthembu | `documentation/04_SOFTWARE_ARCHITECTURE_AND_DESIGN.md` |
+| **Relational ERD** | 3NF Relational Data Dictionary | `university_db` (8 tables) | Ms Nomthandazo Khoza | `documentation/05_DATABASE_SPECIFICATION_AND_DATA_DICTIONARY.md` |
+| **Authentication & RBAC** | `classes/User.php`, `functions.php` | `users` | Mr Avuyile Mthembu | `index.php` |
+| **Auto Student Numbering** | `classes/RegistrationService.php` | `students` (`UNIQUE`) | Mr Avuyile Mthembu | `admin/register_student.php` |
+| **Lecturer Portal** | `lecturer/*.php`, `module_lecturers` | `lecturers`, `module_lecturers` | Mr Avuyile & Ms Qhama | `lecturer/dashboard.php` |
+| **Quarterly Mark Capture** | `classes/ModuleResult.php` | `module_results` | Ms Nomthandazo & Mr Avuyile| `lecturer/results.php` |
+| **AI Academic Success Coach** | `classes/OpenRouterService.php` | `module_results` | Mr Avuyile Mthembu | `student/results.php` |
+| **Frontend Layout & Switcher**| Materialize CSS, custom styling | N/A | Ms Qhama Nodada | `index.php`, all portal views |
+| **PDF Document Generation** | JavaScript `jspdf.min.js` | N/A | Ms Qhama Nodada | `student/results.php` |
 | **Live Web Deployment** | InfinityFree Hosting (PHP 8.2 / MySQL) | Production DB | Team Collaboration | [https://student-system.infinityfree.io](https://student-system.infinityfree.io) |
 
 ---
@@ -226,7 +226,7 @@ The system evolves a legacy single-table student directory into an enterprise-gr
 Submitted by:
 • Mr Avuyile Mthembu (Full Stack Software Developer & Project Lead)
 • Ms Nomthandazo Khoza (Database Administrator - DBA)
-• Mr/Ms Qhama Nodada (Frontend Developer)
+• Ms Qhama Nodada (Frontend Developer)
 
 Directorate: Information Technology Business Solutions (ITBS)
 Host Department: Department of Forestry, Fisheries and the Environment (DFFE)
@@ -238,4 +238,4 @@ Status: Complete - All 18 Functional Requirements Implemented & Verified in Prod
 ---
 
 > **Sequential Documentation Pipeline**  
-> ← Previous: [02. Systems Analysis & SDLC Specification](SYSTEMS_ANALYSIS_AND_DESIGN_SDLC.md) | **Document 3 of 5** | Next: [04. System Design & Class Architecture](STUDENT_PORTAL_SYSTEM_DESIGN.md) →
+> ← Previous: [02. Systems Analysis & Process Specification](02_SYSTEMS_ANALYSIS_AND_PROCESS_SPECIFICATION.md) | **Document 3 of 5** | Next: [04. Software Architecture & Design](04_SOFTWARE_ARCHITECTURE_AND_DESIGN.md) ->

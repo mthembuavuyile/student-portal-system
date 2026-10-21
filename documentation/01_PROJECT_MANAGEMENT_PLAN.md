@@ -5,7 +5,7 @@
 ---
 
 > **Sequential Documentation Pipeline**  
-> **Document 1 of 5** | Next: [02. Systems Analysis & SDLC Specification](SYSTEMS_ANALYSIS_AND_DESIGN_SDLC.md) →
+> **Document 1 of 5** | Next: [02. Systems Analysis & Process Specification](02_SYSTEMS_ANALYSIS_AND_PROCESS_SPECIFICATION.md) ->
 
 ---
 
@@ -19,7 +19,7 @@
 | **Host Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
 | **Branch & Directorate** | Corporate Management Services (CMS) — Directorate: IT Business Solutions (ITBS) |
 | **Unit** | ICT Services: Infrastructure & Security Support |
-| **Project Team** | • **Avuyile Mthembu**: Full Stack Software Developer (Project Lead & System Architect)<br>• **Nomthandazo Khoza**: Database Administrator (DBA)<br>• **Qhama Nodada**: Frontend Developer |
+| **Project Team** | • **Mr Avuyile Mthembu**: Full Stack Software Developer (Project Lead & System Architect)<br>• **Ms Nomthandazo Khoza**: Database Administrator (DBA)<br>• **Ms Qhama Nodada**: Frontend Developer |
 | **Technical Mentor** | Senior Specialist: Software Architecture & Systems Development (ITBS) |
 | **Project Nature** | Internship Practical Technical Assessment & Demonstration Task |
 | **Live Production Instance** | [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) |
@@ -53,9 +53,9 @@ To simulate a real-world software engineering unit, responsibilities were divide
 |                                  INTERNSHIP DEV TEAM                                    |
 +-----------------------------------------------------------------------------------------+
 |                                                                                         |
-|  [ Avuyile Mthembu ]               [ Nomthandazo Khoza ]         [ Qhama Nodada ]       |
-|  Full Stack Developer              Database Administrator        Frontend Developer     |
-|  (Team Lead & Architect)           (DBA & Data Modeler)          (UI/UX & Client Logic) |
+|  [ Mr Avuyile Mthembu ]         [ Ms Nomthandazo Khoza ]      [ Ms Qhama Nodada ]    |
+|  Full Stack Developer          Database Administrator        Frontend Developer     |
+|  (Team Lead & Architect)       (DBA & Data Modeler)          (UI/UX & Client Logic) |
 |  - OOP Domain Models               - 3NF Schema Normalization    - Material Design UI   |
 |  - Auth & Security (Bcrypt)        - ERD Architecture            - Multi-Role Switcher  |
 |  - AI Coach Integration            - Migration SQL Scripts       - Search/Filter Logic  |
@@ -221,11 +221,11 @@ By selecting appropriate open-source and free cloud-tier tools, the team avoided
 ## 6. Team Governance & Responsibility Assignment (RACI)
 
 ### 6.1 Team Role Definitions
-- **Avuyile Mthembu** — *Full Stack Software Developer (Team Lead & System Architect)*:
+- **Mr Avuyile Mthembu** — *Full Stack Software Developer (Team Lead & System Architect)*:
   - Responsible for end-to-end system cohesion, PHP OOP domain classes, authentication security, OpenRouter AI integration, and live deployment.
-- **Nomthandazo Khoza** — *Database Administrator (DBA)*:
+- **Ms Nomthandazo Khoza** — *Database Administrator (DBA)*:
   - Responsible for relational modeling, 3NF normalization, foreign key constraints, migration SQL scripts (`migration_v2.sql`, `migration_v3_lecturer_ai.sql`), and query efficiency.
-- **Qhama Nodada** — *Frontend Developer*:
+- **Ms Qhama Nodada** — *Frontend Developer*:
   - Responsible for user experience design, Material Design CSS, responsive mobile-friendly layouts, multi-role tabbed login switcher, and client-side jsPDF export integration.
 
 ### 6.2 RACI Matrix
@@ -234,7 +234,7 @@ By selecting appropriate open-source and free cloud-tier tools, the team avoided
 - **C** = Consulted (Provides input & feedback)
 - **I** = Informed (Updated on progress)
 
-| SDLC Deliverable | Technical Mentor | Avuyile Mthembu (Full Stack) | Nomthandazo Khoza (DBA) | Qhama Nodada (Frontend) |
+| SDLC Deliverable | Technical Mentor | Mr Avuyile Mthembu (Full Stack) | Ms Nomthandazo Khoza (DBA) | Ms Qhama Nodada (Frontend) |
 | :--- | :---: | :---: | :---: | :---: |
 | **Project Charter & Scope Definition** | **A** | R | C | C |
 | **Requirements Specification (SRS)** | **A** | R | C | R |
@@ -255,10 +255,10 @@ By selecting appropriate open-source and free cloud-tier tools, the team avoided
 
 | Risk ID | Description | Severity | Planned Mitigation Strategy | Owner |
 | :---: | :--- | :---: | :--- | :---: |
-| **RSK-01** | **Legacy data corruption**: Migrating from flat table breaks existing records or queries. | **High** | Maintained legacy columns (`full_name`, `student_id_number`) alongside normalized tables with real-time sync. | Nomthandazo (DBA) |
-| **RSK-02** | **Tight 2-week schedule**: Feature creep preventing timely project delivery. | **High** | Strictly prioritized MVP: Auth, 3NF DB, 3 Portals, AI Coach, and PDF exports; non-essentials pushed to v4. | Avuyile (Lead) |
-| **RSK-03** | **OpenRouter API availability**: Rate limiting or network drops disabling student AI chat. | **Medium** | Built a robust offline heuristic fallback inside `OpenRouterService.php` that diagnoses weak quarters automatically. | Avuyile (Lead) |
-| **RSK-04** | **Frontend inconsistency**: Cross-browser display bugs across different screen sizes. | **Medium** | Adopted proven Materialize CSS framework with flexible viewport grids and tested on Chrome/Firefox/Edge. | Qhama (Frontend) |
+| **RSK-01** | **Legacy data corruption**: Migrating from flat table breaks existing records or queries. | **High** | Maintained legacy columns (`full_name`, `student_id_number`) alongside normalized tables with real-time sync. | Ms Nomthandazo (DBA) |
+| **RSK-02** | **Tight 2-week schedule**: Feature creep preventing timely project delivery. | **High** | Strictly prioritized MVP: Auth, 3NF DB, 3 Portals, AI Coach, and PDF exports; non-essentials pushed to v4. | Mr Avuyile (Lead) |
+| **RSK-03** | **OpenRouter API availability**: Rate limiting or network drops disabling student AI chat. | **Medium** | Built a robust offline heuristic fallback inside `OpenRouterService.php` that diagnoses weak quarters automatically. | Mr Avuyile (Lead) |
+| **RSK-04** | **Frontend inconsistency**: Cross-browser display bugs across different screen sizes. | **Medium** | Adopted proven Materialize CSS framework with flexible viewport grids and tested on Chrome/Firefox/Edge. | Ms Qhama (Frontend) |
 
 ---
 
@@ -288,7 +288,7 @@ Submitted by the Internship Development Team:
    Database Administrator (DBA)
 
 3. _________________________________      Date: 2026-10-16
-   Mr/Ms Qhama Nodada
+   Ms Qhama Nodada
    Frontend Developer
 
 Host Directorate:
@@ -303,11 +303,11 @@ ____________________________________      Date: 2026-10-16
 Senior Specialist: Software Architecture & Systems Development (ITBS)
 Technical Mentor & Project Sponsor
 
-Evaluation: Competencies Demonstrated with Excellence across Full 2-Week SDLC
+Evaluation: Full 2-Week SDLC Requirements and Competencies Verified
 ================================================================================
 ```
 
 ---
 
 > **Sequential Documentation Pipeline**  
-> **Document 1 of 5** | Next: [02. Systems Analysis & SDLC Specification](SYSTEMS_ANALYSIS_AND_DESIGN_SDLC.md) →
+> **Document 1 of 5** | Next: [02. Systems Analysis & Process Specification](02_SYSTEMS_ANALYSIS_AND_PROCESS_SPECIFICATION.md) ->

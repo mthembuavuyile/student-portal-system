@@ -1,21 +1,21 @@
 # STUDENT PORTAL SYSTEM
-## Systems Analysis, Design & SDLC Methodology Specification
-### Fast-Track 2-Week Lifecycle Traceability & Engineering Manual
+## Systems Analysis & Process Specification
+### SDLC Lifecycle Traceability, Feasibility Analysis and Process Modeling
 
 ---
 
 > **Sequential Documentation Pipeline**  
-> ← Previous: [01. Project Management Plan](PROJECT_MANAGEMENT_PLAN.md) | **Document 2 of 5** | Next: [03. Software Requirements Specification](SOFTWARE_REQUIREMENTS_SPECIFICATION.md) →
+> ← Previous: [01. Project Management Plan](01_PROJECT_MANAGEMENT_PLAN.md) | **Document 2 of 5** | Next: [03. Software Requirements Specification](03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) ->
 
 ---
 
 | **Institutional Metadata** | **Specification Details** |
 | :--- | :--- |
 | **System Title** | Student Portal System – Academic Management Platform |
-| **Document Type** | Systems Analysis and Design (SA&D) & SDLC Lifecycle Manual |
+| **Document Type** | Systems Analysis and Process Specification |
 | **Framework Followed** | 5-Phase Fast-Track SDLC (Structured Analysis & Iterative Sprint Execution) |
 | **Lifecycle Duration** | **2 Calendar Weeks** (10 Intensive Working Days) |
-| **Development Team** | • **Avuyile Mthembu**: Full Stack Software Developer (Lead & System Architect)<br>• **Nomthandazo Khoza**: Database Administrator (DBA & Data Modeler)<br>• **Qhama Nodada**: Frontend Developer (UI/UX & Client Logic) |
+| **Development Team** | • **Mr Avuyile Mthembu**: Full Stack Software Developer (Lead & System Architect)<br>• **Ms Nomthandazo Khoza**: Database Administrator (DBA & Data Modeler)<br>• **Ms Qhama Nodada**: Frontend Developer (UI/UX & Client Logic) |
 | **Host Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
 | **Branch & Directorate** | Corporate Management Services (CMS) — Directorate: IT Business Solutions (ITBS) |
 | **Technical Reviewer** | Senior Software Architect / Mentorship Lead (ITBS) |
@@ -176,7 +176,7 @@ flowchart TD
 
 +--------------------------------------------------------------------------------------------------+
 |                                    PRESENTATION LAYER (Client Tier)                              |
-|  Engineered by: Qhama Nodada (Frontend Developer)                                                |
+|  Engineered by: Ms Qhama Nodada (Frontend Developer)                                             |
 |  - Responsive Multi-Role Layout (Materialize CSS, Modern CSS Custom Properties, Flexbox/Grid)   |
 |  - Tabbed Role Switcher with Auto-fill Quick Access Demo Accounts                                |
 |  - Interactive Client-Side Search & Filter Engine (search-filter.js)                              |
@@ -188,7 +188,7 @@ flowchart TD
                                                 v
 +--------------------------------------------------------------------------------------------------+
 |                                APPLICATION & BUSINESS LOGIC LAYER                                |
-|  Engineered by: Avuyile Mthembu (Full Stack Software Developer)                                 |
+|  Engineered by: Mr Avuyile Mthembu (Full Stack Software Developer)                              |
 |  Controllers / Pages:                                                                            |
 |   - admin/*.php (Governance, Student Management, Curriculum Mapping, Lecturer Allocation)        |
 |   - lecturer/*.php (Roster Management, Quarterly Mark Capturing, Results Auditing)               |
@@ -204,7 +204,7 @@ flowchart TD
                                                 v
 +--------------------------------------------------------------------------------------------------+
 |                                    DATA PERSISTENCE LAYER                                        |
-|  Engineered by: Nomthandazo Khoza (Database Administrator)                                       |
+|  Engineered by: Ms Nomthandazo Khoza (Database Administrator)                                    |
 |  Relational Database Management System: MySQL 8.0+ / MariaDB 10.4+ (InnoDB Engine)              |
 |   - 8 Normalized Tables in Third Normal Form (3NF) with Foreign Key Constraints & Cascading      |
 |   - Dual-Column Backward Compatibility Layer (legacy full_name, student_id_number support)       |
@@ -273,24 +273,24 @@ The legacy database consisted of a single denormalized flat table:
 
 | Requirement ID | Requirement Description | Design Class & Method | Database Table(s) | Lead Intern | Verification Endpoint | Status |
 | :---: | :--- | :--- | :--- | :---: | :--- | :---: |
-| **FR-01** | Cryptographic Salted Auth | `User::authenticate()` | `users` | Avuyile | `index.php` | **Verified** |
-| **FR-02** | Role-Based Redirection | `functions.php:check_role()` | `users` | Avuyile | `admin/`, `lecturer/`, `student/` | **Verified** |
-| **FR-03** | Session Fixation Protection | `index.php:session_regenerate_id()` | Session Store | Avuyile | `index.php` | **Verified** |
-| **FR-04** | Password Change Self-Service | `User::changePassword()` | `users` | Avuyile | `change_password.php` | **Verified** |
-| **FR-05** | Auto Student Number Generator| `RegistrationService::generateStudentNumber()`| `students` | Avuyile | `admin/register_student.php` | **Verified** |
-| **FR-06** | Manual Student ID Ingestion | `RegistrationService::register()` | `students` | Avuyile | `admin/register_student.php` | **Verified** |
-| **FR-07** | Dual-Column Profile Sync | `Student::save()`, `RegistrationService` | `students` | Nomthandazo | `admin/update_student.php` | **Verified** |
-| **FR-08** | Course Qualification Mgmt | `Course::getAll()`, `Course::save()` | `courses` | Nomthandazo | `admin/courses.php` | **Verified** |
-| **FR-09** | Shared Many-to-Many Modules | `Course::addModule()`, `Module::getCourses()` | `course_modules` | Nomthandazo | `admin/modules.php` | **Verified** |
-| **FR-10** | Multi-Lecturer Assignment | `Module::assignLecturer()` | `module_lecturers`| Nomthandazo | `admin/lecturers.php` | **Verified** |
-| **FR-11** | Single Active Course Rule | `Enrollment::validateSingleActive()` | `enrollments` | Avuyile | `admin/student_profile.php` | **Verified** |
-| **FR-12** | Enrollment History Retention| `Student::getEnrollmentHistory()` | `enrollments` | Nomthandazo | `student/profile.php` | **Verified** |
-| **FR-13** | Quarterly Mark Validation | `ModuleResult::setMarks()` (0-100 check) | `module_results`| Qhama & Avuyile| `lecturer/results.php` | **Verified** |
-| **FR-14** | Running Average Calculation | `ModuleResult::calculateAverage()` | `module_results`| Avuyile | `student/results.php` | **Verified** |
-| **FR-15** | PDF Registration Slip | Client-side `jsPDF` engine | N/A | Qhama | `student/registration_slip.php` | **Verified** |
-| **FR-16** | PDF Academic Transcript | Client-side `jsPDF` engine | N/A | Qhama | `student/results.php` | **Verified** |
-| **FR-17** | AI Success Coach Diagnostics | `OpenRouterService::analyzePerformance()` | `module_results`| Avuyile | `student/results.php` | **Verified** |
-| **FR-18** | Interactive AI Study Chat | `OpenRouterService::chat()` | API Relay | Avuyile | `student/results.php` | **Verified** |
+| **FR-01** | Cryptographic Salted Auth | `User::authenticate()` | `users` | Mr Avuyile | `index.php` | **Verified** |
+| **FR-02** | Role-Based Redirection | `functions.php:check_role()` | `users` | Mr Avuyile | `admin/`, `lecturer/`, `student/` | **Verified** |
+| **FR-03** | Session Fixation Protection | `index.php:session_regenerate_id()` | Session Store | Mr Avuyile | `index.php` | **Verified** |
+| **FR-04** | Password Change Self-Service | `User::changePassword()` | `users` | Mr Avuyile | `change_password.php` | **Verified** |
+| **FR-05** | Auto Student Number Generator| `RegistrationService::generateStudentNumber()`| `students` | Mr Avuyile | `admin/register_student.php` | **Verified** |
+| **FR-06** | Manual Student ID Ingestion | `RegistrationService::register()` | `students` | Mr Avuyile | `admin/register_student.php` | **Verified** |
+| **FR-07** | Dual-Column Profile Sync | `Student::save()`, `RegistrationService` | `students` | Ms Nomthandazo | `admin/update_student.php` | **Verified** |
+| **FR-08** | Course Qualification Mgmt | `Course::getAll()`, `Course::save()` | `courses` | Ms Nomthandazo | `admin/courses.php` | **Verified** |
+| **FR-09** | Shared Many-to-Many Modules | `Course::addModule()`, `Module::getCourses()` | `course_modules` | Ms Nomthandazo | `admin/modules.php` | **Verified** |
+| **FR-10** | Multi-Lecturer Assignment | `Module::assignLecturer()` | `module_lecturers`| Ms Nomthandazo | `admin/lecturers.php` | **Verified** |
+| **FR-11** | Single Active Course Rule | `Enrollment::validateSingleActive()` | `enrollments` | Mr Avuyile | `admin/student_profile.php` | **Verified** |
+| **FR-12** | Enrollment History Retention| `Student::getEnrollmentHistory()` | `enrollments` | Ms Nomthandazo | `student/profile.php` | **Verified** |
+| **FR-13** | Quarterly Mark Validation | `ModuleResult::setMarks()` (0-100 check) | `module_results`| Ms Qhama & Mr Avuyile| `lecturer/results.php` | **Verified** |
+| **FR-14** | Running Average Calculation | `ModuleResult::calculateAverage()` | `module_results`| Mr Avuyile | `student/results.php` | **Verified** |
+| **FR-15** | PDF Registration Slip | Client-side `jsPDF` engine | N/A | Ms Qhama | `student/registration_slip.php` | **Verified** |
+| **FR-16** | PDF Academic Transcript | Client-side `jsPDF` engine | N/A | Ms Qhama | `student/results.php` | **Verified** |
+| **FR-17** | AI Success Coach Diagnostics | `OpenRouterService::analyzePerformance()` | `module_results`| Mr Avuyile | `student/results.php` | **Verified** |
+| **FR-18** | Interactive AI Study Chat | `OpenRouterService::chat()` | API Relay | Mr Avuyile | `student/results.php` | **Verified** |
 
 ---
 
@@ -324,7 +324,7 @@ Submitted by the Internship Development Team:
    Database Administrator (DBA & Data Modeler)
 
 3. _________________________________      Date: 2026-10-16
-   Mr/Ms Qhama Nodada
+   Ms Qhama Nodada
    Frontend Developer (UI/UX & Client Logic)
 
 Directorate: Information Technology Business Solutions (ITBS)
@@ -342,4 +342,4 @@ Status: Approved - Full SDLC Competencies Demonstrated Successfully
 ---
 
 > **Sequential Documentation Pipeline**  
-> ← Previous: [01. Project Management Plan](PROJECT_MANAGEMENT_PLAN.md) | **Document 2 of 5** | Next: [03. Software Requirements Specification](SOFTWARE_REQUIREMENTS_SPECIFICATION.md) →
+> ← Previous: [01. Project Management Plan](01_PROJECT_MANAGEMENT_PLAN.md) | **Document 2 of 5** | Next: [03. Software Requirements Specification](03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) ->
