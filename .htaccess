@@ -1,0 +1,16 @@
+# Apache Configuration for Student Management System
+# Department of Forestry, Fisheries & the Environment (DFFE)
+
+# Prevent directory browsing
+Options -Indexes
+
+# Route missing files/routes to 404.php gracefully
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^.*$ 404.php [L]
+</IfModule>
+
+# Standard ErrorDocument fallback
+ErrorDocument 404 404.php

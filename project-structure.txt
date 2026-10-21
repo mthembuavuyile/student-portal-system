@@ -2,6 +2,7 @@ university_system/
 Developed by: Mr Avuyile Mthembu, Ms Nomthandazo Khoza, Ms Qhama Nodada
 │
 ├── index.php (Landing/Login page)
+├── 404.php (Responsive, role-aware 404 error page & navigator)
 ├── config.php (Database configuration)
 ├── functions.php (Reusable PHP functions & class autoloader)
 ├── logout.php (Session logout handler)
