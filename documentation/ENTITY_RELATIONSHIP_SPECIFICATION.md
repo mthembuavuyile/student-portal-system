@@ -1,37 +1,41 @@
 # STUDENT PORTAL SYSTEM
 ## Complete Entity Relationship Diagram (ERD) Specification & Data Dictionary
+### Relational Schema, 3NF Normalization & Data Integrity
+
+---
+
+> **Sequential Documentation Pipeline**  
+> ← Previous: [04. System Design & Class Architecture](STUDENT_PORTAL_SYSTEM_DESIGN.md) | **Document 5 of 5** | Index: [README](../README.md)
 
 ---
 
 | **Institutional Metadata** | **Specification Details** |
 | :--- | :--- |
 | **System Name** | Student Portal System (Academic Management Assessment Task) |
-| **Project Nature** | **Internship Technical Practical Assessment / Competency Evaluation** |
-| **Document Title** | Entity Relationship Diagram (ERD) Text Specification & Data Dictionary |
+| **Document Title** | Entity Relationship Diagram (ERD) Specification & Data Dictionary |
+| **Project Nature** | **Internship Technical Assessment / Practical Competency Evaluation Task** |
+| **Project Sprint Duration** | **2 Calendar Weeks** (10 Intensive Working Days) |
+| **Lead Database Administrator (DBA)**| **Ms Nomthandazo Khoza** (Relational Modeling, 3NF Normalization & Migrations) |
+| **Full Stack Lead** | **Mr Avuyile Mthembu** (System Architecture, PDO Queries & Domain Mapping) |
+| **Frontend Developer** | **Mr/Ms Qhama Nodada** (UI Data Binding & Client Presentation) |
 | **Database Name** | `university_db` (MySQL 8.0+ / MariaDB 10.4+, InnoDB Storage Engine) |
 | **Character Set / Collation** | `utf8mb4` / `utf8mb4_unicode_ci` |
-| **Prepared by** | **Mr Avuyile Mthembu** |
-| **Position** | **Intern: Software Developer** |
-| **Directorate** | **Information Technology Business Solutions (ITBS)** |
-| **Unit** | **ICT Services: Infrastructure & Security Support** |
-| **Branch** | **Corporate Management Services (CMS)** |
+| **Directorate & Branch** | Directorate: IT Business Solutions (ITBS) — Corporate Management Services (CMS) |
 | **Host Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
-| **Architecture Version** | 2.0 (Relational Normalization with 100% Backward Compatibility) |
-| **Live Production URL** | [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) |
+| **Architecture Version** | Version 3.0 (Role Segregation, 3NF Normalization & 100% Backward Compatibility) |
+| **Live Production Instance** | [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) |
 
 ---
 
 ## 1. System Overview & Assessment Aim
 
-The **Student Portal System** database (`university_db`) was architected as part of an **internship technical assessment task** assigned by the development mentor within the Directorate: Information Technology Business Solutions (ITBS). (Live instance: [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)).
+The **Student Portal System** relational database (`university_db`) was architected and normalized during an intensive **two-week software engineering internship sprint** within the **Directorate: Information Technology Business Solutions (ITBS)** at DFFE.
 
-The purpose of the task is to demonstrate database modeling and engineering competencies: taking a legacy flat student directory and normalizing it into a robust relational database schema with referential integrity, while providing zero-downtime, non-breaking backward compatibility for existing queries, PDF generation scripts, and authentication modules.
-
-### Architectural Tenets
-1. **Third Normal Form (3NF)**: Redundant course names, module titles, and lecturer details are decomposed into independent entities linked via associative junction tables.
-2. **Referential Integrity**: Cascading updates and deletions ensure orphaned foreign records are prevented at the database engine level.
-3. **Auditability & Temporal Tracking**: Timestamps record row creation and update events.
-4. **Historical Persistence**: Prior student course registrations are retained for transcript generation, while an application-level constraint enforces exactly one active enrollment.
+The database engineering mandate focused on:
+1. **Third Normal Form (3NF) Decomposition**: Eliminating update, insertion, and deletion anomalies present in the legacy flat single-table schema.
+2. **Referential Integrity & Cascading Rules**: Enforcing relational constraints at the InnoDB database engine level to prevent orphaned records.
+3. **Zero-Regressive Backward Compatibility**: Preserving legacy columns and data access paths so that existing queries and authentication continue to execute without exceptions.
+4. **Auditability & Temporal Tracking**: Tracking registration timestamps and result updates for institutional auditability.
 
 ---
 
@@ -540,3 +544,31 @@ modules ||--o{ module_results : "evaluates (1:N)"
 students ||--o| users : "authenticates (1:0..1)"
 @enduml
 ```
+
+---
+
+## 7. Database Specification Sign-off & Verification
+
+```
+================================================================================
+               RELATIONAL DATABASE & 3NF SPECIFICATION SIGN-OFF
+================================================================================
+
+Submitted by the Internship Development Team:
+
+• Ms Nomthandazo Khoza (Database Administrator - DBA & Relational Modeler)
+• Mr Avuyile Mthembu (Full Stack Software Developer & System Architect)
+• Mr/Ms Qhama Nodada (Frontend Developer)
+
+Directorate: Information Technology Business Solutions (ITBS)
+Host Department: Department of Forestry, Fisheries and the Environment (DFFE)
+
+Status: Fully Verified - 8 Relational Tables in 3NF, Migrations & Cascading Integrity
+================================================================================
+```
+
+---
+
+> **Sequential Documentation Pipeline**  
+> ← Previous: [04. System Design & Class Architecture](STUDENT_PORTAL_SYSTEM_DESIGN.md) | **Document 5 of 5** | Index: [README](../README.md)
+

@@ -1,45 +1,44 @@
 # STUDENT PORTAL SYSTEM
 ## System Design, Class Relationships & Technical Architecture
+### Object-Oriented Architecture, UML Modeling & Domain Services
 
 ---
 
-| **Metadata** | **Details** |
+> **Sequential Documentation Pipeline**  
+> ← Previous: [03. Software Requirements Specification](SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | **Document 4 of 5** | Next: [05. Entity Relationship Specification](ENTITY_RELATIONSHIP_SPECIFICATION.md) →
+
+---
+
+| **System Metadata** | **Technical Details** |
 | :--- | :--- |
-| **Document Title** | Student Portal System - System Design and Class Relationships |
-| **Project Nature** | **Internship Technical Practical Assessment / Competency Evaluation** |
-| **Prepared by** | **Mr Avuyile Mthembu** |
-| **Position** | **Intern: Software Developer** |
-| **Directorate** | **Information Technology Business Solutions (ITBS)** |
-| **Unit** | **ICT Services: Infrastructure & Security Support** |
-| **Branch** | **Corporate Management Services (CMS)** |
+| **Document Title** | Student Portal System – System Design and Class Architecture |
+| **Project Nature** | **Internship Technical Assessment / Practical Competency Demonstration** |
+| **Project Sprint Duration** | **2 Calendar Weeks** (10 Intensive Working Days) |
+| **Architecture Lead (Full Stack)**| **Mr Avuyile Mthembu** (Lead Developer: OOP Domain Layer, Services, Auth & AI) |
+| **Database Lead (DBA)** | **Ms Nomthandazo Khoza** (Relational Modeling, 3NF Normalization & Migrations) |
+| **Frontend Lead (UI/UX)** | **Mr/Ms Qhama Nodada** (Presentation Layer, Material Design & jsPDF Integration) |
+| **Directorate & Branch** | Directorate: IT Business Solutions (ITBS) — Corporate Management Services (CMS) |
 | **Host Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
-| **Version** | 2.0 (With 100% Backward Compatibility) |
-| **Status** | Completed, Tested & Implemented |
-| **Live Production URL** | [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) |
+| **Standard Followed** | UML 2.5 (Unified Modeling Language) Class Specification |
+| **Architecture Version** | Version 3.0 (Multi-Role Portals, 3NF Normalization & AI Advisor) |
+| **Live Production Instance** | [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) |
 
 ---
 
-## 1. System Overview & Assessment Aim
+## 1. System Overview & Architectural Tenets
 
-The **Student Portal System** (Live demo: [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)) is an academic records management system developed as a **practical assessment task** assigned by the technical mentor in the Directorate: Information Technology Business Solutions (ITBS). 
-
-The goal of the assignment is to demonstrate practical software engineering competencies:
-- **System Analysis & Modeling**: Translating academic management requirements into formal UML diagrams.
-- **Relational Architecture**: Decomposing a legacy flat student table into a normalized 3NF relational database.
-- **Object-Oriented Programming (OOP)**: Building encapsulated PHP domain models (`Student`, `Course`, `Module`, `Lecturer`, `Enrollment`, `ModuleResult`) and transactional services (`RegistrationService`).
-- **Zero-Regressive Backward Compatibility**: Ensuring existing queries, session logic, and login credentials continue functioning without interruption.
+The **Student Portal System** is an academic management platform developed during a fast-track two-week internship sprint at DFFE. The goal of this technical design document is to define the object-oriented structure, class multiplicities, design patterns, and domain rules governing the application.
 
 ### Key Architectural Tenets
-1. **Separation of Concerns**: Domain models represent distinct institutional entities (`Student`, `Course`, `Module`, `Lecturer`, `Enrollment`, `ModuleResult`), coordinated by dedicated services (`RegistrationService`).
-2. **Data Normalization with Zero Downtime Migration**: New normalized attributes and junction tables support many-to-many relationships while preserving legacy column access.
-3. **100% Backward Compatibility**: All legacy queries, reporting templates, session keys, and database tables (`students`, `users`) continue functioning without breaking existing integrations.
-4. **Institutional Security & Integrity**: Role-based access control (RBAC), prepared statements (PDO), cryptographic password hashing (bcrypt), and transactional consistency.
+1. **Separation of Concerns**: Domain models represent core academic concepts (`Student`, `Course`, `Module`, `Lecturer`, `Enrollment`, `ModuleResult`, `User`), while specialized services (`RegistrationService`, `OpenRouterService`) encapsulate cross-cutting transactional workflows.
+2. **Third Normal Form (3NF) Relational Mapping**: Normalized entities and associative tables prevent duplicate records while preserving legacy single-table facades.
+3. **100% Backward Compatibility**: Legacy queries, reporting templates, session keys, and database tables (`students`, `users`) execute without regression errors.
+4. **Resilient Artificial Intelligence**: Generative AI assistance using the OpenRouter Free API is wrapped with local heuristic fallbacks to guarantee uninterrupted student access.
+5. **Cryptographic Integrity**: Bcrypt salted hashing (`cost => 10`) ensures unique 22-character salts per credential.
 
 ---
 
 ## 2. UML Class Diagram
-
-The UML Class Diagram illustrates the structural design of the Student Portal System, detailing main classes, attributes, visibility, methods, multiplicities, and associative relationships.
 
 ```mermaid
 classDiagram
@@ -58,6 +57,7 @@ classDiagram
         -string courseOfStudy
         -date enrollmentDate
         -string academicStatus
+        -timestamp registrationTimestamp
         +__construct(data: array)
         +getId(): int
         +getStudentNumber(): string
@@ -195,6 +195,15 @@ classDiagram
         +static registerStudent(pdo: PDO, data: array): array
     }
 
+    class OpenRouterService {
+        -string apiKey
+        -string model
+        +__construct()
+        +analyzePerformance(studentName: string, marksData: array): string
+        +chat(userMessage: string, contextSummary: string): string
+        -executeFallbackHeuristic(marksData: array): string
+    }
+
     class User {
         -int id
         -string username
@@ -220,229 +229,99 @@ classDiagram
     RegistrationService ..> Student : registers & generates ID
     RegistrationService ..> Enrollment : creates initial active
     RegistrationService ..> User : provisions credentials
+    OpenRouterService ..> ModuleResult : analyzes student performance
 ```
 
 ---
 
-## 3. Main Classes and Attributes
+## 3. Core Class Specifications
 
-### 3.1 `Student`
-Represents an enrolled scholar within the institution.
-*   **Attributes**:
-    *   `studentNumber` *(string, unique)*: Auto-generated institutional student identifier.
-    *   `firstName` *(string)*: Student's legal first name.
-    *   `surname` *(string)*: Student's legal family name.
-    *   `idNumber` *(string, unique)*: South African National Identification number.
-    *   `email` *(string, unique)*: Official contact email address.
-    *   `dateOfBirth` *(date)*: Date of birth (ISO YYYY-MM-DD).
-*   **Backward-Compatible Facade Attributes**:
-    *   `fullName`: Computed dynamically as `firstName . ' ' . surname` or mapped to legacy column `full_name`.
-    *   `studentIdNumber`: Direct alias for `studentNumber`.
-    *   `courseOfStudy`: Reflects the currently active enrolled course name.
-    *   `academicStatus`: Reflects current enrollment/academic status (`Active`, `Pending`, `Graduated`, `Dropped`).
+### 3.1 `Student` (Domain Model)
+Represents a student enrolled within the university.
+* **Attributes**: `id`, `studentNumber`, `firstName`, `surname`, `idNumber`, `email`, `dateOfBirth`, `enrollmentDate`, `academicStatus`.
+* **Backward Compatibility Facade**:
+  - `fullName`: Computed dynamically as `firstName . ' ' . surname` or mapped to legacy column `full_name`.
+  - `studentIdNumber`: Direct alias for `studentNumber`.
+  - `courseOfStudy`: Reflects the currently active enrolled qualification title.
 
-### 3.2 `Course`
-Represents an academic qualification / degree programme offered by the department.
-*   **Attributes**:
-    *   `courseId` *(int, Primary Key)*: Internal identifier.
-    *   `courseCode` *(string, unique)*: Official programme code (e.g., `SD101`, `IT101`, `CS101`).
-    *   `courseName` *(string)*: Formal qualification title (e.g., *Systems Development*).
-    *   `duration` *(string)*: Prescribed time for completion (e.g., `3 Years`).
+### 3.2 `Course` & `Module` (Curriculum Domain Models)
+* **`Course`**: Represents academic qualifications (e.g., *Systems Development*, `SD101`). Offers modules via associative mapping (`course_modules`).
+* **`Module`**: Represents academic units of study (e.g., *Database Systems*, `DBS201`, 15 credits). Modules are reusable across multiple courses and can have multiple lecturers assigned.
 
-### 3.3 `Module`
-Represents a subject / unit of learning within the institutional curriculum.
-*   **Attributes**:
-    *   `moduleId` *(int, Primary Key)*: Internal identifier.
-    *   `moduleCode` *(string, unique)*: Unique subject code (e.g., `DBS201`, `SEP202`, `WAA203`).
-    *   `moduleName` *(string)*: Full descriptive subject title.
-    *   `credits` *(int)*: National Qualifications Framework (NQF) credit weight (default: 15).
+### 3.3 `Lecturer` (Educator Domain Model)
+Represents academic teaching faculty. Linked to modules via `module_lecturers` with explicit designation of primary lecturer and co-lecturer roles (`is_primary = 1/0`).
 
-### 3.4 `Lecturer`
-Represents academic staff responsible for course instructional delivery and assessments.
-*   **Attributes**:
-    *   `lecturerId` *(int, Primary Key)*: Staff identifier.
-    *   `firstName` *(string)*: Lecturer's first name.
-    *   `surname` *(string)*: Lecturer's family name.
-    *   `email` *(string, unique)*: Official institutional departmental email address.
+### 3.4 `Enrollment` (Registration State & History)
+Enforces institutional business rules governing course enrollment:
+- **Single Active Course Rule**: `validateSingleActive(PDO $pdo)` verifies that no other enrollment for the student has `status = 'Active'`.
+- **Historical Audit Trail**: When a student completes, suspends, or switches courses, the old enrollment remains stored permanently for transcript history.
 
-### 3.5 `Enrollment`
-Tracks academic course registrations, maintaining active status and registration history.
-*   **Attributes**:
-    *   `enrollmentId` *(int, Primary Key)*: Unique registration identifier.
-    *   `studentId` *(int, Foreign Key)*: Linked to `students.id`.
-    *   `courseId` *(int, Foreign Key)*: Linked to `courses.course_id`.
-    *   `registrationDate` *(date)*: Date the registration was formalized.
-    *   `status` *(string)*: Current state (`Active`, `Completed`, `Suspended`, `Withdrawn`).
+### 3.5 `ModuleResult` (Academic Assessment Engine)
+Stores quarterly marks (Q1, Q2, Q3, Q4) and calculates composite outcomes:
+- Range validation ensures marks fall within `0.00` to `100.00`.
+- `calculateAverage()` computes the unweighted running mean across completed quarters, rounded to 2 decimal places.
 
-### 3.6 `ModuleResult`
-Stores quarterly assessments and calculated overall academic outcomes.
-*   **Attributes**:
-    *   `markId` *(int, Primary Key)*: Unique assessment result identifier.
-    *   `studentId` *(int, Foreign Key)*: Student evaluated.
-    *   `moduleId` *(int, Foreign Key)*: Module evaluated.
-    *   `academicYear` *(int)*: Academic year (e.g., `2026`).
-    *   `quarter1` *(decimal 5,2)*: Quarter 1 assessment score (0 - 100%).
-    *   `quarter2` *(decimal 5,2)*: Quarter 2 assessment score (0 - 100%).
-    *   `quarter3` *(decimal 5,2)*: Quarter 3 assessment score (0 - 100%).
-    *   `quarter4` *(decimal 5,2)*: Quarter 4 assessment score (0 - 100%).
-    *   `average` *(decimal 5,2)*: Calculated composite average of quarterly marks.
+### 3.6 `RegistrationService` (Transaction Orchestration)
+Encapsulates new student onboarding inside an atomic database transaction:
+1. Generates unique student number `ST{YY}{5-digits}` with collision detection.
+2. Inserts student master record (dual-writing normalized and legacy columns).
+3. Creates initial `'Active'` course enrollment.
+4. Provisions student login account with salted Bcrypt password hash.
 
-### 3.7 `User`
-Manages system authentication credentials, role-based authorization, and secure password updates.
-*   **Attributes**:
-    *   `id` *(int, Primary Key)*: Unique account identifier.
-    *   `username` *(string, unique)*: Login identifier (admin name or student number).
-    *   `password` *(string)*: Secure Bcrypt cryptographic hash containing an automatic, cryptographically secure 22-character pseudorandom salt (`$2y$10$[random_salt][hash]`). Even identical plain-text passwords produce different stored hashes, protecting against rainbow table attacks.
-    *   `role` *(string)*: Institutional role (`admin`, `student`).
-    *   `studentIdNumber` *(string, Foreign Key, nullable)*: Associated student number for student accounts.
-*   **Methods**:
-    *   `verifyPassword(string $plainPassword): bool`: Validates plain-text credential against the stored bcrypt hash using PHP's timing-attack safe `password_verify()`, extracting the embedded salt automatically.
-    *   `updatePassword(PDO $pdo, string $newPassword): bool`: Hashes new password with a fresh random salt (`PASSWORD_DEFAULT` / `PASSWORD_BCRYPT`) and updates the database.
-    *   `static changePassword(PDO $pdo, int $userId, ...): array`: Self-service password modification.
-    *   `static adminResetPassword(PDO $pdo, string $studentNumber, ...): array`: Administrative reset mechanism.
+### 3.7 `OpenRouterService` (AI Pedagogical Advisor)
+Connects to OpenRouter's free generative AI endpoints (`google/gemini-2.0-flash-exp:free`):
+- Transmits anonymized grade payloads and student academic history.
+- Prompts constrain responses to subject revision advice, study habits, and time management.
+- Implements an automated local heuristic fallback when the network is offline or unconfigured.
+
+### 3.8 `User` (Authentication & Security)
+Manages user authentication across `admin`, `lecturer`, and `student` roles using PHP's native `password_hash()` and `password_verify()`.
 
 ---
 
-## 4. Business Rules and System Logic Verification
+## 4. Business Rules & Logic Verification
 
-### Rule 1: Student Enrollment Rule
-> **Rule**: *"A student may have only one active course enrollment at a time. The Enrollment class maintains registration history."*
-*   **Implementation & Verification**:
-    *   The `Enrollment::validateSingleActive(PDO $pdo)` method performs an atomic query prior to any write. If a record already exists with `status = 'Active'` for that `student_id`, an exception is thrown:
-        ```text
-        "Business Rule Violation: Student ID X already has an active course enrollment. A student may have only one active course enrollment at a time."
-        ```
-    *   Prior course registrations transition to `'Completed'`, `'Suspended'`, or `'Withdrawn'`, thereby preserving the student's complete historical transcript.
-
-### Rule 2: Automatic Student Number Generation
-> **Rule**: *"RegistrationService generates a unique student number upon successful registration. The database must enforce uniqueness."*
-*   **Implementation & Verification**:
-    *   `RegistrationService::generateStudentNumber(PDO $pdo, $prefix = 'ST')` calculates the current 2-digit academic year (`date('y')`), inspects existing records, increments the sequence, and runs a collision-detection verification loop against the database.
-    *   The database enforces uniqueness through `UNIQUE KEY` constraints on both `student_number` and `student_id_number`.
-
-### Rule 3: Shared Modules and Multiple Lecturers (Many-to-Many)
-> **Rule**: *"Modules may be shared across courses and taught by multiple lecturers, supporting many-to-many relationships."*
-*   **Implementation & Verification**:
-    *   **Course $\leftrightarrow$ Module**: Modeled via `course_modules` junction table (`course_id`, `module_id`, `semester`). Example: `DBS201` is shared between *Systems Development* and *Information Technology*.
-    *   **Module $\leftrightarrow$ Lecturer**: Modeled via `module_lecturers` junction table (`module_id`, `lecturer_id`, `is_primary`). Example: `DBS201` has Dr N. Sithole (Primary) and Prof K. Naidoo (Co-Lecturer).
-
-### Rule 4: Quarterly Marks & Average Calculation
-> **Rule**: *"ModuleResult stores four quarterly marks for one student, one module, and one academic year. The calculateAverage() method calculates the average of the four marks."*
-*   **Implementation & Verification**:
-    *   `ModuleResult::calculateAverage()` aggregates the submitted non-null quarterly marks:
-        $$\text{Average} = \frac{\sum_{i=1}^{n} \text{Quarter}_i}{n}$$
-    *   Invoked automatically prior to persistence in `save()`, ensuring the database always stores exact mathematical outcomes rounded to 2 decimal places.
-
-### Rule 5: Mark Validation Range
-> **Rule**: *"Each quarterly mark must fall within the institution's permitted range, typically 0-100."*
-*   **Implementation & Verification**:
-    *   `ModuleResult::validateMark($mark)` throws an `InvalidArgumentException` if a value $< 0.00$ or $> 100.00$ is provided.
-    *   Client-side HTML5 input constraints (`min="0" max="100" step="0.01"`) provide immediate user guidance.
+| Rule | Business Description | Architectural Implementation |
+| :--- | :--- | :--- |
+| **Single Active Course** | A student can only have one active course enrollment at any time. | `Enrollment::validateSingleActive()` queries database before saving; throws exception if active record exists. |
+| **Student Numbering** | Automated unique numbering format `ST` + 2-digit year + 5-digit sequence. | `RegistrationService::generateStudentNumber()` auto-increments sequence and validates against database `UNIQUE` key. |
+| **Shared Modules** | Modules can be shared across multiple courses. | Associative junction table `course_modules` (`course_id`, `module_id`). |
+| **Multi-Lecturer Assignment** | Modules can have multiple instructors with a primary lead. | Associative junction table `module_lecturers` (`module_id`, `lecturer_id`, `is_primary`). |
+| **Quarterly Mark Range** | Marks must fall between 0.00% and 100.00%. | `ModuleResult::validateMark()` throws exception if $<0$ or $>100$. HTML5 inputs enforce client-side constraints. |
+| **Running Composite Average**| Average is dynamically calculated from completed quarters. | `ModuleResult::calculateAverage()` computes arithmetic mean rounded to 2 decimal places. |
 
 ---
 
-## 5. Backward Compatibility Strategy Matrix
+## 5. Backward Compatibility Strategy
 
-To protect existing data and avoid breaking legacy code or reports, the following compatibility layer was engineered:
-
-| Component | Legacy State | Version 2.0 Design | Backward Compatibility Solution |
-| :--- | :--- | :--- | :--- |
-| **`students` Table** | `full_name`, `student_id_number`, `course_of_study`, `academic_status` | Added `student_number`, `first_name`, `surname`, `id_number` | Preserved all original columns. SQL update script synchronized existing records (`first_name = SUBSTRING_INDEX(full_name, ' ', 1)`). Code writes to both columns. |
-| **Authentication (`users`)** | Logged in with `username` & `student_id_number` | Normalized authentication referencing `student_number` | Foreign key references `student_id_number` unchanged; usernames match `student_number`. |
-| **Registration Form** | Single "Full Name" and manual "Student ID" input | First Name, Surname, National ID, and Auto-generation toggle | Default toggle runs `RegistrationService`; unchecking allows manual entry for legacy ID migration. |
-| **Student List & Search** | Searched only Name and ID | Live search table | Table filters simultaneously across Full Name, Student Number, National ID, and Course. |
-| **PDF Slips & Reports** | Relied on `student_id_number` and `full_name` | Enhanced with duration and national ID | Kept exact function signatures; enhanced report cards with official department branding. |
+To ensure legacy Version 1.0 records, scripts, and reports continue operating without failure:
+1. **Dual-Column Persistence**: The `students` table preserves legacy columns (`full_name`, `student_id_number`, `course_of_study`, `academic_status`) alongside normalized fields.
+2. **Synchronized Dual-Writing**: When updating student details, both normalized columns (`first_name`, `surname`) and legacy columns (`full_name`) are synchronized.
+3. **Authentication Continuity**: Pre-existing user accounts continue authenticating without requiring password resets.
 
 ---
 
-## 6. Database Physical Schema (Entity Relationship)
-
-```text
-+-----------------------------------------------------------------------------------+
-|                                  students                                         |
-+-----------------------------------------------------------------------------------+
-| PK  id                     INT(11) AUTO_INCREMENT                                 |
-|     student_number         VARCHAR(50) NULL                                       |
-|     first_name             VARCHAR(100) NULL                                      |
-|     surname                VARCHAR(100) NULL                                      |
-|     id_number              VARCHAR(50) NULL                                       |
-|     full_name              VARCHAR(255) NOT NULL                                  |
-| UK  student_id_number      VARCHAR(50) NOT NULL                                   |
-| UK  email                  VARCHAR(255) NOT NULL                                  |
-|     date_of_birth          DATE NOT NULL                                          |
-|     course_of_study        VARCHAR(255) NOT NULL                                  |
-|     enrollment_date        DATE NOT NULL                                          |
-|     academic_status        VARCHAR(50) DEFAULT 'Active'                           |
-|     registration_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP                    |
-+-----------------------------------------------------------------------------------+
-         |                                           |
-         | 1:N                                       | 1:N
-         v                                           v
-+--------------------------+               +----------------------------------------+
-|       enrollments        |               |             module_results             |
-+--------------------------+               +----------------------------------------+
-| PK  enrollment_id (INT)  |               | PK  mark_id (INT)                      |
-| FK  student_id (INT)     |               | FK  student_id (INT)                   |
-| FK  course_id (INT)      |               | FK  module_id (INT)                    |
-|     registration_date    |               |     academic_year (INT)                |
-|     status (Active/...)  |               |     quarter1, quarter2, quarter3, q4   |
-+--------------------------+               |     average (DECIMAL 5,2)              |
-         ^                                 +----------------------------------------+
-         | N:1                                       ^
-+--------------------------+                         | N:1
-|         courses          |                         |
-+--------------------------+                         |
-| PK  course_id (INT)      |                         |
-| UK  course_code (VARCHAR)|                         |
-|     course_name (VARCHAR)|                         |
-|     duration (VARCHAR)   |                         |
-+--------------------------+                         |
-         | 1:N                                       |
-         v                                           |
-+--------------------------+               +----------------------------------------+
-|      course_modules      |               |                modules                 |
-+--------------------------+               +----------------------------------------+
-| PK  id (INT)             |               | PK  module_id (INT)                    |
-| FK  course_id (INT)      |-------------->| UK  module_code (VARCHAR)              |
-| FK  module_id (INT)      |               |     module_name (VARCHAR)              |
-|     semester (VARCHAR)   |               |     credits (INT)                      |
-+--------------------------+               +----------------------------------------+
-                                                     | 1:N
-                                                     v
-                                           +----------------------------------------+
-                                           |            module_lecturers            |
-                                           +----------------------------------------+
-                                           | PK  id (INT)                           |
-                                           | FK  module_id (INT)                    |
-                                           | FK  lecturer_id (INT)                  |
-                                           |     is_primary (TINYINT)               |
-                                           +----------------------------------------+
-                                                     ^
-                                                     | N:1
-                                           +----------------------------------------+
-                                           |               lecturers                |
-                                           +----------------------------------------+
-                                           | PK  lecturer_id (INT)                  |
-                                           |     first_name (VARCHAR)               |
-                                           |     surname (VARCHAR)                  |
-                                           | UK  email (VARCHAR)                    |
-                                           +----------------------------------------+
-```
-
----
-
-## 7. Submission & Assessment Verification
-
-This technical design artifact, UML diagrams, and corresponding codebase have been implemented and submitted for internship technical evaluation, demonstrating full-stack competency, relational integrity, regression resilience, and mathematical accuracy.
+## 6. Submission & Assessment Verification
 
 ```
-Submitted by:
-Mr Avuyile Mthembu
-Intern: Software Developer
+================================================================================
+                    SYSTEM DESIGN & ARCHITECTURE SUBMISSION
+================================================================================
+
+Submitted by the Internship Development Team:
+
+• Mr Avuyile Mthembu (Full Stack Software Developer & System Architect)
+• Ms Nomthandazo Khoza (Database Administrator - DBA)
+• Mr/Ms Qhama Nodada (Frontend Developer - UI/UX)
+
 Directorate: Information Technology Business Solutions (ITBS)
-Unit: ICT Services: Infrastructure & Security Support
-Branch: Corporate Management Services (CMS)
 Host Department: Department of Forestry, Fisheries and the Environment (DFFE)
 
-Assessment Task: Mentor Evaluation – UML Design, Relational Normalization & OOP Implementation
+Status: Complete - UML Class Diagrams, Design Patterns & OOP Architecture Implemented
+================================================================================
 ```
+
+---
+
+> **Sequential Documentation Pipeline**  
+> ← Previous: [03. Software Requirements Specification](SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | **Document 4 of 5** | Next: [05. Entity Relationship Specification](ENTITY_RELATIONSHIP_SPECIFICATION.md) →
