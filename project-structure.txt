@@ -1,5 +1,5 @@
 university_system/
-By Avuyile Mthembu
+Developed by: Mr Avuyile Mthembu, Ms Nomthandazo Khoza, Ms Qhama Nodada
 │
 ├── index.php (Landing/Login page)
 ├── config.php (Database configuration)
@@ -72,11 +72,12 @@ By Avuyile Mthembu
 │   └── nav_student.php (Student navigation with Modules & Academic Results)
 │
 └── documentation/
-    ├── PROJECT_MANAGEMENT_PLAN.md (Comprehensive PMP: Scope, Time, Cost, People, WBS, CPM Gantt, EVM, RACI)
-    ├── SYSTEMS_ANALYSIS_AND_DESIGN_SDLC.md (Complete SA&D Manual: 7-Phase SDLC, TELOS, DFDs, 3-Tier, RTM)
-    ├── SOFTWARE_REQUIREMENTS_SPECIFICATION.md (IEEE 830 SRS with FR-01 to FR-18 & Use Cases)
-    ├── STUDENT_PORTAL_SYSTEM_DESIGN.md (Comprehensive System Design & UML 2.5 Class Architecture)
-    ├── ENTITY_RELATIONSHIP_SPECIFICATION.md (3NF Data Dictionary, Schema Constraints & ERD)
-    ├── ENTITY_RELATIONSHIP_DIAGRAM.mmd (Mermaid ERD source definition)
-    ├── UML_CLASS_DIAGRAM.mmd (Mermaid UML Class Diagram source definition)
-    └── screenshots.docx (MS Word with screenshots)
+    ├── 01_PROJECT_MANAGEMENT_PLAN.md (Project Charter, 2-Week Sprint, Budget Model, RACI Governance)
+    ├── 02_SYSTEMS_ANALYSIS_AND_PROCESS_SPECIFICATION.md (TELOS Feasibility, DFDs, 3-Tier Architecture, RTM)
+    ├── 03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md (IEEE 830 SRS with FR-01 to FR-18 & Non-Functional Rules)
+    ├── 04_SOFTWARE_ARCHITECTURE_AND_DESIGN.md (Domain Models, Services, Design Patterns & UML Architecture)
+    ├── 05_DATABASE_SPECIFICATION_AND_DATA_DICTIONARY.md (3NF Normalization Proofs, Relational Schema & Dictionary)
+    └── diagrams/
+        ├── ENTITY_RELATIONSHIP_DIAGRAM.mmd (Mermaid ERD source definition)
+        ├── UML_CLASS_DIAGRAM.mmd (Mermaid UML Class Diagram source definition)
+        └── *.png (Rendered diagram assets)

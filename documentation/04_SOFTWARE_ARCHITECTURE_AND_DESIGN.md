@@ -1,22 +1,22 @@
 # STUDENT PORTAL SYSTEM
-## System Design, Class Relationships & Technical Architecture
-### Object-Oriented Architecture, UML Modeling & Domain Services
+## Software Architecture & Technical System Design
+### Object-Oriented Architecture, Domain Models, Service Layer & UML Specification
 
 ---
 
 > **Sequential Documentation Pipeline**  
-> ← Previous: [03. Software Requirements Specification](SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | **Document 4 of 5** | Next: [05. Entity Relationship Specification](ENTITY_RELATIONSHIP_SPECIFICATION.md) →
+> ← Previous: [03. Software Requirements Specification](03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | **Document 4 of 5** | Next: [05. Database Specification & Data Dictionary](05_DATABASE_SPECIFICATION_AND_DATA_DICTIONARY.md) ->
 
 ---
 
 | **System Metadata** | **Technical Details** |
 | :--- | :--- |
-| **Document Title** | Student Portal System – System Design and Class Architecture |
+| **Document Title** | Software Architecture and Technical System Design |
 | **Project Nature** | **Internship Technical Assessment / Practical Competency Demonstration** |
 | **Project Sprint Duration** | **2 Calendar Weeks** (10 Intensive Working Days) |
 | **Architecture Lead (Full Stack)**| **Mr Avuyile Mthembu** (Lead Developer: OOP Domain Layer, Services, Auth & AI) |
 | **Database Lead (DBA)** | **Ms Nomthandazo Khoza** (Relational Modeling, 3NF Normalization & Migrations) |
-| **Frontend Lead (UI/UX)** | **Mr/Ms Qhama Nodada** (Presentation Layer, Material Design & jsPDF Integration) |
+| **Frontend Lead (UI/UX)** | **Ms Qhama Nodada** (Presentation Layer, Material Design & jsPDF Integration) |
 | **Directorate & Branch** | Directorate: IT Business Solutions (ITBS) — Corporate Management Services (CMS) |
 | **Host Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
 | **Standard Followed** | UML 2.5 (Unified Modeling Language) Class Specification |
@@ -39,6 +39,8 @@ The **Student Portal System** is an academic management platform developed durin
 ---
 
 ## 2. UML Class Diagram
+
+*Note: The canonical diagram definition file is stored in [documentation/diagrams/UML_CLASS_DIAGRAM.mmd](diagrams/UML_CLASS_DIAGRAM.mmd).*
 
 ```mermaid
 classDiagram
@@ -312,7 +314,7 @@ Submitted by the Internship Development Team:
 
 • Mr Avuyile Mthembu (Full Stack Software Developer & System Architect)
 • Ms Nomthandazo Khoza (Database Administrator - DBA)
-• Mr/Ms Qhama Nodada (Frontend Developer - UI/UX)
+• Ms Qhama Nodada (Frontend Developer - UI/UX)
 
 Directorate: Information Technology Business Solutions (ITBS)
 Host Department: Department of Forestry, Fisheries and the Environment (DFFE)
@@ -324,4 +326,4 @@ Status: Complete - UML Class Diagrams, Design Patterns & OOP Architecture Implem
 ---
 
 > **Sequential Documentation Pipeline**  
-> ← Previous: [03. Software Requirements Specification](SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | **Document 4 of 5** | Next: [05. Entity Relationship Specification](ENTITY_RELATIONSHIP_SPECIFICATION.md) →
+> ← Previous: [03. Software Requirements Specification](03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | **Document 4 of 5** | Next: [05. Database Specification & Data Dictionary](05_DATABASE_SPECIFICATION_AND_DATA_DICTIONARY.md) ->

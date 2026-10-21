@@ -1,9 +1,9 @@
 # Student Portal System
-### Academic Management Platform, Object-Oriented Architecture & Full-Stack Implementation
+### Academic Management Platform, Object-Oriented Architecture and Full-Stack Implementation
 
 ---
 
-| **Project Overview** | **Details** |
+| Project Overview | Details |
 | :--- | :--- |
 | **Host Department** | **Department of Forestry, Fisheries and the Environment (DFFE)** |
 | **Branch & Directorate** | Corporate Management Services (CMS) — Directorate: IT Business Solutions (ITBS) |
@@ -11,62 +11,62 @@
 | **Project Nature** | **Internship Technical Practical Assessment & Competency Evaluation Task** |
 | **Development Sprint** | **2 Calendar Weeks** (10 Intensive Working Days) |
 | **Total Project Expenditure** | **< R 1,000.00 ZAR** (Utilizing Open-Source FOSS Stack, Free Cloud Tier & Existing Hardware) |
-| **Development Team** | • **Avuyile Mthembu**: Full Stack Software Developer (Project Lead & System Architect)<br>• **Nomthandazo Khoza**: Database Administrator (DBA & Relational Modeler)<br>• **Qhama Nodada**: Frontend Developer (UI/UX & Client Logic) |
+| **Development Team** | • **Mr Avuyile Mthembu**: Full Stack Software Developer (Project Lead & System Architect)<br>• **Ms Nomthandazo Khoza**: Database Administrator (DBA & Relational Modeler)<br>• **Ms Qhama Nodada**: Frontend Developer (UI/UX & Client Logic) |
 | **Technical Mentor** | Senior Specialist: Software Architecture & Systems Development (ITBS) |
-| **Live Production Instance** | 👉 **[https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)** |
+| **Live Production Instance** | [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) |
 
 ---
 
-## 🌐 Live System Deployment & Demo Credentials
+## Live System Deployment & Demo Credentials
 
-The system is hosted and actively accessible at:  
-👉 **[https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)**
+The system is deployed and accessible at:  
+[https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)
 
-### Quick Access Demo Credentials (Auto-fillable via UI role switcher tabs)
+### Quick Access Demo Credentials (Available via UI role switcher tabs)
 
 | Portal View | Username | Password | Role Description |
 | :--- | :--- | :--- | :--- |
 | **Student Portal** | `10ha2304014` | `bitcoin` | Seeded demo student account with registered modules, results, and AI coach |
 | **Lecturer / Educator Portal** | `lecturer` | `password123` | Educator view to review teaching rosters and capture quarterly marks (Q1–Q4) |
-| **Administrator Portal** | `admin` | `admin123` | Full administrative governance, student registration, and curriculum management |
+| **Administrator Portal** | `admin` | `admin123` | Administrative governance, student registration, and curriculum management |
 
 ---
 
 ## Project Background & Assessment Mandate
 
-This system was engineered as an intensive, practical **two-week software engineering assessment** assigned by the technical mentorship team within the **Directorate: Information Technology Business Solutions (ITBS)** at the Department of Forestry, Fisheries and the Environment (DFFE).
+This system was engineered as a practical two-week software engineering assessment assigned by the technical mentorship team within the Directorate: Information Technology Business Solutions (ITBS) at the Department of Forestry, Fisheries and the Environment (DFFE).
 
-The assessment challenge was to take a familiar academic management domain and demonstrate full-lifecycle professional software engineering practices under realistic delivery constraints:
+The assessment challenge was to take an academic management domain and demonstrate full-lifecycle software engineering practices under realistic delivery constraints:
 1. **Requirements Analysis**: Reverse-engineering a legacy flat student directory and formalizing IEEE 830 functional requirements.
 2. **Database Normalization (3NF)**: Decomposing a denormalized single table into a normalized relational schema (`university_db`) with cascading referential integrity.
 3. **Object-Oriented Design (UML)**: Modeling domain entities and implementing clean PHP 8 domain classes and service layers.
-4. **Multi-Role Segregation**: Implementing distinct, secure portals for **Administrators**, **Lecturers/Educators**, and **Students**.
+4. **Multi-Role Segregation**: Implementing distinct, secure portals for Administrators, Lecturers/Educators, and Students.
 5. **AI Pedagogical Integration**: Engineering an AI Academic Success Coach leveraging the OpenRouter Free API (`google/gemini-2.0-flash-exp:free`) with local heuristic fallback.
 6. **Zero-Regressive Backward Compatibility**: Preserving legacy data, session logic, and login credentials without breaking changes.
-7. **Lean Resourcefulness**: Delivering the complete system on a sub-R1,000 budget by leveraging open-source technologies (AMPPS, PHP 8, MariaDB) and free cloud tiers.
+7. **Resource Optimization**: Delivering the complete system on a sub-R1,000 budget by leveraging open-source technologies (AMPPS, PHP 8, MariaDB) and free cloud tiers.
 
 ---
 
-## 📚 Sequential Software Engineering Documentation Suite
+## Sequential Software Engineering Documentation Suite
 
-To eliminate documentation redundancy and present the project in a logical, professional sequence for assessors, the engineering specifications in [`documentation/`](documentation/) are organized into a **5-Step Sequential Pipeline**:
+To eliminate documentation redundancy and present the project in a logical sequence for assessors, the engineering specifications in [`documentation/`](documentation/) are organized into a 5-Step Sequential Pipeline:
 
 ```
-[ Step 1: PMP ]  ──>  [ Step 2: SDLC ]  ──>  [ Step 3: SRS ]  ──>  [ Step 4: Design ]  ──>  [ Step 5: ERD ]
-Project Charter       TELOS Feasibility     IEEE 830 Specs        UML Class Modeling     3NF Data Dictionary
-2-Week Sprint & RACI  DFDs & 3-Tier Arch    FR-01 to FR-18        OOP Domain Models      Schema & Migrations
+[ Step 1: PMP ]  ──>  [ Step 2: Analysis ]  ──>  [ Step 3: SRS ]  ──>  [ Step 4: Architecture ]  ──>  [ Step 5: Database ]
+Project Charter       TELOS Feasibility          IEEE 830 Specs        UML Class Modeling            3NF Data Dictionary
+2-Week Sprint & RACI  DFDs & 3-Tier Arch         FR-01 to FR-18        OOP Domain Models             Schema & Migrations
 ```
 
-1. 📋 **[01. Project Management Plan (PMP)](documentation/PROJECT_MANAGEMENT_PLAN.md)**  
+1. **[01. Project Management Plan (PMP)](documentation/01_PROJECT_MANAGEMENT_PLAN.md)**  
    *Scope, Time, Cost, and Team Governance.* Features the Project Charter, 2-Week Sprint Schedule (Gantt chart), sub-R1,000 budget model highlighting open-source cost avoidance (~R48,400 saved), RACI matrix across the 3 interns, and risk register.
-2. 🔄 **[02. Systems Analysis, Design & SDLC Specification](documentation/SYSTEMS_ANALYSIS_AND_DESIGN_SDLC.md)**  
+2. **[02. Systems Analysis & Process Specification](documentation/02_SYSTEMS_ANALYSIS_AND_PROCESS_SPECIFICATION.md)**  
    *Lifecycle Traceability & Process Modeling.* Details the 5-phase fast-track SDLC, TELOS Feasibility Study, As-Is vs. To-Be process models, DFD Level 0 (Context) & Level 1 decomposition, 3-Tier system topology, and the Requirements Traceability Matrix (RTM).
-3. 📜 **[03. Software Requirements Specification (SRS)](documentation/SOFTWARE_REQUIREMENTS_SPECIFICATION.md)**  
+3. **[03. Software Requirements Specification (SRS)](documentation/03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md)**  
    *Formal IEEE 830 Requirements.* Formulates 18 functional requirements (FR-01 to FR-18) including multi-role governance, auto-numbering, quarterly mark capture, OpenRouter AI coaching, and jsPDF document exports, with detailed use cases and non-functional requirements.
-4. 📐 **[04. System Design & Class Architecture](documentation/STUDENT_PORTAL_SYSTEM_DESIGN.md)**  
+4. **[04. Software Architecture & Technical System Design](documentation/04_SOFTWARE_ARCHITECTURE_AND_DESIGN.md)**  
    *Object-Oriented Architecture & UML Modeling.* Includes the formal UML 2.5 Class Diagram, entity multiplicities, domain model descriptions (`Student`, `Course`, `Module`, `Lecturer`, `Enrollment`, `ModuleResult`, `User`, `RegistrationService`, `OpenRouterService`), and backward compatibility facades.
-5. 🗄️ **[05. Entity Relationship Specification & Data Dictionary](documentation/ENTITY_RELATIONSHIP_SPECIFICATION.md)**  
-   *Relational Schema & 3NF Normalization.* Features the complete 3NF normalization mathematical proof, ASCII relational map, data dictionary across all 8 tables, foreign key constraints with cascading rules, and SQL migration scripts.
+5. **[05. Database Specification & Relational Data Dictionary](documentation/05_DATABASE_SPECIFICATION_AND_DATA_DICTIONARY.md)**  
+   *Relational Schema & 3NF Normalization.* Features the complete 3NF normalization proof, ASCII relational map, data dictionary across all 8 tables, foreign key constraints with cascading rules, and SQL migration scripts.
 
 ---
 
@@ -77,13 +77,13 @@ Project Charter       TELOS Feasibility     IEEE 830 Specs        UML Class Mode
 - **AI Academic Success Advisor (OpenRouter Free API)**:
   - **One-Click Diagnostic**: Analyzes quarterly marks across all subjects, flags at-risk modules (<50%), and generates targeted revision strategies.
   - **Interactive Study Chat**: Bounded to syllabus mastery, time management, and academic improvement.
-  - **Zero-Failure Architecture**: Supports OpenRouter free models (`google/gemini-2.0-flash-exp:free`) with seamless fallback to internal heuristic rules when offline.
+  - **Fault-Tolerant Architecture**: Supports OpenRouter free models (`google/gemini-2.0-flash-exp:free`) with fallback to internal heuristic rules when offline.
 - **Automated Student Numbering**: Generates standardized institutional student IDs (`ST` + 2-digit year + 5-digit sequence) with atomic uniqueness verification.
 - **Single Active Course Rule**: Restricts students to exactly one active course enrollment while maintaining permanent transcript history of prior studies.
 - **Curriculum & Shared Modules**: Many-to-many relationship mapping between courses and modules, and multi-lecturer teaching assignments.
 - **Document Exporting (jsPDF)**: Client-side generation of official Registration Confirmation Slips and Academic Transcripts in PDF format.
 - **Cryptographic Security**: Passwords hashed using Bcrypt (`cost => 10`) with cryptographically secure 22-character random salts per account.
-- **Dual-Column Backward Compatibility**: Maintains legacy columns alongside normalized tables so Version 1.0 queries and records continue functioning smoothly.
+- **Dual-Column Backward Compatibility**: Maintains legacy columns alongside normalized tables so Version 1.0 queries and records continue functioning without errors.
 
 ---
 
@@ -107,7 +107,7 @@ Project Charter       TELOS Feasibility     IEEE 830 Specs        UML Class Mode
    ```php
    define('DB_SERVER', 'localhost');
    define('DB_USERNAME', 'root');
-   define('DB_PASSWORD', 'mysql'); // or '' depending on AMPPS/XAMPP
+   define('DB_PASSWORD', 'mysql'); // or '' depending on local setup
    define('DB_NAME', 'university_db');
    ```
 5. *(Optional)* Configure your free OpenRouter API key in `config.php` to enable live generative AI models for the student coach:
@@ -115,17 +115,17 @@ Project Charter       TELOS Feasibility     IEEE 830 Specs        UML Class Mode
    define('OPENROUTER_API_KEY', 'your_openrouter_api_key_here');
    define('OPENROUTER_MODEL', 'google/gemini-2.0-flash-exp:free');
    ```
-   *(Note: If left empty, the built-in offline heuristic fallback handles performance diagnostics automatically!)*
+   *(Note: If left empty, the built-in offline heuristic fallback handles performance diagnostics automatically.)*
 
 ---
 
 ## The Internship Development Team
 
-* **Avuyile Mthembu** — *Full Stack Software Developer (Project Lead & System Architect)*  
-  OOP domain architecture, authentication, AI integration, business logic, system orchestration, and cloud deployment.
-* **Nomthandazo Khoza** — *Database Administrator (DBA & Relational Modeler)*  
+* **Mr Avuyile Mthembu** — *Full Stack Software Developer (Project Lead & System Architect)*  
+  OOP domain architecture, authentication, AI integration, business logic, system integration, and cloud deployment.
+* **Ms Nomthandazo Khoza** — *Database Administrator (DBA & Relational Modeler)*  
   Relational schema design, 3NF normalization, data dictionary, SQL migration scripts, foreign keys, and integrity constraints.
-* **Qhama Nodada** — *Frontend Developer (UI/UX & Client Logic)*  
+* **Ms Qhama Nodada** — *Frontend Developer (UI/UX & Client Logic)*  
   Material Design user interface, responsive viewport layouts, multi-role tabbed switcher, dynamic search filtering, and jsPDF export integration.
 
 **Host Department**: Department of Forestry, Fisheries and the Environment (DFFE)  

@@ -1,23 +1,23 @@
 # STUDENT PORTAL SYSTEM
-## Complete Entity Relationship Diagram (ERD) Specification & Data Dictionary
-### Relational Schema, 3NF Normalization & Data Integrity
+## Database Specification & Relational Data Dictionary
+### Relational Schema Architecture, 3NF Normalization Proofs & Referential Integrity
 
 ---
 
 > **Sequential Documentation Pipeline**  
-> ← Previous: [04. System Design & Class Architecture](STUDENT_PORTAL_SYSTEM_DESIGN.md) | **Document 5 of 5** | Index: [README](../README.md)
+> ← Previous: [04. Software Architecture & Design](04_SOFTWARE_ARCHITECTURE_AND_DESIGN.md) | **Document 5 of 5** | Index: [README](../README.md)
 
 ---
 
 | **Institutional Metadata** | **Specification Details** |
 | :--- | :--- |
 | **System Name** | Student Portal System (Academic Management Assessment Task) |
-| **Document Title** | Entity Relationship Diagram (ERD) Specification & Data Dictionary |
+| **Document Title** | Database Specification and Relational Data Dictionary |
 | **Project Nature** | **Internship Technical Assessment / Practical Competency Evaluation Task** |
 | **Project Sprint Duration** | **2 Calendar Weeks** (10 Intensive Working Days) |
 | **Lead Database Administrator (DBA)**| **Ms Nomthandazo Khoza** (Relational Modeling, 3NF Normalization & Migrations) |
 | **Full Stack Lead** | **Mr Avuyile Mthembu** (System Architecture, PDO Queries & Domain Mapping) |
-| **Frontend Developer** | **Mr/Ms Qhama Nodada** (UI Data Binding & Client Presentation) |
+| **Frontend Developer** | **Ms Qhama Nodada** (UI Data Binding & Client Presentation) |
 | **Database Name** | `university_db` (MySQL 8.0+ / MariaDB 10.4+, InnoDB Storage Engine) |
 | **Character Set / Collation** | `utf8mb4` / `utf8mb4_unicode_ci` |
 | **Directorate & Branch** | Directorate: IT Business Solutions (ITBS) — Corporate Management Services (CMS) |
@@ -40,6 +40,8 @@ The database engineering mandate focused on:
 ---
 
 ## 2. Text-Based Entity Relationship Schema (ASCII Map)
+
+*Note: The canonical Mermaid ERD definition is stored in [documentation/diagrams/ENTITY_RELATIONSHIP_DIAGRAM.mmd](diagrams/ENTITY_RELATIONSHIP_DIAGRAM.mmd).*
 
 ```text
 ====================================================================================================
@@ -558,7 +560,7 @@ Submitted by the Internship Development Team:
 
 • Ms Nomthandazo Khoza (Database Administrator - DBA & Relational Modeler)
 • Mr Avuyile Mthembu (Full Stack Software Developer & System Architect)
-• Mr/Ms Qhama Nodada (Frontend Developer)
+• Ms Qhama Nodada (Frontend Developer)
 
 Directorate: Information Technology Business Solutions (ITBS)
 Host Department: Department of Forestry, Fisheries and the Environment (DFFE)
@@ -570,5 +572,5 @@ Status: Fully Verified - 8 Relational Tables in 3NF, Migrations & Cascading Inte
 ---
 
 > **Sequential Documentation Pipeline**  
-> ← Previous: [04. System Design & Class Architecture](STUDENT_PORTAL_SYSTEM_DESIGN.md) | **Document 5 of 5** | Index: [README](../README.md)
+> ← Previous: [04. Software Architecture & Design](04_SOFTWARE_ARCHITECTURE_AND_DESIGN.md) | **Document 5 of 5** | Index: [README](../README.md)
 
