@@ -1,10 +1,10 @@
 # Student Portal System: Team Presentation & Project Guide
-### Simple English Guide for Stakeholders, Assessment Panels, and Junior Developers
+### Comprehensive Showcase & Demonstration Manual for Assessment Panels and Stakeholders
 
 ---
 
-> **Who is this guide for?**  
-> This document is written in plain, simple English so that **anyone**—from business stakeholders and managers to college students and assessment panels—can clearly understand what our team built, why we built it, how we worked together, and how the system works under the hood. No heavy artificial intelligence buzzwords or confusing corporate jargon.
+> **Presentation Overview**  
+> This guide details the Student Portal System practical assessment delivered at the Department of Forestry, Fisheries and the Environment (DFFE) under IT Business Solutions (ITBS). It covers project background, problem analysis, the 4-pillar project plan, systems architecture, speaker notes for the 3-person team, and the live demonstration workflow.
 
 ---
 
@@ -33,10 +33,10 @@
 4. [Methodology: Systems Analysis & Design (The College Basics)](#4-methodology-systems-analysis--design-the-college-basics)
    - [Step 1: Planning & Feasibility](#step-1-planning--feasibility)
    - [Step 2: Analysis (How Data Flows)](#step-2-analysis-how-data-flows)
-   - [Step 3: Database Design & Normalization (1NF, 2NF, 3NF in Plain English)](#step-3-database-design--normalization-1nf-2nf-3nf-in-plain-english)
+   - [Step 3: Database Design & Normalization (1NF, 2NF, 3NF)](#step-3-database-design--normalization-1nf-2nf-3nf)
    - [Step 4: System Architecture & UML Class Diagram](#step-4-system-architecture--uml-class-diagram)
    - [Step 5: Testing & Going Live](#step-5-testing--going-live)
-5. [The Diagrams Explained Simply](#5-the-diagrams-explained-simply)
+5. [System Diagrams Overview](#5-system-diagrams-overview)
    - [5.1 The Data Flow Diagram (DFD)](#51-the-data-flow-diagram-dfd)
    - [5.2 The Entity Relationship Diagram (ERD)](#52-the-entity-relationship-diagram-erd)
    - [5.3 The UML Class Diagram](#53-the-uml-class-diagram)
@@ -215,7 +215,7 @@ Feasibility & Scope   As-Is vs To-Be     ERD & UML Class      PHP, MySQL, HTML/C
 * We audited the old flat database.
 * We mapped out the **As-Is Process** (admin does everything manually on paper and Excel) versus the **To-Be Process** (lecturers capture marks online, students download their own transcripts).
 
-### Step 3: Database Design & Normalization (1NF, 2NF, 3NF in Plain English)
+### Step 3: Database Design & Normalization (1NF, 2NF, 3NF)
 This was one of the most important parts of the assessment.
 
 * **What is Normalization?** It is simply organizing a database so you don't repeat data and don't make mistakes when you add, change, or delete information.
@@ -243,7 +243,7 @@ In Object-Oriented Programming (OOP), we turn real-world things into code bluepr
 
 ---
 
-# 5. The Diagrams Explained Simply
+# 5. System Diagrams Overview
 
 ### 5.1 The Data Flow Diagram (DFD)
 
@@ -274,7 +274,7 @@ A **Data Flow Diagram** shows who sends data, where it gets processed, and where
 
 ### 5.2 The Entity Relationship Diagram (ERD)
 
-An **ERD** is the map of our database tables. Here is what our 8 tables do in plain English:
+An **ERD** is the map of our database tables. Here is what our 8 tables store and how they connect:
 
 ```
   [ users ]
