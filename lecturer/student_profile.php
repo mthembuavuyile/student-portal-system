@@ -283,66 +283,89 @@ if ($student->getAcademicStatus() === STATUS_ACTIVE) {
 </div>
 
 <!-- Modal for Recording/Editing Marks -->
-<div id="profileMarksModal" class="modal" style="max-width: 600px; border-radius: 8px;">
+<div id="profileMarksModal" class="modal modal-flex" style="max-width: 650px; border-radius: 12px;">
     <form method="POST" action="student_profile.php?id=<?php echo $studentId; ?>" id="profileMarksForm">
         <input type="hidden" name="action" value="save_marks">
         <input type="hidden" name="module_id" id="modal_module_id">
         <?php csrf_token_field(); ?>
 
-        <div class="modal-content" style="padding: 24px;">
-            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                <i class="material-icons medium indigo-text text-darken-3" style="margin-right: 12px;">fact_check</i>
+        <div class="modal-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="circle indigo lighten-5 indigo-text text-darken-3 center-align" style="width: 42px; height: 42px; line-height: 42px; flex-shrink: 0;">
+                    <i class="material-icons" style="font-size: 24px; line-height: 42px;">fact_check</i>
+                </div>
                 <div>
-                    <h5 style="margin: 0; font-weight: 600;">Capture / Update Marks</h5>
-                    <span class="grey-text">Student: <strong><?php echo htmlspecialchars($student->getFullName()); ?></strong></span>
+                    <h5 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #0f172a;">Capture / Update Marks</h5>
+                    <span class="grey-text text-darken-1" style="font-size: 0.85rem;">Student: <strong><?php echo htmlspecialchars($student->getFullName()); ?></strong></span>
                 </div>
             </div>
+            <a href="#!" class="modal-close waves-effect waves-circle grey-text text-darken-2" style="padding: 4px; border-radius: 50%;">
+                <i class="material-icons">close</i>
+            </a>
+        </div>
 
-            <div class="divider" style="margin-bottom: 18px;"></div>
-
-            <div class="row">
-                <div class="col s12 m6">
-                    <p style="margin: 0;"><strong>Module:</strong> <span id="display_module_code" class="teal-text text-darken-2 font-weight-bold">-</span></p>
-                </div>
-                <div class="input-field col s12 m6" style="margin-top: 0;">
-                    <input id="modal_academic_year" type="number" name="academic_year" value="<?php echo date('Y'); ?>" min="2020" max="2035" required>
-                    <label for="modal_academic_year" class="active">Academic Year</label>
-                </div>
-            </div>
-
-            <div class="card-panel grey lighten-4" style="border-radius: 6px; padding: 15px; margin-top: 0;">
-                <h6 style="margin-top: 0; font-weight: 600; color: #283593;">Quarterly Assessments (0.00% - 100.00%)</h6>
+        <div class="modal-content">
+            <div class="card-panel white z-depth-0" style="border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; margin: 0 0 14px 0; background: #f8fafc !important;">
                 <div class="row" style="margin-bottom: 0;">
-                    <div class="input-field col s6 m3">
+                    <div class="col s12 m6">
+                        <small class="grey-text text-darken-1" style="display: block; font-size: 0.75rem; text-transform: uppercase; font-weight: 600;">Module Code</small>
+                        <strong id="display_module_code" class="teal-text text-darken-2" style="font-size: 1.05rem;">-</strong>
+                    </div>
+                    <div class="col s12 m6">
+                        <small class="grey-text text-darken-1" style="display: block; font-size: 0.75rem; text-transform: uppercase; font-weight: 600;">Student ID Number</small>
+                        <span class="grey-text text-darken-3 font-weight-bold" style="font-size: 0.95rem; font-family: monospace;">
+                            <?php echo htmlspecialchars($student->getStudentNumber() ?: $student->getIdNumber()); ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 12px;">
+                <div class="input-field col s12 m6" style="margin-top: 5px;">
+                    <input id="modal_academic_year" type="number" name="academic_year" value="<?php echo date('Y'); ?>" min="2020" max="2035" required>
+                    <label for="modal_academic_year" class="active">Academic Year *</label>
+                </div>
+            </div>
+
+            <div class="card-panel grey lighten-4" style="border-radius: 8px; padding: 14px 16px; margin: 0; border: 1px solid #e2e8f0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-weight: 700; color: #283593; font-size: 0.95rem;">
+                        <i class="material-icons tiny left" style="margin-top: 3px;">grade</i>Quarterly Continuous Assessments
+                    </span>
+                    <span class="grey-text" style="font-size: 0.8rem;">Weight: 25% each</span>
+                </div>
+                
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="input-field col s6 m3" style="margin: 4px 0;">
                         <input id="modal_quarter1" type="number" step="0.01" min="0" max="100" name="quarter1" class="profile-mark-field" placeholder="0 - 100">
-                        <label for="modal_quarter1" class="active">Q1 (25%)</label>
+                        <label for="modal_quarter1" class="active">Q1 (%)</label>
                     </div>
-                    <div class="input-field col s6 m3">
+                    <div class="input-field col s6 m3" style="margin: 4px 0;">
                         <input id="modal_quarter2" type="number" step="0.01" min="0" max="100" name="quarter2" class="profile-mark-field" placeholder="0 - 100">
-                        <label for="modal_quarter2" class="active">Q2 (25%)</label>
+                        <label for="modal_quarter2" class="active">Q2 (%)</label>
                     </div>
-                    <div class="input-field col s6 m3">
+                    <div class="input-field col s6 m3" style="margin: 4px 0;">
                         <input id="modal_quarter3" type="number" step="0.01" min="0" max="100" name="quarter3" class="profile-mark-field" placeholder="0 - 100">
-                        <label for="modal_quarter3" class="active">Q3 (25%)</label>
+                        <label for="modal_quarter3" class="active">Q3 (%)</label>
                     </div>
-                    <div class="input-field col s6 m3">
+                    <div class="input-field col s6 m3" style="margin: 4px 0;">
                         <input id="modal_quarter4" type="number" step="0.01" min="0" max="100" name="quarter4" class="profile-mark-field" placeholder="0 - 100">
-                        <label for="modal_quarter4" class="active">Q4 (25%)</label>
+                        <label for="modal_quarter4" class="active">Q4 (%)</label>
                     </div>
                 </div>
 
-                <div class="row" style="margin-bottom: 0; margin-top: 10px;">
+                <div class="row" style="margin-bottom: 0; margin-top: 8px;">
                     <div class="col s12 center-align">
-                        <span style="font-weight: 500;">Live Calculated Average: </span>
-                        <span id="profileLiveAverage" class="badge grey white-text" style="float:none; font-size: 1.05rem; padding: 4px 12px; border-radius: 6px;">Pending</span>
+                        <span style="font-weight: 600; color: #475569; font-size: 0.88rem;">Live Calculated Average: </span>
+                        <span id="profileLiveAverage" class="badge grey white-text" style="float:none; font-size: 1rem; padding: 4px 14px; border-radius: 6px; font-weight: 700;">Pending</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="modal-footer" style="padding: 10px 24px;">
-            <a href="#!" class="modal-close waves-effect waves-grey btn-flat">Cancel</a>
-            <button type="submit" class="btn waves-effect waves-light amber darken-3 font-weight-bold">
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-grey btn-flat" style="font-weight: 600; color: #64748b;">Cancel</a>
+            <button type="submit" class="btn waves-effect waves-light amber darken-3 font-weight-bold" style="border-radius: 6px; display: inline-flex; align-items: center; gap: 6px;">
                 <i class="material-icons left">save</i>Save Marks
             </button>
         </div>

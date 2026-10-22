@@ -152,118 +152,138 @@ if ($filterStudentId && $filterModuleId) {
 <!-- Marksheet Table -->
 <div class="row">
     <div class="col s12">
-        <div class="card z-depth-1" style="border-radius: 8px;">
-            <div class="card-content">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div class="card z-depth-1" style="border-radius: 10px; overflow: hidden;">
+            <div class="card-content" style="padding: 20px 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                     <span class="card-title" style="font-weight: 600; margin: 0;">
-                        Official Marksheet (<?php echo count($moduleResults); ?> Entries)
+                        <i class="material-icons left indigo-text">fact_check</i>Official Marksheet (<?php echo count($moduleResults); ?> Entries)
                     </span>
                     <button class="btn-flat waves-effect" onclick="window.print();">
                         <i class="material-icons left tiny">print</i>Print Marksheet
                     </button>
                 </div>
 
-                <table class="highlight responsive-table" id="educatorResultsTable">
-                    <thead>
-                        <tr>
-                            <th>Student</th>
-                            <th>Student ID</th>
-                            <th>Module</th>
-                            <th>Year</th>
-                            <th>Q1 (25%)</th>
-                            <th>Q2 (25%)</th>
-                            <th>Q3 (25%)</th>
-                            <th>Q4 (25%)</th>
-                            <th>Calculated Average</th>
-                            <th>Outcome</th>
-                            <th class="center-align">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($moduleResults)): ?>
-                            <?php foreach ($moduleResults as $res): ?>
-                                <?php 
-                                    $modRes = new ModuleResult($res);
-                                    $grade = $modRes->getGradeStatus();
-                                ?>
+                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch;">
+                    <table class="highlight" id="educatorResultsTable" style="width: 100%; min-width: 860px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #e2e8f0; background: #f8fafc;">
+                                <th style="padding: 12px 10px; font-size: 0.8rem; color: #475569; text-transform: uppercase;">Student</th>
+                                <th style="padding: 12px 10px; font-size: 0.8rem; color: #475569; text-transform: uppercase;">Student ID</th>
+                                <th style="padding: 12px 10px; font-size: 0.8rem; color: #475569; text-transform: uppercase;">Module</th>
+                                <th style="padding: 12px 10px; font-size: 0.8rem; color: #475569; text-transform: uppercase;">Year</th>
+                                <th style="padding: 12px 8px; font-size: 0.8rem; color: #475569; text-transform: uppercase; text-align: center;">Q1</th>
+                                <th style="padding: 12px 8px; font-size: 0.8rem; color: #475569; text-transform: uppercase; text-align: center;">Q2</th>
+                                <th style="padding: 12px 8px; font-size: 0.8rem; color: #475569; text-transform: uppercase; text-align: center;">Q3</th>
+                                <th style="padding: 12px 8px; font-size: 0.8rem; color: #475569; text-transform: uppercase; text-align: center;">Q4</th>
+                                <th style="padding: 12px 10px; font-size: 0.8rem; color: #475569; text-transform: uppercase; text-align: center;">Calculated Avg</th>
+                                <th style="padding: 12px 10px; font-size: 0.8rem; color: #475569; text-transform: uppercase; text-align: center;">Outcome</th>
+                                <th style="padding: 12px 10px; font-size: 0.8rem; color: #475569; text-transform: uppercase; text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($moduleResults)): ?>
+                                <?php foreach ($moduleResults as $res): ?>
+                                    <?php 
+                                        $modRes = new ModuleResult($res);
+                                        $grade = $modRes->getGradeStatus();
+                                    ?>
+                                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                                        <td style="padding: 12px 10px;">
+                                            <strong style="color: #0f172a;"><?php echo htmlspecialchars($res['full_name']); ?></strong>
+                                        </td>
+                                        <td style="padding: 12px 10px;">
+                                            <span class="chip tiny grey lighten-3" style="font-family: monospace; margin: 0;">
+                                                <?php echo htmlspecialchars($res['student_number'] ?: $res['student_id_number']); ?>
+                                            </span>
+                                        </td>
+                                        <td style="padding: 12px 10px;">
+                                            <span class="chip tiny teal lighten-5 teal-text font-weight-bold" style="margin: 0;">
+                                                <?php echo htmlspecialchars($res['module_code']); ?>
+                                            </span>
+                                            <small class="grey-text" style="display: block; font-size: 0.76rem; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                <?php echo htmlspecialchars($res['module_name']); ?>
+                                            </small>
+                                        </td>
+                                        <td style="padding: 12px 10px; font-size: 0.9rem;"><?php echo htmlspecialchars($res['academic_year']); ?></td>
+                                        <td style="padding: 12px 8px; text-align: center; font-size: 0.88rem;"><?php echo $res['quarter1'] !== null ? number_format($res['quarter1'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
+                                        <td style="padding: 12px 8px; text-align: center; font-size: 0.88rem;"><?php echo $res['quarter2'] !== null ? number_format($res['quarter2'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
+                                        <td style="padding: 12px 8px; text-align: center; font-size: 0.88rem;"><?php echo $res['quarter3'] !== null ? number_format($res['quarter3'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
+                                        <td style="padding: 12px 8px; text-align: center; font-size: 0.88rem;"><?php echo $res['quarter4'] !== null ? number_format($res['quarter4'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
+                                        <td style="padding: 12px 10px; text-align: center;">
+                                            <strong style="font-size: 1rem; color: #1565c0;">
+                                                <?php echo $res['average'] !== null ? number_format($res['average'], 2) . '%' : 'Pending'; ?>
+                                            </strong>
+                                        </td>
+                                        <td style="padding: 12px 10px; text-align: center;">
+                                            <span class="chip <?php echo $grade['color']; ?> white-text tiny" style="margin: 0;">
+                                                <?php echo $grade['grade']; ?>
+                                            </span>
+                                        </td>
+                                        <td style="padding: 12px 10px; text-align: right; white-space: nowrap;">
+                                            <div style="display: inline-flex; align-items: center; gap: 6px;">
+                                                <button type="button" 
+                                                        class="btn-small waves-effect waves-light amber darken-3 edit-marks-btn"
+                                                        data-student="<?php echo $res['student_id']; ?>"
+                                                        data-module="<?php echo $res['module_id']; ?>"
+                                                        data-year="<?php echo $res['academic_year']; ?>"
+                                                        data-q1="<?php echo $res['quarter1'] ?? ''; ?>"
+                                                        data-q2="<?php echo $res['quarter2'] ?? ''; ?>"
+                                                        data-q3="<?php echo $res['quarter3'] ?? ''; ?>"
+                                                        data-q4="<?php echo $res['quarter4'] ?? ''; ?>"
+                                                        style="height: 32px; line-height: 32px; padding: 0 10px; border-radius: 6px; font-weight: 600; font-size: 0.8rem; text-transform: none; display: inline-flex; align-items: center; gap: 4px;"
+                                                        title="Edit Marks">
+                                                    <i class="material-icons tiny">edit</i>Marks
+                                                </button>
+                                                <a href="student_profile.php?id=<?php echo $res['student_id']; ?>" 
+                                                   class="btn-small waves-effect waves-light indigo darken-3" 
+                                                   style="height: 32px; line-height: 32px; width: 34px; padding: 0; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center;"
+                                                   title="View Student Profile">
+                                                    <i class="material-icons tiny">person</i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
                                 <tr>
-                                    <td><strong><?php echo htmlspecialchars($res['full_name']); ?></strong></td>
-                                    <td><span class="chip tiny grey lighten-3"><?php echo htmlspecialchars($res['student_number'] ?: $res['student_id_number']); ?></span></td>
-                                    <td>
-                                        <span class="chip tiny teal lighten-5 teal-text font-weight-bold">
-                                            <?php echo htmlspecialchars($res['module_code']); ?>
-                                        </span>
-                                        <small class="grey-text d-block"><?php echo htmlspecialchars($res['module_name']); ?></small>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($res['academic_year']); ?></td>
-                                    <td><?php echo $res['quarter1'] !== null ? number_format($res['quarter1'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
-                                    <td><?php echo $res['quarter2'] !== null ? number_format($res['quarter2'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
-                                    <td><?php echo $res['quarter3'] !== null ? number_format($res['quarter3'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
-                                    <td><?php echo $res['quarter4'] !== null ? number_format($res['quarter4'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
-                                    <td>
-                                        <strong style="font-size: 1.1rem; color: #1565c0;">
-                                            <?php echo $res['average'] !== null ? number_format($res['average'], 2) . '%' : 'Pending'; ?>
-                                        </strong>
-                                    </td>
-                                    <td>
-                                        <span class="chip <?php echo $grade['color']; ?> white-text">
-                                            <?php echo $grade['grade']; ?>
-                                        </span>
-                                    </td>
-                                    <td class="center-align" style="white-space: nowrap;">
-                                        <button type="button" 
-                                                class="btn-small waves-effect waves-light amber darken-3 edit-marks-btn"
-                                                data-student="<?php echo $res['student_id']; ?>"
-                                                data-module="<?php echo $res['module_id']; ?>"
-                                                data-year="<?php echo $res['academic_year']; ?>"
-                                                data-q1="<?php echo $res['quarter1'] ?? ''; ?>"
-                                                data-q2="<?php echo $res['quarter2'] ?? ''; ?>"
-                                                data-q3="<?php echo $res['quarter3'] ?? ''; ?>"
-                                                data-q4="<?php echo $res['quarter4'] ?? ''; ?>"
-                                                title="Edit Marks">
-                                            <i class="material-icons tiny left">edit</i>Edit
-                                        </button>
-                                        <a href="student_profile.php?id=<?php echo $res['student_id']; ?>" 
-                                           class="btn-small waves-effect waves-light indigo darken-3" 
-                                           title="View Student Profile">
-                                            <i class="material-icons tiny">person</i>
-                                        </a>
+                                    <td colspan="11" class="center-align grey-text" style="padding: 35px;">
+                                        <i class="material-icons large grey-text text-lighten-2">assignment_late</i><br>
+                                        No marks recorded for this selection yet. Click <strong>"Record New Marks"</strong> above to assign grades.
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="11" class="center-align grey-text" style="padding: 30px;">
-                                    <i class="material-icons large grey-text text-lighten-2">assignment_late</i><br>
-                                    No marks recorded for this selection yet. Click <strong>"Record New Marks"</strong> above to assign grades.
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Capture / Update Marks Modal -->
-<div id="captureMarksModal" class="modal" style="max-width: 650px; border-radius: 8px;">
+<div id="captureMarksModal" class="modal modal-flex" style="max-width: 660px; border-radius: 12px;">
     <form method="POST" action="results.php" id="educatorMarksForm">
         <input type="hidden" name="action" value="save_marks">
         <?php csrf_token_field(); ?>
-        <div class="modal-content" style="padding: 24px;">
-            <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                <i class="material-icons medium indigo-text text-darken-3" style="margin-right: 12px;">fact_check</i>
+        
+        <div class="modal-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="circle indigo lighten-5 indigo-text text-darken-3 center-align" style="width: 42px; height: 42px; line-height: 42px; flex-shrink: 0;">
+                    <i class="material-icons" style="font-size: 24px; line-height: 42px;">fact_check</i>
+                </div>
                 <div>
-                    <h5 style="margin: 0; font-weight: 600;">Capture / Update Student Marks</h5>
-                    <span class="grey-text">Educator grading panel. Permitted mark range: 0.00% - 100.00%.</span>
+                    <h5 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #0f172a;">Capture / Update Student Marks</h5>
+                    <span class="grey-text text-darken-1" style="font-size: 0.85rem;">Educator grading panel &bull; Marks range: 0.00% &ndash; 100.00%</span>
                 </div>
             </div>
+            <a href="#!" class="modal-close waves-effect waves-circle grey-text text-darken-2" style="padding: 4px; border-radius: 50%;">
+                <i class="material-icons">close</i>
+            </a>
+        </div>
 
-            <div class="divider" style="margin-bottom: 20px;"></div>
-
-            <div class="row">
-                <div class="input-field col s12 m6">
+        <div class="modal-content">
+            <div class="row" style="margin-bottom: 8px;">
+                <div class="input-field col s12 m6" style="margin-top: 5px;">
                     <select name="module_id" id="modal_module_id" required>
                         <option value="" disabled selected>-- Select Teaching Module --</option>
                         <?php foreach ($modules as $m): ?>
@@ -272,10 +292,10 @@ if ($filterStudentId && $filterModuleId) {
                             </option>
                         <?php endforeach; ?>
                     </select>
-                    <label>Module *</label>
+                    <label>Teaching Module *</label>
                 </div>
 
-                <div class="input-field col s12 m6">
+                <div class="input-field col s12 m6" style="margin-top: 5px;">
                     <select name="student_id" id="modal_student_id" required>
                         <option value="" disabled <?php echo empty($filterStudentId) ? 'selected' : ''; ?>>-- Select Enrolled Student --</option>
                         <?php foreach ($eligibleStudents as $st): ?>
@@ -284,42 +304,56 @@ if ($filterStudentId && $filterModuleId) {
                             </option>
                         <?php endforeach; ?>
                     </select>
-                    <label>Student *</label>
+                    <label>Enrolled Student *</label>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="input-field col s12 m4">
+            <div class="row" style="margin-bottom: 12px;">
+                <div class="input-field col s12 m6" style="margin-top: 5px;">
                     <input id="modal_academic_year" type="number" name="academic_year" value="<?php echo date('Y'); ?>" min="2020" max="2035" required>
                     <label for="modal_academic_year" class="active">Academic Year *</label>
                 </div>
             </div>
 
-            <div class="card-panel grey lighten-4" style="border-radius: 6px; padding: 15px;">
-                <h6 style="margin-top: 0; font-weight: 600; color: #283593;">Quarterly Assessments (0 - 100)</h6>
+            <div class="card-panel grey lighten-4" style="border-radius: 8px; padding: 14px 16px; margin: 0; border: 1px solid #e2e8f0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-weight: 700; color: #283593; font-size: 0.95rem;">
+                        <i class="material-icons tiny left" style="margin-top: 3px;">grade</i>Quarterly Continuous Assessments
+                    </span>
+                    <span class="grey-text" style="font-size: 0.8rem;">Weight: 25% each</span>
+                </div>
+                
                 <div class="row" style="margin-bottom: 0;">
-                    <div class="input-field col s6 m3">
-                        <input id="modal_quarter1" type="number" step="0.01" min="0" max="100" name="quarter1" placeholder="e.g. 75">
+                    <div class="input-field col s6 m3" style="margin: 4px 0;">
+                        <input id="modal_quarter1" type="number" step="0.01" min="0" max="100" name="quarter1" class="mark-field" placeholder="0 - 100">
                         <label for="modal_quarter1" class="active">Q1 (%)</label>
                     </div>
-                    <div class="input-field col s6 m3">
-                        <input id="modal_quarter2" type="number" step="0.01" min="0" max="100" name="quarter2" placeholder="e.g. 80">
+                    <div class="input-field col s6 m3" style="margin: 4px 0;">
+                        <input id="modal_quarter2" type="number" step="0.01" min="0" max="100" name="quarter2" class="mark-field" placeholder="0 - 100">
                         <label for="modal_quarter2" class="active">Q2 (%)</label>
                     </div>
-                    <div class="input-field col s6 m3">
-                        <input id="modal_quarter3" type="number" step="0.01" min="0" max="100" name="quarter3" placeholder="e.g. 70">
+                    <div class="input-field col s6 m3" style="margin: 4px 0;">
+                        <input id="modal_quarter3" type="number" step="0.01" min="0" max="100" name="quarter3" class="mark-field" placeholder="0 - 100">
                         <label for="modal_quarter3" class="active">Q3 (%)</label>
                     </div>
-                    <div class="input-field col s6 m3">
-                        <input id="modal_quarter4" type="number" step="0.01" min="0" max="100" name="quarter4" placeholder="e.g. 85">
+                    <div class="input-field col s6 m3" style="margin: 4px 0;">
+                        <input id="modal_quarter4" type="number" step="0.01" min="0" max="100" name="quarter4" class="mark-field" placeholder="0 - 100">
                         <label for="modal_quarter4" class="active">Q4 (%)</label>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom: 0; margin-top: 8px;">
+                    <div class="col s12 center-align">
+                        <span style="font-weight: 600; color: #475569; font-size: 0.88rem;">Live Calculated Average: </span>
+                        <span id="resultsLiveAverage" class="badge grey white-text" style="float:none; font-size: 1rem; padding: 4px 14px; border-radius: 6px; font-weight: 700;">Pending</span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal-footer" style="padding: 10px 24px;">
-            <a href="#!" class="modal-close waves-effect waves-grey btn-flat">Cancel</a>
-            <button type="submit" class="btn waves-effect waves-light amber darken-3 font-weight-bold">
+
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-grey btn-flat" style="font-weight: 600; color: #64748b;">Cancel</a>
+            <button type="submit" class="btn waves-effect waves-light amber darken-3 font-weight-bold" style="border-radius: 6px; display: inline-flex; align-items: center; gap: 6px;">
                 <i class="material-icons left">save</i>Save Marks
             </button>
         </div>
@@ -333,6 +367,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var selects = document.querySelectorAll('select');
     M.FormSelect.init(selects);
+
+    // Live Average calculation
+    const markInputs = document.querySelectorAll('.mark-field');
+    const liveBadge = document.getElementById('resultsLiveAverage');
+
+    function calculateAverage() {
+        if (!liveBadge) return;
+        let sum = 0;
+        let count = 0;
+        markInputs.forEach(inp => {
+            const val = parseFloat(inp.value);
+            if (!isNaN(val) && val >= 0 && val <= 100) {
+                sum += val;
+                count++;
+            }
+        });
+        if (count > 0) {
+            const avg = (sum / count).toFixed(2);
+            liveBadge.textContent = avg + '%';
+            if (avg >= 75) {
+                liveBadge.className = 'badge green white-text';
+            } else if (avg >= 50) {
+                liveBadge.className = 'badge blue white-text';
+            } else {
+                liveBadge.className = 'badge red white-text';
+            }
+        } else {
+            liveBadge.textContent = 'Pending';
+            liveBadge.className = 'badge grey white-text';
+        }
+    }
+
+    markInputs.forEach(inp => {
+        inp.addEventListener('input', calculateAverage);
+    });
 
     // Edit Marks Click Handler
     document.querySelectorAll('.edit-marks-btn').forEach(function(btn) {
@@ -355,6 +424,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             M.FormSelect.init(document.querySelectorAll('select'));
             M.updateTextFields();
+            calculateAverage();
 
             var instance = M.Modal.getInstance(document.getElementById('captureMarksModal'));
             instance.open();
@@ -370,6 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('modal_quarter3').value = '<?php echo $existingMarks->getQuarter3() ?? ''; ?>';
         document.getElementById('modal_quarter4').value = '<?php echo $existingMarks->getQuarter4() ?? ''; ?>';
         M.updateTextFields();
+        calculateAverage();
         <?php endif; ?>
         autoModal.open();
     }
