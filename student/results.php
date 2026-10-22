@@ -226,23 +226,24 @@ $studentPayloadJson = json_encode([
         border-radius: 2px;
     }
 
-    .department-badge {
-        background: #eff6ff;
-        color: #1e40af;
-        border: 1px solid #bfdbfe;
-        padding: 6px 16px;
-        border-radius: 24px;
-        font-weight: 600;
-        font-size: 0.82rem;
+    .transcript-dept-lead {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        letter-spacing: 0.2px;
+        color: #475569;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
+    }
+    .transcript-dept-lead i {
+        font-size: 15px;
+        color: #1e3a8a;
     }
 
     .transcript-title {
-        margin: 12px 0 6px 0;
+        margin: 8px 0 4px 0;
         color: #0f172a;
         font-weight: 700;
         font-size: 1.85rem;
@@ -254,22 +255,6 @@ $studentPayloadJson = json_encode([
         font-size: 0.88rem;
         margin: 0;
         font-weight: 500;
-    }
-
-    .transcript-stamp {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #047857;
-        background: #ecfdf5;
-        border: 1px solid #a7f3d0;
-        padding: 3px 10px;
-        border-radius: 12px;
-        margin-top: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
     }
 
     /* Student Identity Banner */
@@ -345,30 +330,38 @@ $studentPayloadJson = json_encode([
         background: #cbd5e1;
     }
 
-    .status-badge-active {
+    .bio-status-row {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        background: #dcfce7;
-        color: #166534;
-        font-weight: 700;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .status-tag {
         font-size: 0.78rem;
-        padding: 3px 10px;
-        border-radius: 14px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
     }
-    .pulse-dot-green {
-        width: 7px;
-        height: 7px;
-        background-color: #22c55e;
+    .status-tag.status-active {
+        background: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+    }
+    .status-tag.status-active::before {
+        content: '';
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
+        background: #16a34a;
         display: inline-block;
-        animation: pulse-ring 2s infinite;
     }
-
-    @keyframes pulse-ring {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    .status-tag-honor {
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: #1e3a8a;
     }
 
     /* KPI Stat Metric Cards Grid */
@@ -857,119 +850,141 @@ $studentPayloadJson = json_encode([
     .ai-coach-header-controls {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         flex-wrap: wrap;
     }
 
+    /* Unified 34px height, 6px radius controls */
     .ai-status-pill {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        background: #ecfdf5;
-        border: 1px solid #a7f3d0;
-        color: #065f46;
-        font-size: 0.76rem;
-        font-weight: 700;
-        padding: 5px 12px;
-        border-radius: 20px;
-        letter-spacing: 0.2px;
+        gap: 7px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        font-size: 0.8rem;
+        font-weight: 500;
+        height: 34px;
+        line-height: 34px;
+        padding: 0 12px;
+        border-radius: 6px;
+        box-sizing: border-box;
+        white-space: nowrap;
+    }
+    .status-dot-subtle {
+        width: 7px;
+        height: 7px;
+        background-color: #10b981;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
     }
 
     .btn-run-diagnosis {
-        background: #1565c0 !important;
-        color: #fff !important;
-        border-radius: var(--mat-radius-sm) !important;
+        background: #2563eb !important;
+        color: #ffffff !important;
+        border: 1px solid #1d4ed8 !important;
+        border-radius: 6px !important;
         font-weight: 600 !important;
-        font-size: 0.84rem !important;
-        height: 38px !important;
-        line-height: 38px !important;
-        padding: 0 16px !important;
+        font-size: 0.82rem !important;
+        height: 34px !important;
+        line-height: 32px !important;
+        padding: 0 14px !important;
         text-transform: none !important;
         display: inline-flex !important;
         align-items: center !important;
         gap: 6px !important;
-        box-shadow: var(--mat-shadow-sm) !important;
+        box-shadow: 0 1px 2px rgba(37, 99, 235, 0.15) !important;
+        box-sizing: border-box !important;
+        transition: all 0.15s ease !important;
+        cursor: pointer !important;
+        white-space: nowrap !important;
     }
     .btn-run-diagnosis:hover {
-        background: #0d47a1 !important;
+        background: #1d4ed8 !important;
+        border-color: #1e40af !important;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25) !important;
+    }
+    .btn-run-diagnosis i {
+        font-size: 16px !important;
     }
 
     .btn-clear-chat {
-        background: #f1f5f9;
-        border: 1px solid var(--mat-border);
-        color: var(--mat-text-secondary);
-        border-radius: var(--mat-radius-sm);
-        padding: 8px 12px;
-        font-size: 0.82rem;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .btn-clear-chat:hover {
-        background: #e2e8f0;
-        color: #0f172a;
-    }
-
-    /* Quick Coaching Prompt Chips Carousel */
-    .ai-topics-carousel-bar {
-        background: #fafafa;
-        border-bottom: 1px solid var(--mat-border);
-        padding: 12px 24px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    .ai-topics-carousel-bar::-webkit-scrollbar {
-        height: 4px;
-    }
-    .ai-topics-carousel-bar::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 2px;
-    }
-
-    .topics-lead-label {
-        font-size: 0.72rem;
-        font-weight: 700;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        white-space: nowrap;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .prompt-chip {
         background: #ffffff;
         border: 1px solid #cbd5e1;
-        color: #1e293b;
-        font-size: 0.8rem;
+        color: #475569;
+        border-radius: 6px;
+        height: 34px;
+        line-height: 32px;
+        padding: 0 12px;
+        font-size: 0.82rem;
         font-weight: 500;
-        padding: 6px 14px;
-        border-radius: 20px;
-        white-space: nowrap;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
         cursor: pointer;
-        text-decoration: none;
+        box-sizing: border-box;
         transition: all 0.15s ease;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        white-space: nowrap;
     }
-    .prompt-chip i {
+    .btn-clear-chat:hover {
+        background: #f8fafc;
+        border-color: #94a3b8;
+        color: #0f172a;
+    }
+    .btn-clear-chat i {
         font-size: 16px;
-        color: #4f46e5;
+        color: #64748b;
     }
-    .prompt-chip:hover {
+
+    /* Clean Suggested AI Prompts Bar (No ugly scrollbar) */
+    .ai-prompts-bar {
+        background: #f8fafc;
+        border-bottom: 1px solid var(--mat-border);
+        padding: 8px 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    .ai-prompts-bar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .prompts-label {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+        margin-right: 2px;
+    }
+
+    .prompt-pill-clean {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        font-size: 0.78rem;
+        font-weight: 500;
+        height: 28px;
+        line-height: 26px;
+        padding: 0 12px;
+        border-radius: 6px;
+        white-space: nowrap;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.15s ease;
+        box-sizing: border-box;
+    }
+    .prompt-pill-clean:hover {
         background: #eff6ff;
         border-color: #93c5fd;
         color: #1d4ed8;
-        transform: translateY(-1px);
     }
 
     /* Conversation Thread Stream & Dynamic Messages Spacing */
@@ -1456,193 +1471,33 @@ $studentPayloadJson = json_encode([
         border-color: #c7d2fe;
     }
 
-    /* ==========================================================================
-       THINKING BUBBLE ANIMATION SYSTEM
-       ========================================================================== */
+    /* Clean Modern Thinking State */
     .ai-thinking-row {
         align-items: center;
-        gap: 10px;
-        position: relative;
+        gap: 12px;
         padding: 6px 0;
     }
-
-    /* Pulsating Neural Aura on Avatar */
-    .thinking-avatar-pulse {
-        animation: thinkingAvatarGlow 2.2s infinite ease-in-out;
-        position: relative;
-    }
-    .thinking-avatar-pulse::after {
-        content: '';
-        position: absolute;
-        inset: -4px;
-        border-radius: 50%;
-        border: 2px solid #818cf8;
-        opacity: 0;
-        animation: auraPulse 2.2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
-    }
-    @keyframes auraPulse {
-        0% { transform: scale(0.9); opacity: 0.9; }
-        50% { opacity: 0.45; }
-        100% { transform: scale(1.55); opacity: 0; }
-    }
-    @keyframes thinkingAvatarGlow {
-        0%, 100% { transform: scale(1); box-shadow: 0 3px 12px rgba(124, 58, 237, 0.35); }
-        50% { transform: scale(1.06); box-shadow: 0 5px 20px rgba(124, 58, 237, 0.65); }
-    }
-
-    /* Organic Thought Tail Connector Pips */
-    .thought-tail {
-        display: flex;
+    .ai-thinking-bubble-clean {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 8px 14px;
+        display: inline-flex;
         align-items: center;
-        gap: 4px;
-        margin: 0 2px;
-        flex-shrink: 0;
-    }
-    .thought-pip {
-        border-radius: 50%;
-        background: #ffffff;
-        border: 1.5px solid #c7d2fe;
-        box-shadow: 0 2px 6px rgba(99, 102, 241, 0.15);
-        display: inline-block;
-        animation: thoughtPipFloat 2.4s ease-in-out infinite;
-    }
-    .thought-pip.pip-sm {
-        width: 6px;
-        height: 6px;
-        animation-delay: 0s;
-    }
-    .thought-pip.pip-md {
-        width: 10px;
-        height: 10px;
-        animation-delay: 0.25s;
-    }
-    @keyframes thoughtPipFloat {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-3px); }
-    }
-
-    /* Main Thinking Cloud Bubble */
-    .ai-thinking-bubble {
-        background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
-        border: 1.5px solid #c7d2fe;
-        border-radius: 20px 20px 20px 8px;
-        padding: 14px 20px;
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.12), 0 1px 3px rgba(0, 0, 0, 0.04);
-        position: relative;
-        overflow: hidden;
-        min-width: 290px;
-        max-width: 520px;
-        animation: bubbleFloat 3s ease-in-out infinite, thinkingBubblePop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        display: flex;
-        flex-direction: column;
         gap: 10px;
     }
-
-    @keyframes thinkingBubblePop {
-        from {
-            opacity: 0;
-            transform: scale(0.92) translateY(6px);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
-    }
-
-    @keyframes bubbleFloat {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-3px); }
-    }
-
-    /* Shimmer beam across the bubble */
-    .thinking-shimmer-sweep {
-        position: absolute;
-        top: 0;
-        left: -120%;
-        width: 80%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent 0%, rgba(224, 231, 255, 0.5) 50%, transparent 100%);
-        animation: neuralShimmer 2.4s infinite;
-        pointer-events: none;
-    }
-    @keyframes neuralShimmer {
-        0% { left: -120%; }
-        100% { left: 160%; }
-    }
-
-    /* Header inside thinking bubble */
-    .thinking-bubble-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px dashed #e0e7ff;
-        padding-bottom: 8px;
-    }
-    .thinking-brand {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .thinking-brain-pulse {
-        color: #6366f1;
-        display: inline-flex;
-        animation: brainSpin 2.4s infinite ease-in-out;
-    }
-    @keyframes brainSpin {
-        0%, 100% { transform: rotate(0deg) scale(1); }
-        50% { transform: rotate(6deg) scale(1.15); }
-    }
-    .thinking-badge-text {
-        font-size: 0.76rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-        color: #4f46e5;
-    }
-
-    /* Neural Wave Bars */
-    .neural-wave-bars {
-        display: flex;
-        align-items: center;
-        gap: 3px;
-        height: 14px;
-    }
-    .neural-bar {
-        width: 3px;
-        height: 4px;
-        background: #818cf8;
-        border-radius: 2px;
-        animation: waveDance 1.2s ease-in-out infinite alternate;
-    }
-    .neural-bar.bar-1 { animation-delay: 0.1s; height: 6px; }
-    .neural-bar.bar-2 { animation-delay: 0.3s; height: 12px; }
-    .neural-bar.bar-3 { animation-delay: 0.2s; height: 8px; }
-    .neural-bar.bar-4 { animation-delay: 0.4s; height: 10px; }
-    @keyframes waveDance {
-        0% { height: 3px; opacity: 0.4; }
-        100% { height: 14px; opacity: 1; background: #6366f1; }
-    }
-
-    /* Content inside thinking bubble */
-    .thinking-bubble-content {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    /* Thinking Gradient Bouncing Spheres */
     .thinking-dots {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
         flex-shrink: 0;
     }
     .thinking-dot {
-        width: 8px;
-        height: 8px;
-        background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+        width: 6px;
+        height: 6px;
+        background: #4f46e5;
         border-radius: 50%;
-        animation: thinkDotBounce 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite both;
+        animation: thinkDotBounce 1.2s infinite ease-in-out both;
     }
     .thinking-dot:nth-child(1) { animation-delay: -0.32s; }
     .thinking-dot:nth-child(2) { animation-delay: -0.16s; }
@@ -1650,27 +1505,23 @@ $studentPayloadJson = json_encode([
 
     @keyframes thinkDotBounce {
         0%, 80%, 100% {
-            transform: translateY(0) scale(0.85);
-            opacity: 0.45;
+            transform: scale(0.7);
+            opacity: 0.35;
         }
         40% {
-            transform: translateY(-7px) scale(1.15);
+            transform: scale(1.15);
             opacity: 1;
-            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.45);
         }
     }
-
-    /* Dynamic status text with smooth transition */
     .thinking-dynamic-label {
-        font-size: 0.85rem;
-        font-weight: 500;
+        font-size: 0.82rem;
         color: #475569;
-        line-height: 1.4;
-        transition: opacity 0.24s ease, transform 0.24s ease;
+        font-weight: 500;
+        transition: opacity 0.2s ease, transform 0.2s ease;
     }
     .thinking-dynamic-label.status-fade-out {
         opacity: 0;
-        transform: translateY(-4px);
+        transform: translateY(-2px);
     }
     .thinking-dynamic-label.status-fade-in {
         opacity: 1;
@@ -1888,19 +1739,14 @@ $studentPayloadJson = json_encode([
             
             <!-- Official Header -->
             <div class="transcript-header">
-                <span class="department-badge">
+                <div class="transcript-dept-lead">
                     <i class="material-icons tiny">account_balance</i>
                     Republic of South Africa &bull; Department of Forestry, Fisheries and the Environment
-                </span>
+                </div>
                 <h1 class="transcript-title">Student Academic Transcript</h1>
                 <p class="transcript-subtitle">
-                    ICT Services: Infrastructure & Security Support &bull; Corporate Management Services
+                    ICT Services: Infrastructure &amp; Security Support &bull; Corporate Management Services
                 </p>
-                <div>
-                    <span class="transcript-stamp">
-                        <i class="material-icons tiny">verified</i> Verified Official Institutional Record
-                    </span>
-                </div>
             </div>
 
             <!-- Student Bio & Identification Card -->
@@ -1943,9 +1789,9 @@ $studentPayloadJson = json_encode([
                         </div>
                         <div class="bio-item">
                             <span class="bio-label">Enrollment Status:</span>
-                            <span class="status-badge-active">
-                                <span class="pulse-dot-green"></span>
-                                <?php echo htmlspecialchars($student->getAcademicStatus() ?: 'Active'); ?> &bull; <?php echo htmlspecialchars($academicHonors); ?>
+                            <span class="bio-status-row">
+                                <span class="status-tag status-active"><?php echo htmlspecialchars($student->getAcademicStatus() ?: 'Active'); ?></span>
+                                <span class="status-tag-honor"><?php echo htmlspecialchars($academicHonors); ?></span>
                             </span>
                         </div>
                     </div>
@@ -2259,22 +2105,17 @@ $studentPayloadJson = json_encode([
                         <i class="material-icons">psychology</i>
                     </div>
                     <div class="ai-coach-headings">
-                        <h3 class="ai-coach-main-title">
-                            AI Academic Success Coach
-                            <span class="hide-on-small-only" style="font-size: 0.74rem; font-weight: 700; background: #e0e7ff; color: #4338ca; padding: 2px 8px; border-radius: 10px;">
-                                Intelligent Advisory
-                            </span>
-                        </h3>
+                        <h3 class="ai-coach-main-title">AI Academic Success Coach</h3>
                         <p class="ai-coach-main-desc">
-                            Personalized diagnostic &amp; strategy powered by OpenRouter AI &bull; Linked to your official marks
+                            Personalized diagnostic &amp; strategy linked to your official transcript
                         </p>
                     </div>
                 </div>
 
                 <div class="ai-coach-header-controls">
                     <span class="ai-status-pill">
-                        <span class="pulse-dot-green"></span>
-                        <span id="aiLiveModelLabel">OpenRouter Engine Active</span>
+                        <span class="status-dot-subtle"></span>
+                        <span id="aiLiveModelLabel">AI Engine Active</span>
                     </span>
                     <button id="runAiAdvisorBtn" onclick="runAiCoach('')" class="btn btn-run-diagnosis waves-effect waves-light">
                         <i class="material-icons tiny">analytics</i> Full Diagnostic
@@ -2285,29 +2126,24 @@ $studentPayloadJson = json_encode([
                 </div>
             </div>
 
-            <!-- Quick Coaching Topics Filter Carousel -->
-            <div class="ai-topics-carousel-bar">
-                <span class="topics-lead-label">
-                    <i class="material-icons tiny" style="font-size: 14px;">bolt</i> Quick Topics:
-                </span>
-                <a href="#!" class="prompt-chip" onclick="askAiQuestion('Run a complete quarterly academic performance diagnosis on my transcript')">
-                    <i class="material-icons">assessment</i> Full Diagnostic
-                </a>
-                <a href="#!" class="prompt-chip" onclick="askAiQuestion('How can I boost my marks in my lowest performing module?')">
-                    <i class="material-icons">trending_up</i> Boost Lowest Module
-                </a>
-                <a href="#!" class="prompt-chip" onclick="askAiQuestion('Create a structured 2-week daily revision schedule tailored to my enrolled modules')">
-                    <i class="material-icons">calendar_month</i> 2-Week Timetable
-                </a>
-                <a href="#!" class="prompt-chip" onclick="askAiQuestion('What active recall and spaced repetition techniques work best for technical modules like SQL and OOP?')">
-                    <i class="material-icons">psychology</i> Active Recall Tactics
-                </a>
-                <a href="#!" class="prompt-chip" onclick="askAiQuestion('What specific target scores do I need on final assessments to maintain my Distinction status?')">
-                    <i class="material-icons">military_tech</i> Distinction Targets
-                </a>
-                <a href="#!" class="prompt-chip" onclick="askAiQuestion('Give me 5 practical tips to manage exam time pressure and solve complex coding questions')">
-                    <i class="material-icons">alarm</i> Exam Time Strategy
-                </a>
+            <!-- Clean Suggested Prompts Bar -->
+            <div class="ai-prompts-bar">
+                <span class="prompts-label">Suggested:</span>
+                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('How can I boost my marks in my lowest performing module?')">
+                    Boost Lowest Module
+                </button>
+                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('Create a structured 2-week daily revision schedule tailored to my enrolled modules')">
+                    2-Week Study Plan
+                </button>
+                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('What active recall and spaced repetition techniques work best for technical modules like SQL and OOP?')">
+                    Active Recall Tactics
+                </button>
+                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('What specific target scores do I need on upcoming assessments to maintain my Distinction status?')">
+                    Distinction Targets
+                </button>
+                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('Give me 5 practical tips to manage exam time pressure and solve complex coding questions')">
+                    Exam Strategy
+                </button>
             </div>
 
             <!-- Conversational Chat Stream Feed -->
@@ -2343,21 +2179,8 @@ $studentPayloadJson = json_encode([
                                 I can generate revision timetables, diagnose quarter-over-quarter trends, explain difficult technical concepts, or calculate the exact marks needed on upcoming assessments.
                             </p>
                             <p style="margin-bottom: 0;">
-                                <em>Click any quick topic above or ask your own question below to begin!</em>
+                                <em>Ask a question below or click any suggested prompt to begin!</em>
                             </p>
-                        </div>
-                        <div class="coach-bubble-actions">
-                            <div class="followup-chips-wrap">
-                                <span class="followup-chip" onclick="askAiQuestion('Run a complete quarterly academic performance diagnosis on my transcript')">
-                                    <i class="material-icons tiny" style="font-size: 12px; vertical-align: middle;">play_arrow</i> Run Diagnostic
-                                </span>
-                                <span class="followup-chip" onclick="askAiQuestion('How can I boost my marks in my lowest module?')">
-                                    <i class="material-icons tiny" style="font-size: 12px; vertical-align: middle;">trending_up</i> Boost Lowest Module
-                                </span>
-                                <span class="followup-chip" onclick="askAiQuestion('Create a 2-week revision schedule')">
-                                    <i class="material-icons tiny" style="font-size: 12px; vertical-align: middle;">event</i> Revision Schedule
-                                </span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -2365,50 +2188,20 @@ $studentPayloadJson = json_encode([
                 <!-- Dynamic Chat Messages Will Be Appended Here -->
                 <div id="aiDynamicMessages"></div>
 
-                <!-- Animated Thinking Bubble Waiting Indicator -->
+                <!-- Sleek Modern Thinking Indicator -->
                 <div id="aiTypingIndicator" class="chat-msg-row msg-assistant ai-thinking-row" style="display: none;">
-                    <div class="chat-avatar avatar-coach thinking-avatar-pulse">
+                    <div class="chat-avatar avatar-coach">
                         <i class="material-icons tiny" style="font-size: 18px;">auto_awesome</i>
                     </div>
-                    
-                    <!-- Organic Thought Tail Connector Pips -->
-                    <div class="thought-tail" aria-hidden="true">
-                        <span class="thought-pip pip-sm"></span>
-                        <span class="thought-pip pip-md"></span>
-                    </div>
-
-                    <!-- Cloud-like Thinking Bubble -->
-                    <div class="ai-thinking-bubble">
-                        <div class="thinking-bubble-header">
-                            <div class="thinking-brand">
-                                <span class="thinking-brain-pulse">
-                                    <i class="material-icons tiny" style="font-size: 16px;">psychology</i>
-                                </span>
-                                <span class="thinking-badge-text">Coach Thinking</span>
-                            </div>
-                            <div class="neural-wave-bars" title="Neural reasoning active">
-                                <span class="neural-bar bar-1"></span>
-                                <span class="neural-bar bar-2"></span>
-                                <span class="neural-bar bar-3"></span>
-                                <span class="neural-bar bar-4"></span>
-                            </div>
+                    <div class="ai-thinking-bubble-clean">
+                        <div class="thinking-dots">
+                            <span class="thinking-dot"></span>
+                            <span class="thinking-dot"></span>
+                            <span class="thinking-dot"></span>
                         </div>
-
-                        <div class="thinking-bubble-content">
-                            <!-- Gradient Bouncing Spheres -->
-                            <div class="thinking-dots">
-                                <div class="thinking-dot"></div>
-                                <div class="thinking-dot"></div>
-                                <div class="thinking-dot"></div>
-                            </div>
-                            <!-- Dynamic Status Stage Label -->
-                            <span id="aiThinkingStatusText" class="thinking-dynamic-label">
-                                Analyzing module performance &amp; quarterly trends...
-                            </span>
-                        </div>
-
-                        <!-- Neural Shimmer Beam -->
-                        <div class="thinking-shimmer-sweep"></div>
+                        <span id="aiThinkingStatusText" class="thinking-dynamic-label">
+                            Analyzing module performance &amp; quarterly transcript...
+                        </span>
                     </div>
                 </div>
 
@@ -3051,14 +2844,6 @@ async function runAiCoach(customQuestion = '') {
                             <button class="btn-copy-advice" onclick="copyAdviceText(this, decodeURIComponent('${encodedRawAdvice}'))">
                                 <i class="material-icons tiny">content_copy</i> Copy Advice
                             </button>
-                            <div class="followup-chips-wrap">
-                                <span class="followup-chip" onclick="askAiQuestion('Can you create a daily practice quiz for this?')">
-                                    <i class="material-icons tiny" style="font-size: 12px; vertical-align: middle;">quiz</i> Practice Quiz
-                                </span>
-                                <span class="followup-chip" onclick="askAiQuestion('Explain the highest priority step in deeper detail')">
-                                    <i class="material-icons tiny" style="font-size: 12px; vertical-align: middle;">read_more</i> Elaborate Step
-                                </span>
-                            </div>
                         </div>
                     </div>
                 </div>
