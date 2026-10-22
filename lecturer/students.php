@@ -101,6 +101,95 @@ foreach ($studentRows as $row) {
 $classAverage = $marksRecordedCount > 0 ? round($totalAverageSum / $marksRecordedCount, 1) : 0;
 ?>
 
+<style>
+.students-table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    margin-top: 10px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modern-students-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modern-students-table th {
+    padding: 12px 10px;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #475569;
+    background: #f8fafc;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.modern-students-table td {
+    padding: 12px 10px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.student-info-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 170px;
+    max-width: 210px;
+}
+
+.student-email-link {
+    display: block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.78rem;
+}
+
+.mark-col {
+    width: 52px;
+    text-align: center;
+    padding: 8px 4px !important;
+    font-size: 0.86rem;
+}
+
+.actions-cell-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.btn-action-marks {
+    height: 32px !important;
+    line-height: 32px !important;
+    padding: 0 10px !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    border-radius: 6px !important;
+    text-transform: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+}
+
+.btn-action-profile {
+    height: 32px !important;
+    line-height: 32px !important;
+    width: 34px !important;
+    padding: 0 !important;
+    border-radius: 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+</style>
+
 <div class="row" style="margin-top: 20px;">
     <div class="col s12">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
@@ -232,9 +321,9 @@ $classAverage = $marksRecordedCount > 0 ? round($totalAverageSum / $marksRecorde
 <!-- Students Table -->
 <div class="row">
     <div class="col s12">
-        <div class="card z-depth-1" style="border-radius: 8px;">
-            <div class="card-content">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div class="card z-depth-1" style="border-radius: 10px; overflow: hidden;">
+            <div class="card-content" style="padding: 20px 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                     <span class="card-title" style="font-weight: 600; margin: 0;">
                         <i class="material-icons left indigo-text">badge</i>Enrolled Students Directory (<?php echo count($studentRows); ?> records)
                     </span>
@@ -243,114 +332,118 @@ $classAverage = $marksRecordedCount > 0 ? round($totalAverageSum / $marksRecorde
                     </button>
                 </div>
 
-                <table class="highlight responsive-table" id="studentsTable">
-                    <thead>
-                        <tr>
-                            <th>Student</th>
-                            <th>Student Number</th>
-                            <th>Enrolled Course</th>
-                            <th>Module</th>
-                            <th>Q1</th>
-                            <th>Q2</th>
-                            <th>Q3</th>
-                            <th>Q4</th>
-                            <th>Calculated Avg</th>
-                            <th>Status</th>
-                            <th class="center-align">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($studentRows)): ?>
-                            <?php foreach ($studentRows as $st): ?>
-                                <?php 
-                                    $hasResult = ($st['mark_id'] !== null);
-                                    $modRes = $hasResult ? new ModuleResult($st) : null;
-                                    $grade = $modRes ? $modRes->getGradeStatus() : ['grade' => 'Pending', 'status' => 'Pending', 'color' => 'grey'];
-                                ?>
-                                <tr>
-                                    <td>
-                                        <div style="display: flex; align-items: center; gap: 10px;">
-                                            <div class="circle indigo darken-3 white-text center-align" style="width: 34px; height: 34px; line-height: 34px; font-weight: 600; font-size: 0.85rem; flex-shrink: 0;">
-                                                <?php 
-                                                    $parts = explode(' ', trim($st['full_name']));
-                                                    $initials = strtoupper(substr($parts[0] ?? 'S', 0, 1) . substr($parts[1] ?? '', 0, 1));
-                                                    echo htmlspecialchars($initials ?: 'ST');
-                                                ?>
+                <div class="students-table-wrapper">
+                    <table class="highlight modern-students-table" id="studentsTable">
+                        <thead>
+                            <tr>
+                                <th style="min-width: 170px;">Student</th>
+                                <th style="min-width: 105px;">Student No</th>
+                                <th style="min-width: 130px;">Enrolled Course</th>
+                                <th style="min-width: 100px;">Module</th>
+                                <th class="mark-col">Q1</th>
+                                <th class="mark-col">Q2</th>
+                                <th class="mark-col">Q3</th>
+                                <th class="mark-col">Q4</th>
+                                <th class="center-align" style="min-width: 85px;">Calculated Avg</th>
+                                <th class="center-align" style="min-width: 105px;">Status</th>
+                                <th class="right-align" style="min-width: 135px; padding-right: 14px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($studentRows)): ?>
+                                <?php foreach ($studentRows as $st): ?>
+                                    <?php 
+                                        $hasResult = ($st['mark_id'] !== null);
+                                        $modRes = $hasResult ? new ModuleResult($st) : null;
+                                        $grade = $modRes ? $modRes->getGradeStatus() : ['grade' => 'Pending', 'status' => 'Pending', 'color' => 'grey'];
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <div class="student-info-cell">
+                                                <div class="circle indigo darken-3 white-text center-align" style="width: 34px; height: 34px; line-height: 34px; font-weight: 600; font-size: 0.82rem; flex-shrink: 0;">
+                                                    <?php 
+                                                        $parts = explode(' ', trim($st['full_name']));
+                                                        $initials = strtoupper(substr($parts[0] ?? 'S', 0, 1) . substr($parts[1] ?? '', 0, 1));
+                                                        echo htmlspecialchars($initials ?: 'ST');
+                                                    ?>
+                                                </div>
+                                                <div style="overflow: hidden;">
+                                                    <strong style="color: #0f172a;"><?php echo htmlspecialchars($st['full_name']); ?></strong>
+                                                    <small class="grey-text student-email-link"><a href="mailto:<?php echo htmlspecialchars($st['email']); ?>" class="grey-text text-darken-1"><?php echo htmlspecialchars($st['email']); ?></a></small>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <strong><?php echo htmlspecialchars($st['full_name']); ?></strong><br>
-                                                <small class="grey-text"><a href="mailto:<?php echo htmlspecialchars($st['email']); ?>"><?php echo htmlspecialchars($st['email']); ?></a></small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="chip tiny grey lighten-3">
-                                            <code><?php echo htmlspecialchars($st['student_number'] ?: $st['student_id_number']); ?></code>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <small class="grey-text text-darken-2 font-weight-bold"><?php echo htmlspecialchars($st['course_name']); ?></small>
-                                    </td>
-                                    <td>
-                                        <span class="chip tiny teal lighten-5 teal-text text-darken-3 font-weight-bold" title="<?php echo htmlspecialchars($st['module_name']); ?>">
-                                            <?php echo htmlspecialchars($st['module_code']); ?>
-                                        </span>
-                                        <?php if ($st['is_primary']): ?>
-                                            <span class="badge blue white-text tiny" style="float:none; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem;">Primary</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?php echo $st['quarter1'] !== null ? number_format($st['quarter1'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
-                                    <td><?php echo $st['quarter2'] !== null ? number_format($st['quarter2'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
-                                    <td><?php echo $st['quarter3'] !== null ? number_format($st['quarter3'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
-                                    <td><?php echo $st['quarter4'] !== null ? number_format($st['quarter4'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
-                                    <td>
-                                        <strong style="color: #1565c0; font-size: 1.05rem;">
-                                            <?php echo $st['average'] !== null ? number_format($st['average'], 2) . '%' : '<span class="grey-text">Pending</span>'; ?>
-                                        </strong>
-                                    </td>
-                                    <td>
-                                        <span class="chip <?php echo $grade['color']; ?> white-text tiny">
-                                            <?php echo $grade['grade']; ?>
-                                        </span>
-                                    </td>
-                                    <td class="center-align" style="white-space: nowrap;">
-                                        <!-- Quick Record Marks Button -->
-                                        <button type="button" 
-                                                class="btn-small waves-effect waves-light amber darken-3 edit-marks-modal-btn tooltipped"
-                                                data-position="top"
-                                                data-tooltip="<?php echo $hasResult ? 'Update Marks' : 'Record Marks'; ?>"
-                                                data-student-id="<?php echo $st['student_id']; ?>"
-                                                data-student-name="<?php echo htmlspecialchars($st['full_name']); ?>"
-                                                data-module-id="<?php echo $st['module_id']; ?>"
-                                                data-module-code="<?php echo htmlspecialchars($st['module_code']); ?>"
-                                                data-year="<?php echo $st['academic_year'] ?? date('Y'); ?>"
-                                                data-q1="<?php echo $st['quarter1'] ?? ''; ?>"
-                                                data-q2="<?php echo $st['quarter2'] ?? ''; ?>"
-                                                data-q3="<?php echo $st['quarter3'] ?? ''; ?>"
-                                                data-q4="<?php echo $st['quarter4'] ?? ''; ?>">
-                                            <i class="material-icons tiny left">edit</i><?php echo $hasResult ? 'Edit Marks' : 'Marks'; ?>
-                                        </button>
+                                        </td>
+                                        <td>
+                                            <span class="chip tiny grey lighten-3" style="margin: 0; font-family: monospace;">
+                                                <?php echo htmlspecialchars($st['student_number'] ?: $st['student_id_number']); ?>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <small class="grey-text text-darken-2 font-weight-bold"><?php echo htmlspecialchars($st['course_name']); ?></small>
+                                        </td>
+                                        <td>
+                                            <span class="chip tiny teal lighten-5 teal-text text-darken-3 font-weight-bold" title="<?php echo htmlspecialchars($st['module_name']); ?>" style="margin: 0;">
+                                                <?php echo htmlspecialchars($st['module_code']); ?>
+                                            </span>
+                                            <?php if ($st['is_primary']): ?>
+                                                <span class="badge blue white-text tiny" style="float:none; padding: 2px 6px; border-radius: 4px; font-size: 0.68rem;">Primary</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="mark-col"><?php echo $st['quarter1'] !== null ? number_format($st['quarter1'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
+                                        <td class="mark-col"><?php echo $st['quarter2'] !== null ? number_format($st['quarter2'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
+                                        <td class="mark-col"><?php echo $st['quarter3'] !== null ? number_format($st['quarter3'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
+                                        <td class="mark-col"><?php echo $st['quarter4'] !== null ? number_format($st['quarter4'], 1) . '%' : '<span class="grey-text">-</span>'; ?></td>
+                                        <td class="center-align">
+                                            <strong style="color: #1565c0; font-size: 1rem;">
+                                                <?php echo $st['average'] !== null ? number_format($st['average'], 2) . '%' : '<span class="grey-text">Pending</span>'; ?>
+                                            </strong>
+                                        </td>
+                                        <td class="center-align">
+                                            <span class="chip <?php echo $grade['color']; ?> white-text tiny" style="margin: 0;">
+                                                <?php echo $grade['grade']; ?>
+                                            </span>
+                                        </td>
+                                        <td class="right-align" style="padding-right: 14px;">
+                                            <div class="actions-cell-wrapper">
+                                                <!-- Quick Record Marks Button -->
+                                                <button type="button" 
+                                                        class="btn-small waves-effect waves-light amber darken-3 edit-marks-modal-btn tooltipped btn-action-marks"
+                                                        data-position="top"
+                                                        data-tooltip="<?php echo $hasResult ? 'Update Marks' : 'Record Marks'; ?>"
+                                                        data-student-id="<?php echo $st['student_id']; ?>"
+                                                        data-student-name="<?php echo htmlspecialchars($st['full_name']); ?>"
+                                                        data-module-id="<?php echo $st['module_id']; ?>"
+                                                        data-module-code="<?php echo htmlspecialchars($st['module_code']); ?>"
+                                                        data-year="<?php echo $st['academic_year'] ?? date('Y'); ?>"
+                                                        data-q1="<?php echo $st['quarter1'] ?? ''; ?>"
+                                                        data-q2="<?php echo $st['quarter2'] ?? ''; ?>"
+                                                        data-q3="<?php echo $st['quarter3'] ?? ''; ?>"
+                                                        data-q4="<?php echo $st['quarter4'] ?? ''; ?>">
+                                                    <i class="material-icons tiny">edit</i>Marks
+                                                </button>
 
-                                        <!-- View Student Profile -->
-                                        <a href="student_profile.php?id=<?php echo $st['student_id']; ?>" 
-                                           class="btn-small waves-effect waves-light indigo darken-3 tooltipped" 
-                                           data-position="top" 
-                                           data-tooltip="View Student Details">
-                                            <i class="material-icons tiny">person</i>
-                                        </a>
+                                                <!-- View Student Profile -->
+                                                <a href="student_profile.php?id=<?php echo $st['student_id']; ?>" 
+                                                   class="btn-small waves-effect waves-light indigo darken-3 tooltipped btn-action-profile" 
+                                                   data-position="top" 
+                                                   data-tooltip="View Student Details">
+                                                    <i class="material-icons tiny">person</i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="11" class="center-align grey-text" style="padding: 40px;">
+                                        <i class="material-icons large grey-text text-lighten-2">people_outline</i><br>
+                                        No students found for this selection. When students enroll in courses offering your assigned modules, they will appear here.
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="11" class="center-align grey-text" style="padding: 40px;">
-                                    <i class="material-icons large grey-text text-lighten-2">people_outline</i><br>
-                                    No students found for this selection. When students enroll in courses offering your assigned modules, they will appear here.
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
