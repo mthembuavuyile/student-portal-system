@@ -26,7 +26,7 @@ class OpenRouterService {
 
     public function __construct(?string $apiKey = null, ?string $model = null) {
         $this->apiKey = $apiKey ?? (defined('OPENROUTER_API_KEY') ? OPENROUTER_API_KEY : '');
-        $this->model = $model ?? (defined('OPENROUTER_MODEL') ? OPENROUTER_MODEL : 'minimax/minimax-m3.1-flash:free');
+        $this->model = $model ?? (defined('OPENROUTER_MODEL') ? OPENROUTER_MODEL : 'openrouter/free');
         $this->siteUrl = defined('BASE_URL') ? BASE_URL : 'http://localhost';
         $this->siteName = defined('OPENROUTER_SITE_NAME') ? OPENROUTER_SITE_NAME : 'SMS University Portal';
     }
@@ -92,7 +92,14 @@ PROMPT;
     }
 
     /**
-     * Executes a chat completion call to OpenRouter with automatic multi-model fallback.
+     * Executes a chat completion call to OpenRouter with automatic multi-model failover rotation.
+     * 
+     * Incorporates Atlas-grade safeguards:
+     * 1. 15s Per-attempt timeout & 5s connect timeout to fit within PHP script execution limits.
+     * 2. Retryable HTTP status detection (429 rate limit, 500-504 server down, 400/404 retired model).
+     * 3. Response body error pattern matching ("overloaded", "rate limit", "temporarily unavailable").
+     * 4. Multi-model candidate pool rotation across frontier zero-credit engines.
+     * 5. Fallback extraction of reasoning tokens & cleaning of raw <think> tags.
      */
     public function callOpenRouter(array $messages, ?string $modelOverride = null): array {
         if (!$this->hasApiKey()) {
@@ -102,12 +109,19 @@ PROMPT;
             ];
         }
 
-        $fallbackList = defined('OPENROUTER_FALLBACK_MODELS') && is_array(OPENROUTER_FALLBACK_MODELS)
+        $fallbackPool = defined('OPENROUTER_FALLBACK_MODELS') && is_array(OPENROUTER_FALLBACK_MODELS)
             ? OPENROUTER_FALLBACK_MODELS
-            : ['minimax/minimax-m3.1-flash:free', 'google/gemma-4-26b-a4b-it:free', 'nvidia/nemotron-3.5-lightning:free'];
+            : [
+                'openrouter/free',
+                'nvidia/nemotron-3.5-lightning:free',
+                'cohere/north-mini-code:free',
+                'poolside/laguna-s-2.1:free',
+                'google/gemma-4-26b-a4b-it:free'
+            ];
 
         $primary = $modelOverride ?: $this->model;
-        $models = array_slice(array_values(array_unique(array_merge([$primary], $fallbackList))), 0, 3);
+        // Build rotation list with primary first, followed by deduplicated fallback pool
+        $rotationCandidates = array_values(array_unique(array_merge([$primary], $fallbackPool)));
         $url = 'https://openrouter.ai/api/v1/chat/completions';
 
         $headers = [
@@ -117,10 +131,15 @@ PROMPT;
             'X-Title: ' . $this->siteName
         ];
 
-        // Sequential model fallback
-        foreach ($models as $singleModel) {
-            $singlePayload = [
-                'model' => $singleModel,
+        $attemptedModels = [];
+        $lastError = null;
+
+        // Multi-model failover rotation engine
+        foreach ($rotationCandidates as $candidateModel) {
+            $attemptedModels[] = $candidateModel;
+
+            $payload = [
+                'model' => $candidateModel,
                 'messages' => $messages,
                 'temperature' => 0.4,
                 'max_tokens' => 2500
@@ -129,41 +148,83 @@ PROMPT;
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($singlePayload));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  // Fast abort if connection hangs
+            curl_setopt($ch, CURLOPT_TIMEOUT, 15);         // Strict 15s budget per attempt
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-            $singleResp = curl_exec($ch);
-            $singleHttp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            $singleErr = curl_error($ch);
+            $rawResp = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $curlErr = curl_error($ch);
             unset($ch);
 
-            if (!$singleErr && $singleHttp >= 200 && $singleHttp < 300 && !empty($singleResp)) {
-                $singleData = json_decode($singleResp, true);
-                $message = $singleData['choices'][0]['message'] ?? [];
-                $content = trim((string)($message['content'] ?? ''));
+            // 1. Connection / Timeout error: rotate immediately
+            if ($curlErr) {
+                $lastError = "cURL error on {$candidateModel}: {$curlErr}";
+                continue;
+            }
 
-                if (empty($content) && !empty($message['reasoning'])) {
-                    $content = trim((string)$message['reasoning']);
+            // 2. Retryable HTTP Status Codes (429 rate limit, 500-504 server down, 400/404 retired model)
+            if (in_array($httpCode, [429, 500, 502, 503, 504, 400, 404])) {
+                $lastError = "HTTP {$httpCode} on {$candidateModel}";
+                continue;
+            }
+
+            // 3. Inspect response JSON payload
+            if (!empty($rawResp)) {
+                $decoded = json_decode($rawResp, true);
+
+                // Detect upstream error objects
+                if (isset($decoded['error'])) {
+                    $errMsg = is_string($decoded['error']) ? $decoded['error'] : ($decoded['error']['message'] ?? '');
+                    $lowered = strtolower($errMsg);
+                    if (strpos($lowered, 'rate limit') !== false ||
+                        strpos($lowered, 'overloaded') !== false ||
+                        strpos($lowered, 'temporarily unavailable') !== false ||
+                        strpos($lowered, 'no available provider') !== false ||
+                        strpos($lowered, 'not found') !== false) {
+                        $lastError = "Provider error on {$candidateModel}: {$errMsg}";
+                        continue; // Rotate to next candidate
+                    }
                 }
 
-                $usedModel = $singleData['model'] ?? $singleModel;
+                if ($httpCode >= 200 && $httpCode < 300) {
+                    $choice = $decoded['choices'][0]['message'] ?? [];
+                    $content = trim((string)($choice['content'] ?? ''));
 
-                if (!empty($content)) {
-                    return [
-                        'success' => true,
-                        'content' => $content,
-                        'model' => $usedModel,
-                        'source' => 'OpenRouter AI (' . $usedModel . ')'
-                    ];
+                    // Extract reasoning if content is empty (Nemotron / DeepSeek pattern)
+                    if (empty($content) && !empty($choice['reasoning'])) {
+                        $content = trim((string)$choice['reasoning']);
+                    }
+
+                    // Clean raw <think>...</think> tags if reasoning model embedded them
+                    if (!empty($content)) {
+                        $content = preg_replace('/<think>[\s\S]*?<\/think>/i', '', $content);
+                        $content = trim($content);
+                    }
+
+                    $resolvedModel = $decoded['model'] ?? $candidateModel;
+
+                    if (!empty($content)) {
+                        return [
+                            'success' => true,
+                            'content' => $content,
+                            'model' => $resolvedModel,
+                            'source' => 'OpenRouter AI (' . $resolvedModel . ')',
+                            'attempts' => $attemptedModels
+                        ];
+                    }
                 }
             }
         }
 
+        // All fallback candidates exhausted
         return [
             'success' => false,
-            'error' => 'AI Academic Success Coach is currently unavailable. Please try again later.'
+            'error' => 'AI Academic Success Coach is currently unavailable. Please try again later.',
+            'debug' => $lastError,
+            'attempts' => $attemptedModels
         ];
     }
 

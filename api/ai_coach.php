@@ -16,14 +16,16 @@ $openRouterKey = defined('OPENROUTER_API_KEY')
 
 $primaryModel = defined('OPENROUTER_MODEL') 
     ? OPENROUTER_MODEL 
-    : (defined('OPENROUTER_DEFAULT_MODEL') ? OPENROUTER_DEFAULT_MODEL : 'minimax/minimax-m3.1-flash:free');
+    : (defined('OPENROUTER_DEFAULT_MODEL') ? OPENROUTER_DEFAULT_MODEL : 'openrouter/free');
 
 $fallbackModels = defined('OPENROUTER_FALLBACK_MODELS') && is_array(OPENROUTER_FALLBACK_MODELS)
     ? OPENROUTER_FALLBACK_MODELS
     : [
-        'minimax/minimax-m3.1-flash:free',
-        'google/gemma-4-26b-a4b-it:free',
-        'nvidia/nemotron-3.5-lightning:free'
+        'openrouter/free',
+        'nvidia/nemotron-3.5-lightning:free',
+        'cohere/north-mini-code:free',
+        'poolside/laguna-s-2.1:free',
+        'google/gemma-4-26b-a4b-it:free'
     ];
 
 $modelChain = array_values(array_unique(array_merge([$primaryModel], $fallbackModels)));
@@ -154,9 +156,10 @@ if (!empty($userContent) && (!$lastMsg || $lastMsg['content'] !== $userContent |
     $messagesList[] = ['role' => 'user', 'content' => $userContent];
 }
 
-// 6. Real OpenRouter API Execution
+// 6. Real OpenRouter API Execution with Atlas Failover Rotation
 $aiContent = null;
 $usedModel = null;
+$attemptedModels = [];
 
 $openRouterHeaders = [
     'Authorization: Bearer ' . $openRouterKey,
@@ -165,8 +168,10 @@ $openRouterHeaders = [
     'X-Title: ' . $siteTitle
 ];
 
-// Try models in sequence
+// Try models in sequence with retryable error safeguards
 foreach ($modelChain as $candidateModel) {
+    $attemptedModels[] = $candidateModel;
+
     $payload = [
         'model' => $candidateModel,
         'messages' => $messagesList,
@@ -179,7 +184,8 @@ foreach ($modelChain as $candidateModel) {
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
     curl_setopt($ch, CURLOPT_HTTPHEADER, $openRouterHeaders);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  // Fast abort on connect hang
+    curl_setopt($ch, CURLOPT_TIMEOUT, 15);         // 15s budget per model
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
     $raw = curl_exec($ch);
@@ -187,20 +193,53 @@ foreach ($modelChain as $candidateModel) {
     $curlErr = curl_error($ch);
     unset($ch);
 
-    if (!$curlErr && $httpCode >= 200 && $httpCode < 300 && !empty($raw)) {
-        $resp = json_decode($raw, true);
-        $message = $resp['choices'][0]['message'] ?? [];
-        $text = trim((string)($message['content'] ?? ''));
+    // 1. Connection / Timeout error: rotate immediately
+    if ($curlErr) {
+        continue;
+    }
 
-        // If reasoning model returned text in reasoning field
-        if (empty($text) && !empty($message['reasoning'])) {
-            $text = trim((string)$message['reasoning']);
+    // 2. Retryable HTTP Status Codes (429, 500-504, 400/404)
+    if (in_array($httpCode, [429, 500, 502, 503, 504, 400, 404])) {
+        continue;
+    }
+
+    // 3. Inspect response JSON payload
+    if (!empty($raw)) {
+        $resp = json_decode($raw, true);
+
+        // Detect upstream error objects
+        if (isset($resp['error'])) {
+            $errMsg = is_string($resp['error']) ? $resp['error'] : ($resp['error']['message'] ?? '');
+            $lowered = strtolower($errMsg);
+            if (strpos($lowered, 'rate limit') !== false ||
+                strpos($lowered, 'overloaded') !== false ||
+                strpos($lowered, 'temporarily unavailable') !== false ||
+                strpos($lowered, 'no available provider') !== false ||
+                strpos($lowered, 'not found') !== false) {
+                continue; // Rotate to next candidate
+            }
         }
 
-        if (!empty($text)) {
-            $aiContent = $text;
-            $usedModel = $resp['model'] ?? $candidateModel;
-            break;
+        if ($httpCode >= 200 && $httpCode < 300) {
+            $message = $resp['choices'][0]['message'] ?? [];
+            $text = trim((string)($message['content'] ?? ''));
+
+            // Extract reasoning if content is empty (Nemotron / DeepSeek pattern)
+            if (empty($text) && !empty($message['reasoning'])) {
+                $text = trim((string)$message['reasoning']);
+            }
+
+            // Clean raw <think>...</think> tags if reasoning model embedded them
+            if (!empty($text)) {
+                $text = preg_replace('/<think>[\s\S]*?<\/think>/i', '', $text);
+                $text = trim($text);
+            }
+
+            if (!empty($text)) {
+                $aiContent = $text;
+                $usedModel = $resp['model'] ?? $candidateModel;
+                break;
+            }
         }
     }
 }
