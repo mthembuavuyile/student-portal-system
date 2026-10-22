@@ -61,6 +61,14 @@ if (!empty($fixed_base)) {
     define('BASE_URL', $protocol . $host . ($clean_path !== '' ? '/' . $clean_path : '') . '/');
 }
 
+// -- Standardized Deployment Endpoints --
+if (!defined('LOCAL_URL')) {
+    define('LOCAL_URL', 'http://localhost/university_system/index.php');
+}
+if (!defined('LIVE_URL')) {
+    define('LIVE_URL', 'https://student-system.infinityfree.io/index.php');
+}
+
 // -- Constants --
 define('STATUS_ACTIVE', 'Active');
 define('STATUS_PENDING', 'Pending');

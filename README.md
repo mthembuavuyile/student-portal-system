@@ -14,13 +14,15 @@
 | **Development Team** | • **Mr Avuyile Mthembu**: Full Stack Software Developer (Project Lead & System Architect)<br>• **Ms Nomthandazo Khoza**: Database Administrator (DBA & Relational Modeler)<br>• **Ms Qhama Nodada**: Frontend Developer (UI/UX & Client Logic) |
 | **Technical Mentor** | Senior Specialist: Software Architecture & Systems Development (ITBS) |
 | **Live Production Instance** | [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) |
+| **Localhost Instance** | [http://localhost/university_system/index.php](http://localhost/university_system/index.php) |
 
 ---
 
-## Live System Deployment & Demo Credentials
+## Deployment Environments & Demo Credentials
 
-The system is deployed and accessible at:  
-[https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)
+The system is operational across both cloud production and local workstation environments:
+- **Live Cloud Production**: [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php)
+- **Localhost Workstation (AMPPS)**: [http://localhost/university_system/index.php](http://localhost/university_system/index.php)
 
 ### Quick Access Demo Credentials (Available via UI role switcher tabs)
 
