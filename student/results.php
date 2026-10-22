@@ -84,6 +84,9 @@ foreach ($moduleResults as $res) {
         'average' => $res['average'] !== null ? (float)$res['average'] : null
     ];
 }
+$studentDisplayName = $student->getFirstName() ?: 'Avuyile';
+$studentInitials = strtoupper(substr($student->getFirstName() ?: 'A', 0, 1) . substr($student->getSurname() ?: 'M', 0, 1));
+
 $studentPayloadJson = json_encode([
     'studentName' => $student->getFullName(),
     'modules' => $clientModuleData
@@ -965,16 +968,23 @@ $studentPayloadJson = json_encode([
         transform: translateY(-1px);
     }
 
-    /* Conversation Thread Stream */
+    /* Conversation Thread Stream & Dynamic Messages Spacing */
+    #aiDynamicMessages {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        width: 100%;
+    }
+
     .ai-chat-thread {
-        padding: 24px 26px;
+        padding: 26px 28px;
         background: #f8fafc;
-        max-height: 560px;
-        min-height: 320px;
+        max-height: 580px;
+        min-height: 340px;
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 24px;
         scroll-behavior: smooth;
     }
     .ai-chat-thread::-webkit-scrollbar {
@@ -985,16 +995,18 @@ $studentPayloadJson = json_encode([
         border-radius: 3px;
     }
 
-    /* Message Bubbles */
+    /* Message Bubbles - Strict Flex Alignment & Spacing */
     .chat-msg-row {
         display: flex;
-        gap: 12px;
+        gap: 14px;
         width: 100%;
-        animation: fadeInMsg 0.25s ease-out;
+        align-items: flex-start;
+        animation: fadeInMsg 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
     }
     @keyframes fadeInMsg {
-        from { opacity: 0; transform: translateY(6px); }
-        to { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; transform: translateY(8px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .msg-user {
@@ -1005,61 +1017,71 @@ $studentPayloadJson = json_encode([
     }
 
     .chat-avatar {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        font-size: 0.88rem;
+        font-size: 0.86rem;
         font-weight: 700;
+        margin-top: 2px;
+        position: relative;
     }
     .avatar-user {
-        background: #0f172a;
-        color: #fff;
+        background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+        color: #ffffff;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
     }
     .avatar-coach {
         background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-        color: #fff;
-        box-shadow: 0 2px 6px rgba(124, 58, 237, 0.25);
+        color: #ffffff;
+        box-shadow: 0 3px 10px rgba(124, 58, 237, 0.3);
     }
 
     .chat-bubble {
-        max-width: 82%;
-        border-radius: var(--mat-radius-md);
-        box-shadow: var(--mat-shadow-sm);
         position: relative;
     }
 
     /* User Bubble Styling */
     .user-bubble {
-        background: #1565c0;
+        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
         color: #ffffff;
-        padding: 12px 18px;
-        border-bottom-right-radius: 4px;
+        padding: 13px 20px;
+        border-radius: 18px 18px 4px 18px;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+        max-width: 76%;
     }
     .user-bubble-text {
-        font-size: 0.94rem;
-        line-height: 1.5;
+        font-size: 0.95rem;
+        font-weight: 500;
+        line-height: 1.55;
         margin: 0;
         word-break: break-word;
+        letter-spacing: -0.01em;
     }
     .user-bubble-meta {
         font-size: 0.72rem;
-        color: rgba(255,255,255,0.75);
+        color: rgba(255, 255, 255, 0.82);
         text-align: right;
-        margin-top: 4px;
+        margin-top: 6px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
     }
 
     /* Coach Bubble Styling */
     .coach-bubble {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: calc(100% - 52px);
         background: #ffffff;
-        border: 1px solid var(--mat-border);
-        padding: 20px 22px;
-        border-top-left-radius: 4px;
+        border: 1px solid #e2e8f0;
+        padding: 22px 26px;
+        border-radius: 20px 20px 20px 4px;
         color: #1e293b;
-        width: 100%;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+        position: relative;
     }
 
     .coach-bubble-header {
@@ -1253,39 +1275,225 @@ $studentPayloadJson = json_encode([
         border-color: #c7d2fe;
     }
 
-    /* Typing Animation Indicator */
-    .ai-typing-card {
-        display: none;
+    /* ==========================================================================
+       THINKING BUBBLE ANIMATION SYSTEM
+       ========================================================================== */
+    .ai-thinking-row {
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        padding: 6px 0;
+    }
+
+    /* Pulsating Neural Aura on Avatar */
+    .thinking-avatar-pulse {
+        animation: thinkingAvatarGlow 2.2s infinite ease-in-out;
+        position: relative;
+    }
+    .thinking-avatar-pulse::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 2px solid #818cf8;
+        opacity: 0;
+        animation: auraPulse 2.2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+    }
+    @keyframes auraPulse {
+        0% { transform: scale(0.9); opacity: 0.9; }
+        50% { opacity: 0.45; }
+        100% { transform: scale(1.55); opacity: 0; }
+    }
+    @keyframes thinkingAvatarGlow {
+        0%, 100% { transform: scale(1); box-shadow: 0 3px 12px rgba(124, 58, 237, 0.35); }
+        50% { transform: scale(1.06); box-shadow: 0 5px 20px rgba(124, 58, 237, 0.65); }
+    }
+
+    /* Organic Thought Tail Connector Pips */
+    .thought-tail {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0 2px;
+        flex-shrink: 0;
+    }
+    .thought-pip {
+        border-radius: 50%;
+        background: #ffffff;
+        border: 1.5px solid #c7d2fe;
+        box-shadow: 0 2px 6px rgba(99, 102, 241, 0.15);
+        display: inline-block;
+        animation: thoughtPipFloat 2.4s ease-in-out infinite;
+    }
+    .thought-pip.pip-sm {
+        width: 6px;
+        height: 6px;
+        animation-delay: 0s;
+    }
+    .thought-pip.pip-md {
+        width: 10px;
+        height: 10px;
+        animation-delay: 0.25s;
+    }
+    @keyframes thoughtPipFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+    }
+
+    /* Main Thinking Cloud Bubble */
+    .ai-thinking-bubble {
+        background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%);
+        border: 1.5px solid #c7d2fe;
+        border-radius: 20px 20px 20px 8px;
+        padding: 14px 20px;
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.12), 0 1px 3px rgba(0, 0, 0, 0.04);
+        position: relative;
+        overflow: hidden;
+        min-width: 290px;
+        max-width: 520px;
+        animation: bubbleFloat 3s ease-in-out infinite, thinkingBubblePop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    @keyframes thinkingBubblePop {
+        from {
+            opacity: 0;
+            transform: scale(0.92) translateY(6px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    @keyframes bubbleFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
+    }
+
+    /* Shimmer beam across the bubble */
+    .thinking-shimmer-sweep {
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 80%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent 0%, rgba(224, 231, 255, 0.5) 50%, transparent 100%);
+        animation: neuralShimmer 2.4s infinite;
+        pointer-events: none;
+    }
+    @keyframes neuralShimmer {
+        0% { left: -120%; }
+        100% { left: 160%; }
+    }
+
+    /* Header inside thinking bubble */
+    .thinking-bubble-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px dashed #e0e7ff;
+        padding-bottom: 8px;
+    }
+    .thinking-brand {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .thinking-brain-pulse {
+        color: #6366f1;
+        display: inline-flex;
+        animation: brainSpin 2.4s infinite ease-in-out;
+    }
+    @keyframes brainSpin {
+        0%, 100% { transform: rotate(0deg) scale(1); }
+        50% { transform: rotate(6deg) scale(1.15); }
+    }
+    .thinking-badge-text {
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: #4f46e5;
+    }
+
+    /* Neural Wave Bars */
+    .neural-wave-bars {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        height: 14px;
+    }
+    .neural-bar {
+        width: 3px;
+        height: 4px;
+        background: #818cf8;
+        border-radius: 2px;
+        animation: waveDance 1.2s ease-in-out infinite alternate;
+    }
+    .neural-bar.bar-1 { animation-delay: 0.1s; height: 6px; }
+    .neural-bar.bar-2 { animation-delay: 0.3s; height: 12px; }
+    .neural-bar.bar-3 { animation-delay: 0.2s; height: 8px; }
+    .neural-bar.bar-4 { animation-delay: 0.4s; height: 10px; }
+    @keyframes waveDance {
+        0% { height: 3px; opacity: 0.4; }
+        100% { height: 14px; opacity: 1; background: #6366f1; }
+    }
+
+    /* Content inside thinking bubble */
+    .thinking-bubble-content {
+        display: flex;
         align-items: center;
         gap: 12px;
-        padding: 14px 18px;
-        background: #ffffff;
-        border: 1px solid var(--mat-border);
-        border-radius: var(--mat-radius-md);
-        box-shadow: var(--mat-shadow-sm);
-        width: fit-content;
     }
-    .typing-dots {
+
+    /* Thinking Gradient Bouncing Spheres */
+    .thinking-dots {
         display: flex;
+        align-items: center;
         gap: 5px;
+        flex-shrink: 0;
     }
-    .typing-dot {
-        width: 7px;
-        height: 7px;
-        background: #4f46e5;
+    .thinking-dot {
+        width: 8px;
+        height: 8px;
+        background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
         border-radius: 50%;
-        animation: typingBlink 1.4s infinite ease-in-out both;
+        animation: thinkDotBounce 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite both;
     }
-    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-    @keyframes typingBlink {
-        0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
-        40% { transform: scale(1); opacity: 1; }
+    .thinking-dot:nth-child(1) { animation-delay: -0.32s; }
+    .thinking-dot:nth-child(2) { animation-delay: -0.16s; }
+    .thinking-dot:nth-child(3) { animation-delay: 0s; }
+
+    @keyframes thinkDotBounce {
+        0%, 80%, 100% {
+            transform: translateY(0) scale(0.85);
+            opacity: 0.45;
+        }
+        40% {
+            transform: translateY(-7px) scale(1.15);
+            opacity: 1;
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.45);
+        }
     }
-    .typing-label {
+
+    /* Dynamic status text with smooth transition */
+    .thinking-dynamic-label {
         font-size: 0.85rem;
-        color: #64748b;
         font-weight: 500;
+        color: #475569;
+        line-height: 1.4;
+        transition: opacity 0.24s ease, transform 0.24s ease;
+    }
+    .thinking-dynamic-label.status-fade-out {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    .thinking-dynamic-label.status-fade-in {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     /* Material 3 Floating Chat Input Capsule */
@@ -1976,18 +2184,50 @@ $studentPayloadJson = json_encode([
                 <!-- Dynamic Chat Messages Will Be Appended Here -->
                 <div id="aiDynamicMessages"></div>
 
-                <!-- Animated Typing Indicator Card -->
-                <div id="aiTypingIndicator" class="chat-msg-row msg-assistant" style="display: none;">
-                    <div class="chat-avatar avatar-coach">
+                <!-- Animated Thinking Bubble Waiting Indicator -->
+                <div id="aiTypingIndicator" class="chat-msg-row msg-assistant ai-thinking-row" style="display: none;">
+                    <div class="chat-avatar avatar-coach thinking-avatar-pulse">
                         <i class="material-icons tiny" style="font-size: 18px;">auto_awesome</i>
                     </div>
-                    <div class="ai-typing-card">
-                        <div class="typing-dots">
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
+                    
+                    <!-- Organic Thought Tail Connector Pips -->
+                    <div class="thought-tail" aria-hidden="true">
+                        <span class="thought-pip pip-sm"></span>
+                        <span class="thought-pip pip-md"></span>
+                    </div>
+
+                    <!-- Cloud-like Thinking Bubble -->
+                    <div class="ai-thinking-bubble">
+                        <div class="thinking-bubble-header">
+                            <div class="thinking-brand">
+                                <span class="thinking-brain-pulse">
+                                    <i class="material-icons tiny" style="font-size: 16px;">psychology</i>
+                                </span>
+                                <span class="thinking-badge-text">Coach Thinking</span>
+                            </div>
+                            <div class="neural-wave-bars" title="Neural reasoning active">
+                                <span class="neural-bar bar-1"></span>
+                                <span class="neural-bar bar-2"></span>
+                                <span class="neural-bar bar-3"></span>
+                                <span class="neural-bar bar-4"></span>
+                            </div>
                         </div>
-                        <span class="typing-label">Coach is analyzing your transcript and drafting tailored advice...</span>
+
+                        <div class="thinking-bubble-content">
+                            <!-- Gradient Bouncing Spheres -->
+                            <div class="thinking-dots">
+                                <div class="thinking-dot"></div>
+                                <div class="thinking-dot"></div>
+                                <div class="thinking-dot"></div>
+                            </div>
+                            <!-- Dynamic Status Stage Label -->
+                            <span id="aiThinkingStatusText" class="thinking-dynamic-label">
+                                Analyzing module performance &amp; quarterly trends...
+                            </span>
+                        </div>
+
+                        <!-- Neural Shimmer Beam -->
+                        <div class="thinking-shimmer-sweep"></div>
                     </div>
                 </div>
 
@@ -2024,6 +2264,8 @@ $studentPayloadJson = json_encode([
 <script>
 // Student marks payload directly from PHP
 const studentDataPayload = <?php echo $studentPayloadJson ?: '{}'; ?>;
+const currentStudentName = <?php echo json_encode($studentDisplayName); ?>;
+const currentStudentInitials = <?php echo json_encode($studentInitials); ?>;
 
 // In-Memory Multi-turn Chat Conversation History
 let chatHistory = [];
@@ -2248,6 +2490,7 @@ function copyAdviceText(btnElement, rawAdvice) {
 // Clear conversation thread and restart
 function clearAiChat() {
     chatHistory = [];
+    stopThinkingAnimation();
     const container = document.getElementById('aiDynamicMessages');
     if (container) container.innerHTML = '';
     const welcome = document.getElementById('aiWelcomeMessage');
@@ -2256,6 +2499,57 @@ function clearAiChat() {
 
     if (typeof M !== 'undefined' && M.toast) {
         M.toast({html: 'Coaching conversation cleared.', displayLength: 1500});
+    }
+}
+
+// Dynamic Multi-Stage Thinking Animation Controller
+let thinkingInterval = null;
+const thinkingPhrases = [
+    'Analyzing module performance & quarterly transcript...',
+    'Evaluating assessment weightings & weakest areas...',
+    'Correlating module performance across 4 quarters...',
+    'Synthesizing high-impact academic improvement strategies...',
+    'Formulating personalized revision timetables & action steps...'
+];
+
+function startThinkingAnimation() {
+    const typingIndicator = document.getElementById('aiTypingIndicator');
+    const label = document.getElementById('aiThinkingStatusText');
+    const chatThread = document.getElementById('aiChatThread');
+    if (!typingIndicator) return;
+
+    if (label) {
+        label.textContent = thinkingPhrases[0];
+        label.classList.remove('status-fade-out');
+        label.classList.add('status-fade-in');
+    }
+
+    typingIndicator.style.display = 'flex';
+    if (chatThread) {
+        chatThread.scrollTop = chatThread.scrollHeight;
+    }
+
+    let phraseIdx = 0;
+    clearInterval(thinkingInterval);
+    thinkingInterval = setInterval(function() {
+        phraseIdx = (phraseIdx + 1) % thinkingPhrases.length;
+        if (label) {
+            label.classList.add('status-fade-out');
+            setTimeout(function() {
+                label.textContent = thinkingPhrases[phraseIdx];
+                label.classList.remove('status-fade-out');
+                label.classList.add('status-fade-in');
+            }, 240);
+        }
+    }, 2400);
+}
+
+function stopThinkingAnimation() {
+    clearInterval(thinkingInterval);
+    thinkingInterval = null;
+    const typingIndicator = document.getElementById('aiTypingIndicator');
+    if (typingIndicator) {
+        typingIndicator.style.display = 'none';
     }
 }
 
@@ -2283,10 +2577,10 @@ async function runAiCoach(customQuestion = '') {
             <div class="chat-msg-row msg-user">
                 <div class="chat-bubble user-bubble">
                     <p class="user-bubble-text">${escapeHtml(questionText)}</p>
-                    <div class="user-bubble-meta">${formatCurrentTime()} &bull; Avuyile</div>
+                    <div class="user-bubble-meta">${formatCurrentTime()} &bull; ${escapeHtml(currentStudentName)}</div>
                 </div>
                 <div class="chat-avatar avatar-user">
-                    AM
+                    ${escapeHtml(currentStudentInitials)}
                 </div>
             </div>
         `;
@@ -2294,9 +2588,8 @@ async function runAiCoach(customQuestion = '') {
         clearInputField();
     }
 
-    // Show Typing Indicator & Scroll
-    typingIndicator.style.display = 'flex';
-    chatThread.scrollTop = chatThread.scrollHeight;
+    // Show Thinking Bubble & Scroll
+    startThinkingAnimation();
 
     if (btnRun) btnRun.classList.add('disabled');
     if (btnAsk) btnAsk.classList.add('disabled');
@@ -2315,7 +2608,7 @@ async function runAiCoach(customQuestion = '') {
         });
 
         const data = await response.json();
-        typingIndicator.style.display = 'none';
+        stopThinkingAnimation();
 
         if (data.success && data.advice) {
             let displayModel = data.model || 'OpenRouter AI';
@@ -2388,7 +2681,7 @@ async function runAiCoach(customQuestion = '') {
         }
     } catch (err) {
         console.error('AI Coach fetch error:', err);
-        typingIndicator.style.display = 'none';
+        stopThinkingAnimation();
         const errorHtml = `
             <div class="chat-msg-row msg-assistant">
                 <div class="chat-avatar avatar-coach" style="background: #dc2626;">
@@ -2403,9 +2696,10 @@ async function runAiCoach(customQuestion = '') {
         `;
         dynamicContainer.insertAdjacentHTML('beforeend', errorHtml);
     } finally {
+        stopThinkingAnimation();
         if (btnRun) btnRun.classList.remove('disabled');
         if (btnAsk) btnAsk.classList.remove('disabled');
-        chatThread.scrollTop = chatThread.scrollHeight;
+        if (chatThread) chatThread.scrollTop = chatThread.scrollHeight;
     }
 }
 
@@ -2414,6 +2708,7 @@ function askAiQuestion(q) {
     if (input) input.value = q;
     runAiCoach(q);
 }
+
 
 function handleAiFormSubmit(e) {
     e.preventDefault();
