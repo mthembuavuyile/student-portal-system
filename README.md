@@ -59,6 +59,10 @@ Project Charter       TELOS Feasibility          IEEE 830 Specs        UML Class
 2-Week Sprint & RACI  DFDs & 3-Tier Arch         FR-01 to FR-18        OOP Domain Models             Schema & Migrations
 ```
 
+> **Unified Master Specification Available**:  
+> For assessing all specifications, diagrams, data dictionaries, and architectural models within a single comprehensive manual, please consult **[MASTER_DOCUMENTATION.md](MASTER_DOCUMENTATION.md)** on the root directory.
+
+
 1. **[01. Project Management Plan (PMP)](documentation/01_PROJECT_MANAGEMENT_PLAN.md)**  
    *Scope, Time, Cost, and Team Governance.* Features the Project Charter, 2-Week Sprint Schedule (Gantt chart), sub-R1,000 budget model highlighting open-source cost avoidance (~R48,400 saved), RACI matrix across the 3 interns, and risk register.
 2. **[02. Systems Analysis & Process Specification](documentation/02_SYSTEMS_ANALYSIS_AND_PROCESS_SPECIFICATION.md)**  
