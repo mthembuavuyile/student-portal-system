@@ -26,7 +26,7 @@ class OpenRouterService {
 
     public function __construct(?string $apiKey = null, ?string $model = null) {
         $this->apiKey = $apiKey ?? (defined('OPENROUTER_API_KEY') ? OPENROUTER_API_KEY : '');
-        $this->model = $model ?? (defined('OPENROUTER_MODEL') ? OPENROUTER_MODEL : 'openrouter/free');
+        $this->model = $model ?? (defined('OPENROUTER_MODEL') ? OPENROUTER_MODEL : 'cohere/north-mini-code:free');
         $this->siteUrl = defined('BASE_URL') ? BASE_URL : 'http://localhost';
         $this->siteName = defined('OPENROUTER_SITE_NAME') ? OPENROUTER_SITE_NAME : 'SMS University Portal';
     }
@@ -95,10 +95,10 @@ PROMPT;
      * Executes a chat completion call to OpenRouter with automatic multi-model failover rotation.
      * 
      * Incorporates Atlas-grade safeguards:
-     * 1. 15s Per-attempt timeout & 5s connect timeout to fit within PHP script execution limits.
+     * 1. 25s timeout for primary attempt (permits full code generation) and 15s for subsequent candidates.
      * 2. Retryable HTTP status detection (429 rate limit, 500-504 server down, 400/404 retired model).
      * 3. Response body error pattern matching ("overloaded", "rate limit", "temporarily unavailable").
-     * 4. Multi-model candidate pool rotation across frontier zero-credit engines.
+     * 4. Multi-model candidate pool rotation across verified free models without content-safety models.
      * 5. Fallback extraction of reasoning tokens & cleaning of raw <think> tags.
      */
     public function callOpenRouter(array $messages, ?string $modelOverride = null): array {
@@ -112,16 +112,15 @@ PROMPT;
         $fallbackPool = defined('OPENROUTER_FALLBACK_MODELS') && is_array(OPENROUTER_FALLBACK_MODELS)
             ? OPENROUTER_FALLBACK_MODELS
             : [
-                'openrouter/free',
-                'nvidia/nemotron-3.5-lightning:free',
                 'cohere/north-mini-code:free',
+                'minimax/minimax-m3.1-flash:free',
                 'poolside/laguna-s-2.1:free',
-                'google/gemma-4-26b-a4b-it:free'
+                'nvidia/nemotron-3.5-lightning:free'
             ];
 
         $primary = $modelOverride ?: $this->model;
-        // Build rotation list with primary first, followed by deduplicated fallback pool
-        $rotationCandidates = array_values(array_unique(array_merge([$primary], $fallbackPool)));
+        // Build rotation list with primary first, followed by deduplicated fallback pool (max 3 candidates)
+        $rotationCandidates = array_slice(array_values(array_unique(array_merge([$primary], $fallbackPool))), 0, 3);
         $url = 'https://openrouter.ai/api/v1/chat/completions';
 
         $headers = [
@@ -135,14 +134,15 @@ PROMPT;
         $lastError = null;
 
         // Multi-model failover rotation engine
-        foreach ($rotationCandidates as $candidateModel) {
+        foreach ($rotationCandidates as $idx => $candidateModel) {
             $attemptedModels[] = $candidateModel;
+            $attemptTimeout = ($idx === 0) ? 25 : 15; // 25s for primary attempt, 15s for fallbacks
 
             $payload = [
                 'model' => $candidateModel,
                 'messages' => $messages,
                 'temperature' => 0.4,
-                'max_tokens' => 2500
+                'max_tokens' => 1500
             ];
 
             $ch = curl_init($url);
@@ -150,8 +150,8 @@ PROMPT;
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  // Fast abort if connection hangs
-            curl_setopt($ch, CURLOPT_TIMEOUT, 15);         // Strict 15s budget per attempt
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4);
+            curl_setopt($ch, CURLOPT_TIMEOUT, $attemptTimeout);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             $rawResp = curl_exec($ch);
@@ -193,7 +193,7 @@ PROMPT;
                     $choice = $decoded['choices'][0]['message'] ?? [];
                     $content = trim((string)($choice['content'] ?? ''));
 
-                    // Extract reasoning if content is empty (Nemotron / DeepSeek pattern)
+                    // Extract reasoning if content is empty (Nemotron / DeepSeek / Minimax pattern)
                     if (empty($content) && !empty($choice['reasoning'])) {
                         $content = trim((string)$choice['reasoning']);
                     }
@@ -205,6 +205,13 @@ PROMPT;
                     }
 
                     $resolvedModel = $decoded['model'] ?? $candidateModel;
+
+                    // Discard content safety classifier output (e.g. nemotron-3.5-content-safety)
+                    if (strpos(strtolower($resolvedModel), 'content-safety') !== false ||
+                        strpos(strtolower($content), 'user safety: safe') !== false) {
+                        $lastError = "Filtered safety classifier response on {$candidateModel}";
+                        continue;
+                    }
 
                     if (!empty($content)) {
                         return [

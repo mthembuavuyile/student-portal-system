@@ -81,14 +81,13 @@ define('GEMINI_API_KEY', getenv('GEMINI_API_KEY') ?: '');
 
 // 2. OpenRouter API Configuration
 define('OPENROUTER_API_KEY', getenv('OPENROUTER_API_KEY') ?: '');
-define('OPENROUTER_DEFAULT_MODEL', getenv('OPENROUTER_DEFAULT_MODEL') ?: 'openrouter/free');
+define('OPENROUTER_DEFAULT_MODEL', getenv('OPENROUTER_DEFAULT_MODEL') ?: 'cohere/north-mini-code:free');
 define('OPENROUTER_MODEL', getenv('OPENROUTER_MODEL') ?: OPENROUTER_DEFAULT_MODEL);
 define('OPENROUTER_FALLBACK_MODELS', [
-    'openrouter/free',
-    'nvidia/nemotron-3.5-lightning:free',
     'cohere/north-mini-code:free',
+    'minimax/minimax-m3.1-flash:free',
     'poolside/laguna-s-2.1:free',
-    'google/gemma-4-26b-a4b-it:free'
+    'nvidia/nemotron-3.5-lightning:free'
 ]);
 define('OPENROUTER_SITE_NAME', 'Student Portal System - AI Success Advisor');
 

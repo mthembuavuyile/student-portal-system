@@ -93,6 +93,10 @@ $studentPayloadJson = json_encode([
 ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 ?>
 
+<!-- KaTeX & Highlight.js CSS for Atlas-Grade AI Rich Rendering -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
 <style>
     /* ==========================================================================
        Academic Results & Official Transcript Styling (Material Design 3)
@@ -1222,6 +1226,183 @@ $studentPayloadJson = json_encode([
         padding: 0 4px;
     }
 
+    /* Atlas-Grade AI Code Blocks & Toolbar */
+    .ai-code-block-card {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 8px;
+        margin: 16px 0;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
+        overflow: hidden;
+    }
+    .ai-code-header {
+        background: #1e293b;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .ai-code-lang-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #94a3b8;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .ai-code-lang-badge i {
+        font-size: 14px;
+        color: #60a5fa;
+    }
+    .ai-code-lines-count {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.68rem;
+        color: #cbd5e1;
+        font-weight: 500;
+    }
+    .ai-code-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .btn-code-copy, .btn-code-wrap {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #e2e8f0;
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.15s ease;
+    }
+    .btn-code-copy:hover, .btn-code-wrap:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+    }
+    .btn-code-wrap.active {
+        background: rgba(59, 130, 246, 0.25);
+        border-color: #3b82f6;
+        color: #93c5fd;
+    }
+    .ai-code-pre {
+        margin: 0 !important;
+        padding: 14px 18px !important;
+        background: #0f172a !important;
+        overflow-x: auto;
+        white-space: pre;
+        border: none !important;
+        border-radius: 0 !important;
+    }
+    .ai-code-pre code {
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+        font-size: 0.86rem !important;
+        line-height: 1.6 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* Atlas-Grade Responsive Data Tables */
+    .ai-table-container {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 16px 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .ai-rich-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.88rem;
+        text-align: left;
+    }
+    .ai-rich-table th {
+        background: #f8fafc;
+        color: #1e293b;
+        font-weight: 700;
+        padding: 10px 14px;
+        border-bottom: 2px solid #e2e8f0;
+        letter-spacing: 0.2px;
+    }
+    .ai-rich-table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        vertical-align: top;
+    }
+    .ai-rich-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+    .ai-rich-table tbody tr:hover td {
+        background: #f8fafc;
+    }
+
+    /* KaTeX Mathematical & Scientific Formula Styling */
+    .ai-math-block-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #6366f1;
+        border-radius: 8px;
+        padding: 16px 20px;
+        margin: 16px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        overflow-x: auto;
+    }
+    .ai-math-body {
+        width: 100%;
+        overflow-x: auto;
+        text-align: center;
+        padding: 4px 0;
+    }
+    .btn-copy-latex {
+        align-self: flex-end;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        color: #64748b;
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.15s ease;
+    }
+    .btn-copy-latex:hover {
+        background: #f1f5f9;
+        color: #1e293b;
+    }
+    .ai-math-inline {
+        padding: 0 3px;
+        vertical-align: baseline;
+    }
+    .ai-blockquote {
+        border-left: 4px solid #3b82f6;
+        background: #eff6ff;
+        padding: 10px 16px;
+        margin: 12px 0;
+        border-radius: 0 6px 6px 0;
+        color: #1e3a8a;
+        font-style: italic;
+    }
+
     /* Coach Bubble Actions Bar */
     .coach-bubble-actions {
         display: flex;
@@ -2261,6 +2442,13 @@ $studentPayloadJson = json_encode([
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+<!-- KaTeX, mhchem, Marked, Highlight.js, DOMPurify for Atlas-Grade AI Rendering Pipeline -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/mhchem.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
 <script>
 // Student marks payload directly from PHP
 const studentDataPayload = <?php echo $studentPayloadJson ?: '{}'; ?>;
@@ -2371,89 +2559,303 @@ document.getElementById('downloadPdf').addEventListener('click', function () {
     });
 });
 
-// Enhanced Markdown & Rich Text Formatter
+// ==========================================================================
+// Atlas-Grade 7-Stage "Shield-First" AI Markdown & Rich Text Formatter
+// ==========================================================================
 function formatAiMarkdown(rawText) {
     if (!rawText) return '';
 
-    // 1. Sanitize HTML
-    var text = rawText
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+    let text = String(rawText);
 
-    // 2. Headers
-    text = text.replace(/^### (.*$)/gim, '<h5>$1</h5>');
-    text = text.replace(/^## (.*$)/gim, '<h4>$1</h4>');
-    text = text.replace(/^# (.*$)/gim, '<h3>$1</h3>');
+    // -------------------------------------------------------------
+    // Stage 1: Streaming Code Fence Balance & Code Shielding
+    // -------------------------------------------------------------
+    // Auto-close open code fence if model streamed odd count
+    const fenceCount = (text.match(/```/g) || []).length;
+    if (fenceCount % 2 === 1) {
+        text += '\n```\n';
+    }
 
-    // 3. Highlight Callout Cards for Action Plan, Key Takeaways, Recommendations
-    text = text.replace(/(?:^|\n)(Action Plan|Key Takeaways?|Summary|Immediate Next Steps?):\s*(.*?)(?=\n\n|\n[#*-]|$)/gis, function(match, label, content) {
-        var cleanContent = content.trim().replace(/→|->/g, '<span class="ai-step-arrow">➔</span>');
-        return '\n<div class="ai-action-card"><div class="ai-action-header"><i class="material-icons tiny">flag</i> ' + label + '</div><div class="ai-action-body">' + cleanContent + '</div></div>\n';
+    const codeBlocks = [];
+    // Extract block code: ```lang\ncode\n```
+    text = text.replace(/```([a-zA-Z0-9_\-\.\+]*)[ \t]*\r?\n([\s\S]*?)```/g, function(match, lang, code) {
+        const id = codeBlocks.length;
+        codeBlocks.push({
+            lang: (lang || '').trim().toLowerCase() || 'text',
+            code: code
+        });
+        return `\n\n@@CODE_BLOCK_${id}@@\n\n`;
     });
 
-    // 4. Bold, Italics, Code
-    text = text.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>');
-    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    text = text.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
-    text = text.replace(/`([^`]+)`/g, '<code class="ai-code-inline">$1</code>');
-    text = text.replace(/→|->/g, '<span class="ai-step-arrow">➔</span>');
+    const inlineCodes = [];
+    // Extract inline code: `code`
+    text = text.replace(/`([^`\r\n]+)`/g, function(match, code) {
+        const id = inlineCodes.length;
+        inlineCodes.push(code);
+        return `@@INLINE_CODE_${id}@@`;
+    });
 
-    // 5. Line by line parsing to build clean list structures & descriptions
-    var lines = text.split('\n');
-    var outputLines = [];
-    var inList = false;
+    // -------------------------------------------------------------
+    // Stage 2: Math Extraction & Shielding (KaTeX + LaTeX + mhchem)
+    // -------------------------------------------------------------
+    const mathBlocks = [];
+    // 1. Block environments: \begin{align}...\end{align}, etc.
+    text = text.replace(/(\\begin\{(?:align|equation|matrix|pmatrix|bmatrix|vmatrix|cases|gather|split)\*?\}[\s\S]*?\\end\{(?:align|equation|matrix|pmatrix|bmatrix|vmatrix|cases|gather|split)\*?\})/g, function(match, formula) {
+        const id = mathBlocks.length;
+        mathBlocks.push(formula.trim());
+        return `\n\n@@MATH_BLOCK_${id}@@\n\n`;
+    });
 
-    for (var i = 0; i < lines.length; i++) {
-        var line = lines[i];
-        var isBullet = line.match(/^(\s*)([-*•])\s+(.*)$/);
-        var isNumbered = line.match(/^(\s*)(\d+)\.\s+(.*)$/);
+    // 2. Display delimiters: $$...$$ and \[...\]
+    text = text.replace(/\$\$([\s\S]*?)\$\$/g, function(match, formula) {
+        const id = mathBlocks.length;
+        mathBlocks.push(formula.trim());
+        return `\n\n@@MATH_BLOCK_${id}@@\n\n`;
+    });
+    text = text.replace(/\\\[([\s\S]*?)\\\]/g, function(match, formula) {
+        const id = mathBlocks.length;
+        mathBlocks.push(formula.trim());
+        return `\n\n@@MATH_BLOCK_${id}@@\n\n`;
+    });
 
-        if (isBullet) {
-            if (!inList) {
-                outputLines.push('<ul class="ai-bullet-group">');
-                inList = true;
+    const mathInlines = [];
+    // 3. Inline delimiters: \(...\)
+    text = text.replace(/\\\(([\s\S]*?)\\\)/g, function(match, formula) {
+        const id = mathInlines.length;
+        mathInlines.push(formula.trim());
+        return `@@MATH_INLINE_${id}@@`;
+    });
+
+    // 4. Inline $...$ with Atlas currency safeguard regex ($50.00 not treated as math)
+    text = text.replace(/(^|[^\$\w])\$((?!\s)[^\$\n]+?(?<!\s))\$(?!\d)/g, function(match, prefix, formula) {
+        if (/^[\d,]+(\.\d+)?$/.test(formula.trim())) {
+            return match; // Skip currency
+        }
+        const id = mathInlines.length;
+        mathInlines.push(formula.trim());
+        return `${prefix}@@MATH_INLINE_${id}@@`;
+    });
+
+    // -------------------------------------------------------------
+    // Stage 3: Star Normalization ("Asterisk Flaw" Fix)
+    // -------------------------------------------------------------
+    // Fix loose interior spaces: ** bold text ** -> **bold text**
+    text = text.replace(/\*\*([ \t]*)([^\*\r\n]+?)([ \t]*)\*\*/g, function(match, lead, content, trail) {
+        const trimmed = content.trim();
+        return trimmed ? `**${trimmed}**` : match;
+    });
+    text = text.replace(/(^|[^*])\*([ \t]*)([^*\r\n]+?)([ \t]*)\*([^*]|$)/g, function(match, pre, lead, content, trail, post) {
+        const trimmed = content.trim();
+        return trimmed ? `${pre}*${trimmed}*${post}` : match;
+    });
+
+    // Callout Cards transformation for Action Plan / Summary / Key Takeaways
+    text = text.replace(/(?:^|\n)(Action Plan|Key Takeaways?|Summary|Immediate Next Steps?):\s*(.*?)(?=\n\n|\n[#*-]|$)/gis, function(match, label, content) {
+        const cleanContent = content.trim().replace(/→|->/g, '➔');
+        return `\n\n<div class="ai-action-card"><div class="ai-action-header"><i class="material-icons tiny">flag</i> ${escapeHtml(label)}</div><div class="ai-action-body">${cleanContent}</div></div>\n\n`;
+    });
+
+    // -------------------------------------------------------------
+    // Stage 4: Markdown Parsing via marked.js (with custom table renderer)
+    // -------------------------------------------------------------
+    let html = '';
+    if (typeof marked !== 'undefined') {
+        const renderer = new marked.Renderer();
+
+        // Responsive Data Table Renderer
+        renderer.table = function(header, body) {
+            return `
+                <div class="ai-table-container">
+                    <table class="ai-rich-table">
+                        <thead>${header}</thead>
+                        <tbody>${body}</tbody>
+                    </table>
+                </div>
+            `;
+        };
+
+        // Secure external links
+        renderer.link = function(href, title, linkText) {
+            return `<a href="${href}" target="_blank" rel="noopener noreferrer"${title ? ` title="${title}"` : ''}>${linkText}</a>`;
+        };
+
+        // Semantic blockquote
+        renderer.blockquote = function(quote) {
+            return `<blockquote class="ai-blockquote">${quote}</blockquote>`;
+        };
+
+        html = marked.parse(text, {
+            renderer: renderer,
+            gfm: true,
+            breaks: true
+        });
+    } else {
+        // Fallback parser if CDN is delayed
+        html = text
+            .replace(/^### (.*$)/gim, '<h5>$1</h5>')
+            .replace(/^## (.*$)/gim, '<h4>$1</h4>')
+            .replace(/^# (.*$)/gim, '<h3>$1</h3>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\n\n/g, '<br><br>');
+    }
+
+    // -------------------------------------------------------------
+    // Stage 5: HTML Sanitization via DOMPurify
+    // -------------------------------------------------------------
+    if (typeof DOMPurify !== 'undefined') {
+        html = DOMPurify.sanitize(html, {
+            ADD_TAGS: [
+                'kbd', 'mark', 'details', 'summary', 'svg', 'path',
+                'math', 'semantics', 'mrow', 'mo', 'mn', 'mi', 'msup', 'msub', 'mfrac', 'msqrt', 'annotation',
+                'button', 'i', 'span', 'div', 'table', 'thead', 'tbody', 'tr', 'th', 'td', 'pre', 'code'
+            ],
+            ADD_ATTR: ['target', 'viewBox', 'data-latex', 'xmlns', 'display', 'class', 'style', 'title', 'onclick']
+        });
+    }
+
+    // -------------------------------------------------------------
+    // Stage 6: Math Substitution & KaTeX Rendering
+    // -------------------------------------------------------------
+    mathBlocks.forEach((latex, idx) => {
+        let rendered = '';
+        if (typeof katex !== 'undefined') {
+            try {
+                rendered = katex.renderToString(latex, { displayMode: true, throwOnError: false });
+            } catch (e) {
+                rendered = `<code>${escapeHtml(latex)}</code>`;
             }
-            outputLines.push('<li>' + isBullet[3] + '</li>');
-        } else if (isNumbered) {
-            if (!inList) {
-                outputLines.push('<ul class="ai-bullet-group">');
-                inList = true;
-            }
-            outputLines.push('<li><strong>' + isNumbered[2] + '.</strong> ' + isNumbered[3] + '</li>');
         } else {
-            var trimmed = line.trim();
-            if (inList && trimmed === '') {
-                outputLines.push('</ul>');
-                inList = false;
-            } else if (inList && !trimmed.match(/^<(div|h|p)/)) {
-                // Indented descriptive continuation under the bullet point
-                outputLines.push('<div class="ai-sub-description">' + trimmed + '</div>');
-            } else {
-                if (inList) {
-                    outputLines.push('</ul>');
-                    inList = false;
+            rendered = `<code>${escapeHtml(latex)}</code>`;
+        }
+        const encoded = encodeURIComponent(latex);
+        const mathHtml = `
+            <div class="ai-math-block-card">
+                <div class="ai-math-body">${rendered}</div>
+                <button type="button" class="btn-copy-latex" onclick="copyLatexFormula(this, decodeURIComponent('${encoded}'))" title="Copy LaTeX formula">
+                    <i class="material-icons tiny">functions</i> Copy LaTeX
+                </button>
+            </div>
+        `;
+        html = html.replace(`@@MATH_BLOCK_${idx}@@`, mathHtml);
+    });
+
+    mathInlines.forEach((latex, idx) => {
+        let rendered = '';
+        if (typeof katex !== 'undefined') {
+            try {
+                rendered = katex.renderToString(latex, { displayMode: false, throwOnError: false });
+            } catch (e) {
+                rendered = `<code>${escapeHtml(latex)}</code>`;
+            }
+        } else {
+            rendered = `<code>${escapeHtml(latex)}</code>`;
+        }
+        html = html.replace(`@@MATH_INLINE_${idx}@@`, `<span class="ai-math-inline">${rendered}</span>`);
+    });
+
+    // -------------------------------------------------------------
+    // Stage 7: Code Block Substitution & Toolbar Enhancement
+    // -------------------------------------------------------------
+    codeBlocks.forEach((block, idx) => {
+        const lang = (block.lang || 'code').toLowerCase();
+        const code = block.code;
+        const lineCount = code.split('\n').length;
+
+        let highlighted = escapeHtml(code);
+        if (typeof hljs !== 'undefined') {
+            try {
+                if (lang && hljs.getLanguage(lang)) {
+                    highlighted = hljs.highlight(code, { language: lang }).value;
+                } else {
+                    highlighted = hljs.highlightAuto(code).value;
                 }
-                outputLines.push(line);
+            } catch (e) {
+                highlighted = escapeHtml(code);
             }
         }
-    }
-    if (inList) {
-        outputLines.push('</ul>');
-    }
 
-    // 6. Wrap loose blocks into proper paragraphs
-    var paragraphs = outputLines.join('\n').split(/\n\s*\n/);
-    var finalResult = paragraphs.map(function(p) {
-        var trimmed = p.trim();
-        if (!trimmed) return '';
-        if (trimmed.match(/^<(h[1-6]|ul|ol|div|table|blockquote)/i)) {
-            return trimmed;
-        }
-        return '<p>' + trimmed.replace(/\n/g, '<br>') + '</p>';
-    }).join('\n');
+        const encoded = encodeURIComponent(code);
+        const codeCardHtml = `
+            <div class="ai-code-block-card">
+                <div class="ai-code-header">
+                    <div class="ai-code-lang-badge">
+                        <i class="material-icons tiny">terminal</i>
+                        <span>${escapeHtml(lang.toUpperCase())}</span>
+                        <span class="ai-code-lines-count">${lineCount} lines</span>
+                    </div>
+                    <div class="ai-code-actions">
+                        <button type="button" class="btn-code-wrap" onclick="toggleCodeWrap(this)" title="Toggle word wrap">
+                            <i class="material-icons tiny">wrap_text</i> Wrap
+                        </button>
+                        <button type="button" class="btn-code-copy" onclick="copyCodeBlock(this, decodeURIComponent('${encoded}'))" title="Copy code">
+                            <i class="material-icons tiny">content_copy</i> Copy Code
+                        </button>
+                    </div>
+                </div>
+                <pre class="ai-code-pre"><code class="hljs language-${escapeHtml(lang)}">${highlighted}</code></pre>
+            </div>
+        `;
+        html = html.replace(`@@CODE_BLOCK_${idx}@@`, codeCardHtml);
+    });
 
-    return '<div class="ai-rendered-output">' + finalResult + '</div>';
+    inlineCodes.forEach((code, idx) => {
+        html = html.replace(`@@INLINE_CODE_${idx}@@`, `<code class="ai-code-inline">${escapeHtml(code)}</code>`);
+    });
+
+    return `<div class="ai-rendered-output">${html}</div>`;
+}
+
+// Copy Code Block to Clipboard
+function copyCodeBlock(btn, rawCode) {
+    if (!navigator.clipboard) {
+        const textArea = document.createElement("textarea");
+        textArea.value = rawCode;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showCodeBtnFeedback(btn);
+        return;
+    }
+    navigator.clipboard.writeText(rawCode).then(() => {
+        showCodeBtnFeedback(btn);
+    });
+}
+
+function showCodeBtnFeedback(btn) {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="material-icons tiny" style="color: #4ade80;">check</i> Copied!';
+    btn.style.borderColor = '#4ade80';
+    btn.style.color = '#4ade80';
+    setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.style.borderColor = '';
+        btn.style.color = '';
+    }, 2000);
+}
+
+// Toggle Pre Word Wrap
+function toggleCodeWrap(btn) {
+    const card = btn.closest('.ai-code-block-card');
+    if (!card) return;
+    const pre = card.querySelector('pre');
+    if (!pre) return;
+    const isWrapped = pre.style.whiteSpace === 'pre-wrap';
+    pre.style.whiteSpace = isWrapped ? 'pre' : 'pre-wrap';
+    pre.style.wordBreak = isWrapped ? 'normal' : 'break-word';
+    btn.classList.toggle('active', !isWrapped);
+}
+
+// Copy LaTeX Formula
+function copyLatexFormula(btn, latex) {
+    navigator.clipboard.writeText(latex).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="material-icons tiny" style="color: #16a34a;">check</i> Copied!';
+        setTimeout(() => {
+            btn.innerHTML = orig;
+        }, 2000);
+    });
 }
 
 function escapeHtml(str) {

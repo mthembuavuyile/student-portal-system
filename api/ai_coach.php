@@ -16,19 +16,18 @@ $openRouterKey = defined('OPENROUTER_API_KEY')
 
 $primaryModel = defined('OPENROUTER_MODEL') 
     ? OPENROUTER_MODEL 
-    : (defined('OPENROUTER_DEFAULT_MODEL') ? OPENROUTER_DEFAULT_MODEL : 'openrouter/free');
+    : (defined('OPENROUTER_DEFAULT_MODEL') ? OPENROUTER_DEFAULT_MODEL : 'cohere/north-mini-code:free');
 
 $fallbackModels = defined('OPENROUTER_FALLBACK_MODELS') && is_array(OPENROUTER_FALLBACK_MODELS)
     ? OPENROUTER_FALLBACK_MODELS
     : [
-        'openrouter/free',
-        'nvidia/nemotron-3.5-lightning:free',
         'cohere/north-mini-code:free',
+        'minimax/minimax-m3.1-flash:free',
         'poolside/laguna-s-2.1:free',
-        'google/gemma-4-26b-a4b-it:free'
+        'nvidia/nemotron-3.5-lightning:free'
     ];
 
-$modelChain = array_values(array_unique(array_merge([$primaryModel], $fallbackModels)));
+$modelChain = array_slice(array_values(array_unique(array_merge([$primaryModel], $fallbackModels))), 0, 3);
 
 $siteUrl = defined('BASE_URL') ? BASE_URL : 'http://localhost/university_system';
 $siteTitle = defined('OPENROUTER_SITE_NAME') ? OPENROUTER_SITE_NAME : 'Student Academic Advisor';
@@ -169,14 +168,15 @@ $openRouterHeaders = [
 ];
 
 // Try models in sequence with retryable error safeguards
-foreach ($modelChain as $candidateModel) {
+foreach ($modelChain as $idx => $candidateModel) {
     $attemptedModels[] = $candidateModel;
+    $attemptTimeout = ($idx === 0) ? 25 : 15; // 25s for primary attempt, 15s for fallbacks
 
     $payload = [
         'model' => $candidateModel,
         'messages' => $messagesList,
         'temperature' => 0.4,
-        'max_tokens' => 2500
+        'max_tokens' => 1500
     ];
 
     $ch = curl_init('https://openrouter.ai/api/v1/chat/completions');
@@ -184,8 +184,8 @@ foreach ($modelChain as $candidateModel) {
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
     curl_setopt($ch, CURLOPT_HTTPHEADER, $openRouterHeaders);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);  // Fast abort on connect hang
-    curl_setopt($ch, CURLOPT_TIMEOUT, 15);         // 15s budget per model
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 4);
+    curl_setopt($ch, CURLOPT_TIMEOUT, $attemptTimeout);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
     $raw = curl_exec($ch);
@@ -224,7 +224,7 @@ foreach ($modelChain as $candidateModel) {
             $message = $resp['choices'][0]['message'] ?? [];
             $text = trim((string)($message['content'] ?? ''));
 
-            // Extract reasoning if content is empty (Nemotron / DeepSeek pattern)
+            // Extract reasoning if content is empty (Nemotron / DeepSeek / Minimax pattern)
             if (empty($text) && !empty($message['reasoning'])) {
                 $text = trim((string)$message['reasoning']);
             }
@@ -235,9 +235,17 @@ foreach ($modelChain as $candidateModel) {
                 $text = trim($text);
             }
 
+            $resolvedModel = $resp['model'] ?? $candidateModel;
+
+            // Discard content safety classifier output (e.g. nemotron-3.5-content-safety)
+            if (strpos(strtolower($resolvedModel), 'content-safety') !== false ||
+                strpos(strtolower($text), 'user safety: safe') !== false) {
+                continue;
+            }
+
             if (!empty($text)) {
                 $aiContent = $text;
-                $usedModel = $resp['model'] ?? $candidateModel;
+                $usedModel = $resolvedModel;
                 break;
             }
         }
