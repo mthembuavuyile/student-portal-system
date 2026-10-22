@@ -11,7 +11,7 @@ try {
     $total_courses = $pdo->query("SELECT COUNT(*) FROM courses")->fetchColumn();
     $total_modules = $pdo->query("SELECT COUNT(*) FROM modules")->fetchColumn();
     $total_lecturers = $pdo->query("SELECT COUNT(*) FROM lecturers")->fetchColumn();
-    $total_results = $pdo->query("SELECT COUNT(*) FROM module_results")->fetchColumn();
+    $total_users = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
 
     // Get recent 5 students
     $stmt_recent = $pdo->query("
@@ -109,14 +109,14 @@ try {
         </div>
     </div>
     <div class="col s12 m4 l2">
-        <div class="card orange darken-2 white-text center-align hoverable">
+        <div class="card blue-grey darken-2 white-text center-align hoverable">
             <div class="card-content" style="padding: 15px 10px;">
-                <i class="material-icons medium">assessment</i>
-                <h6 style="margin: 5px 0; font-size: 0.9rem;">Recorded Marks</h6>
-                <h4 style="margin: 5px 0; font-weight: 700;"><?php echo $total_results; ?></h4>
+                <i class="material-icons medium">manage_accounts</i>
+                <h6 style="margin: 5px 0; font-size: 0.9rem;">Portal Accounts</h6>
+                <h4 style="margin: 5px 0; font-weight: 700;"><?php echo $total_users; ?></h4>
             </div>
             <div class="card-action" style="padding: 8px;">
-                <a href="results.php" class="white-text" style="font-size: 0.8rem;">Quarterly Results</a>
+                <span class="white-text" style="font-size: 0.8rem;">Security & Logins</span>
             </div>
         </div>
     </div>

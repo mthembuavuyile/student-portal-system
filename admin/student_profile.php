@@ -109,9 +109,6 @@ include '../includes/header.php';
                 <a href="#modal-reset-password" class="btn waves-effect waves-light indigo darken-1 modal-trigger">
                     <i class="material-icons left">vpn_key</i>Reset Password
                 </a>
-                <a href="results.php" class="btn waves-effect waves-light blue darken-2">
-                    <i class="material-icons left">assessment</i>Manage Marks
-                </a>
                 <a href="javascript:void(0);" onclick="confirmDelete(<?php echo $student->getId(); ?>);" class="btn waves-effect waves-light red darken-2 right">
                     <i class="material-icons left">delete</i>Delete Record
                 </a>
@@ -121,17 +118,17 @@ include '../includes/header.php';
         <!-- Academic Results / Quarterly Marks Section -->
         <div class="card">
             <div class="card-content">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span class="card-title bold" style="font-weight: 600;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <span class="card-title bold" style="font-weight: 600; margin: 0;">
                         <i class="material-icons left orange-text text-darken-3">assessment</i>
                         Academic Results & Quarterly Marks
                     </span>
-                    <a href="results.php" class="btn-small orange darken-3 waves-effect waves-light">
-                        <i class="material-icons left">add</i>Record Marks
-                    </a>
+                    <span class="chip tiny amber lighten-4 amber-text text-darken-4" style="font-weight: 600;">
+                        <i class="material-icons left tiny">verified_user</i>Managed Exclusively by Module Lecturers
+                    </span>
                 </div>
-                <p class="grey-text" style="margin-bottom: 15px;">
-                    Quarterly marks (Q1 - Q4) stored for each module and academic year. Average automatically calculated via calculateAverage().
+                <p class="grey-text" style="margin-bottom: 15px; margin-top: 5px;">
+                    Institutional view: Continuous assessment marks (Q1 - Q4) are submitted and managed by designated faculty lecturers.
                 </p>
 
                 <?php if (!empty($moduleResults)): ?>
@@ -180,9 +177,9 @@ include '../includes/header.php';
                         </tbody>
                     </table>
                 <?php else: ?>
-                    <div class="card-panel grey lighten-4 center-align">
-                        <p class="grey-text">No academic results recorded for this student yet.</p>
-                        <a href="results.php" class="btn blue darken-2 waves-effect waves-light">Record Quarterly Marks</a>
+                    <div class="card-panel grey lighten-4 center-align" style="padding: 25px;">
+                        <i class="material-icons medium grey-text text-lighten-1">assignment_late</i>
+                        <p class="grey-text" style="margin: 5px 0 0 0;">No quarterly marks recorded for this student yet. Marks are recorded exclusively by assigned module lecturers.</p>
                     </div>
                 <?php endif; ?>
             </div>

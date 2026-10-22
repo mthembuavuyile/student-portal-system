@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 // Get filter
 $filterModuleId = isset($_GET['module_id']) && (int)$_GET['module_id'] > 0 ? (int)$_GET['module_id'] : null;
+$filterStudentId = isset($_GET['student_id']) && (int)$_GET['student_id'] > 0 ? (int)$_GET['student_id'] : null;
 
 // Lecturer's modules
 $modules = $lecturer->getModules($pdo);
@@ -76,6 +77,12 @@ $moduleResults = $lecturer->getModuleResults($pdo, $filterModuleId);
 
 // All active students eligible for this lecturer's modules
 $eligibleStudents = $lecturer->getStudents($pdo);
+
+// If both student and module are specified, check for existing marks to pre-populate modal
+$existingMarks = null;
+if ($filterStudentId && $filterModuleId) {
+    $existingMarks = ModuleResult::find($pdo, $filterStudentId, $filterModuleId, (int)date('Y'));
+}
 ?>
 
 <div class="row" style="margin-top: 20px;">
@@ -89,7 +96,10 @@ $eligibleStudents = $lecturer->getStudents($pdo);
                     Educator Marksheet for <strong><?php echo htmlspecialchars($lecturer->getFullName()); ?></strong>. Enter quarterly scores (0 - 100).
                 </p>
             </div>
-            <div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="students.php" class="btn-large waves-effect waves-light indigo darken-3 z-depth-2" style="border-radius: 6px; font-weight: 600;">
+                    <i class="material-icons left">people</i>My Students
+                </a>
                 <a href="#captureMarksModal" class="btn-large waves-effect waves-light amber darken-3 modal-trigger z-depth-2" style="border-radius: 6px; font-weight: 600;">
                     <i class="material-icons left">add_circle</i>Record New Marks
                 </a>
@@ -200,9 +210,9 @@ $eligibleStudents = $lecturer->getStudents($pdo);
                                             <?php echo $grade['grade']; ?>
                                         </span>
                                     </td>
-                                    <td class="center-align">
+                                    <td class="center-align" style="white-space: nowrap;">
                                         <button type="button" 
-                                                class="btn-small waves-effect waves-light blue darken-2 edit-marks-btn"
+                                                class="btn-small waves-effect waves-light amber darken-3 edit-marks-btn"
                                                 data-student="<?php echo $res['student_id']; ?>"
                                                 data-module="<?php echo $res['module_id']; ?>"
                                                 data-year="<?php echo $res['academic_year']; ?>"
@@ -211,8 +221,13 @@ $eligibleStudents = $lecturer->getStudents($pdo);
                                                 data-q3="<?php echo $res['quarter3'] ?? ''; ?>"
                                                 data-q4="<?php echo $res['quarter4'] ?? ''; ?>"
                                                 title="Edit Marks">
-                                            <i class="material-icons tiny">edit</i>
+                                            <i class="material-icons tiny left">edit</i>Edit
                                         </button>
+                                        <a href="student_profile.php?id=<?php echo $res['student_id']; ?>" 
+                                           class="btn-small waves-effect waves-light indigo darken-3" 
+                                           title="View Student Profile">
+                                            <i class="material-icons tiny">person</i>
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -262,9 +277,9 @@ $eligibleStudents = $lecturer->getStudents($pdo);
 
                 <div class="input-field col s12 m6">
                     <select name="student_id" id="modal_student_id" required>
-                        <option value="" disabled selected>-- Select Enrolled Student --</option>
+                        <option value="" disabled <?php echo empty($filterStudentId) ? 'selected' : ''; ?>>-- Select Enrolled Student --</option>
                         <?php foreach ($eligibleStudents as $st): ?>
-                            <option value="<?php echo $st['id']; ?>">
+                            <option value="<?php echo $st['id']; ?>" <?php echo ($filterStudentId == $st['id']) ? 'selected' : ''; ?>>
                                 <?php echo htmlspecialchars($st['full_name'] . ' (' . ($st['student_number'] ?: $st['student_id_number']) . ')'); ?>
                             </option>
                         <?php endforeach; ?>
@@ -345,6 +360,20 @@ document.addEventListener('DOMContentLoaded', function() {
             instance.open();
         });
     });
+
+    <?php if ($filterStudentId || isset($_GET['open_modal'])): ?>
+    var autoModal = M.Modal.getInstance(document.getElementById('captureMarksModal'));
+    if (autoModal) {
+        <?php if ($existingMarks): ?>
+        document.getElementById('modal_quarter1').value = '<?php echo $existingMarks->getQuarter1() ?? ''; ?>';
+        document.getElementById('modal_quarter2').value = '<?php echo $existingMarks->getQuarter2() ?? ''; ?>';
+        document.getElementById('modal_quarter3').value = '<?php echo $existingMarks->getQuarter3() ?? ''; ?>';
+        document.getElementById('modal_quarter4').value = '<?php echo $existingMarks->getQuarter4() ?? ''; ?>';
+        M.updateTextFields();
+        <?php endif; ?>
+        autoModal.open();
+    }
+    <?php endif; ?>
 });
 </script>
 

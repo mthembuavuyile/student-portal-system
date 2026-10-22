@@ -7,6 +7,7 @@
         </a>
         <ul class="right hide-on-med-and-down">
             <li><a href="<?php echo BASE_URL; ?>lecturer/dashboard.php"><i class="material-icons left">dashboard</i>Dashboard</a></li>
+            <li><a href="<?php echo BASE_URL; ?>lecturer/students.php"><i class="material-icons left">people</i>My Students</a></li>
             <li><a href="<?php echo BASE_URL; ?>lecturer/modules.php"><i class="material-icons left">book</i>My Modules</a></li>
             <li><a href="<?php echo BASE_URL; ?>lecturer/results.php"><i class="material-icons left">edit_note</i>Assign Marks</a></li>
             <li><a href="<?php echo BASE_URL; ?>change_password.php"><i class="material-icons left">lock</i>Password</a></li>
@@ -23,6 +24,7 @@
         <a href="#email"><span class="white-text email">Academic Faculty & Mark Assessment</span></a>
     </div></li>
     <li><a href="<?php echo BASE_URL; ?>lecturer/dashboard.php"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="<?php echo BASE_URL; ?>lecturer/students.php"><i class="material-icons">people</i>My Students</a></li>
     <li><a href="<?php echo BASE_URL; ?>lecturer/modules.php"><i class="material-icons">book</i>My Assigned Modules</a></li>
     <li><a href="<?php echo BASE_URL; ?>lecturer/results.php"><i class="material-icons">edit_note</i>Assign & Record Marks</a></li>
     <li><div class="divider"></div></li>

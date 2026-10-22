@@ -35,7 +35,10 @@ $modules = $lecturer->getModules($pdo);
                     Curriculum modules assigned to <strong><?php echo htmlspecialchars($lecturer->getFullName()); ?></strong>.
                 </p>
             </div>
-            <div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="students.php" class="btn waves-effect waves-light indigo darken-3">
+                    <i class="material-icons left">people</i>My Students
+                </a>
                 <a href="results.php" class="btn waves-effect waves-light amber darken-3">
                     <i class="material-icons left">edit_note</i>Assign Marks
                 </a>
@@ -116,9 +119,12 @@ $modules = $lecturer->getModules($pdo);
                             </div>
                         </div>
 
-                        <div class="card-action" style="padding: 12px 0 0 0; border-top: 1px solid #f0f0f0;">
-                            <a href="results.php?module_id=<?php echo $m['module_id']; ?>" class="btn waves-effect waves-light indigo darken-3" style="width: 100%;">
-                                <i class="material-icons left tiny">edit_note</i>Record Marks for <?php echo htmlspecialchars($m['module_code']); ?>
+                        <div class="card-action" style="padding: 12px 0 0 0; border-top: 1px solid #f0f0f0; display: flex; gap: 8px;">
+                            <a href="students.php?module_id=<?php echo $m['module_id']; ?>" class="btn-small waves-effect waves-light indigo darken-3" style="flex: 1;">
+                                <i class="material-icons left tiny">people</i>Students (<?php echo $stCount; ?>)
+                            </a>
+                            <a href="results.php?module_id=<?php echo $m['module_id']; ?>" class="btn-small waves-effect waves-light amber darken-3" style="flex: 1;">
+                                <i class="material-icons left tiny">edit_note</i>Marks
                             </a>
                         </div>
                     </div>

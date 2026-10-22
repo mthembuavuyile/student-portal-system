@@ -139,6 +139,113 @@ class Lecturer {
         return $stmt->fetchAll();
     }
 
+    /**
+     * Get students enrolled in modules taught by this lecturer with enrolled module details and marks
+     */
+    public function getStudentsDetailed(PDO $pdo, ?int $moduleId = null): array {
+        if (!$this->lecturerId) return [];
+        $sql = "
+            SELECT 
+                s.id AS student_id,
+                s.full_name,
+                s.student_number,
+                s.student_id_number,
+                s.id_number,
+                s.email,
+                s.academic_status,
+                s.date_of_birth,
+                s.enrollment_date,
+                c.course_id,
+                c.course_code,
+                c.course_name,
+                m.module_id,
+                m.module_code,
+                m.module_name,
+                m.credits,
+                ml.is_primary,
+                r.mark_id,
+                r.academic_year,
+                r.quarter1,
+                r.quarter2,
+                r.quarter3,
+                r.quarter4,
+                r.average
+            FROM students s
+            JOIN enrollments e ON e.student_id = s.id AND e.status = 'Active'
+            JOIN courses c ON c.course_id = e.course_id
+            JOIN course_modules cm ON cm.course_id = c.course_id
+            JOIN modules m ON m.module_id = cm.module_id
+            JOIN module_lecturers ml ON ml.module_id = m.module_id
+            LEFT JOIN module_results r ON r.student_id = s.id AND r.module_id = m.module_id
+            WHERE ml.lecturer_id = :lid
+        ";
+        $params = [':lid' => $this->lecturerId];
+        if ($moduleId !== null) {
+            $sql .= " AND m.module_id = :mid";
+            $params[':mid'] = $moduleId;
+        }
+        $sql .= " ORDER BY s.full_name ASC, m.module_code ASC";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Check if a specific student is taught by this lecturer
+     */
+    public function hasStudent(PDO $pdo, int $studentId): bool {
+        if (!$this->lecturerId) return false;
+        $stmt = $pdo->prepare("
+            SELECT COUNT(*)
+            FROM students s
+            JOIN enrollments e ON e.student_id = s.id AND e.status = 'Active'
+            JOIN courses c ON c.course_id = e.course_id
+            JOIN course_modules cm ON cm.course_id = c.course_id
+            JOIN module_lecturers ml ON ml.module_id = cm.module_id
+            WHERE ml.lecturer_id = :lid AND s.id = :sid
+        ");
+        $stmt->execute([':lid' => $this->lecturerId, ':sid' => $studentId]);
+        return (int)$stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Get all modules taught by this lecturer that a specific student is enrolled in, with marks
+     */
+    public function getStudentModules(PDO $pdo, int $studentId): array {
+        if (!$this->lecturerId) return [];
+        $stmt = $pdo->prepare("
+            SELECT 
+                m.module_id,
+                m.module_code,
+                m.module_name,
+                m.credits,
+                ml.is_primary,
+                c.course_name,
+                c.course_code,
+                r.mark_id,
+                r.academic_year,
+                r.quarter1,
+                r.quarter2,
+                r.quarter3,
+                r.quarter4,
+                r.average
+            FROM modules m
+            JOIN module_lecturers ml ON ml.module_id = m.module_id
+            JOIN course_modules cm ON cm.module_id = m.module_id
+            JOIN courses c ON c.course_id = cm.course_id
+            JOIN enrollments e ON e.course_id = c.course_id AND e.status = 'Active'
+            LEFT JOIN module_results r ON r.student_id = :sid AND r.module_id = m.module_id
+            WHERE ml.lecturer_id = :lid AND e.student_id = :sid2
+            ORDER BY m.module_code ASC
+        ");
+        $stmt->execute([
+            ':lid'  => $this->lecturerId,
+            ':sid'  => $studentId,
+            ':sid2' => $studentId
+        ]);
+        return $stmt->fetchAll();
+    }
+
     public function toArray(): array {
         return [
             'lecturerId' => $this->lecturerId,

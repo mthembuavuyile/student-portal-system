@@ -28,6 +28,7 @@ if (!$lecturer) {
 $modules = $lecturer->getModules($pdo);
 $students = $lecturer->getStudents($pdo);
 $results = $lecturer->getModuleResults($pdo);
+$detailedStudents = $lecturer->getStudentsDetailed($pdo);
 
 // Calculate metrics
 $moduleCount = count($modules);
@@ -64,7 +65,10 @@ $classAverage = $resultsCount > 0 ? round($totalAverageSum / $resultsCount, 1) :
                             <i class="material-icons tiny">badge</i> Staff ID: LEC-<?php echo str_pad($lecturer->getLecturerId(), 4, '0', STR_PAD_LEFT); ?>
                         </p>
                     </div>
-                    <div class="col s12 m4 right-align" style="margin-top: 10px;">
+                    <div class="col s12 m6 right-align" style="margin-top: 10px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;">
+                        <a href="students.php" class="btn-large waves-effect waves-light indigo darken-1 z-depth-2" style="border-radius: 6px; font-weight: 600;">
+                            <i class="material-icons left">people</i>My Students
+                        </a>
                         <a href="results.php" class="btn-large waves-effect waves-light amber darken-3 z-depth-2" style="border-radius: 6px; font-weight: 600;">
                             <i class="material-icons left">edit_note</i>Assign Marks
                         </a>
@@ -81,45 +85,51 @@ $classAverage = $resultsCount > 0 ? round($totalAverageSum / $resultsCount, 1) :
 <!-- Metric Stat Cards -->
 <div class="row">
     <div class="col s12 m6 l3">
-        <div class="card-panel white z-depth-1 hoverable" style="border-left: 5px solid #283593; border-radius: 6px;">
-            <div class="row valign-wrapper" style="margin-bottom: 0;">
-                <div class="col s3">
-                    <i class="material-icons medium indigo-text text-darken-3">book</i>
-                </div>
-                <div class="col s9 right-align">
-                    <h4 style="margin: 0; font-weight: 700; color: #283593;"><?php echo $moduleCount; ?></h4>
-                    <span class="grey-text text-darken-1">My Modules</span>
+        <a href="modules.php" style="text-decoration: none; color: inherit;">
+            <div class="card-panel white z-depth-1 hoverable" style="border-left: 5px solid #283593; border-radius: 6px;">
+                <div class="row valign-wrapper" style="margin-bottom: 0;">
+                    <div class="col s3">
+                        <i class="material-icons medium indigo-text text-darken-3">book</i>
+                    </div>
+                    <div class="col s9 right-align">
+                        <h4 style="margin: 0; font-weight: 700; color: #283593;"><?php echo $moduleCount; ?></h4>
+                        <span class="grey-text text-darken-1">My Modules</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 
     <div class="col s12 m6 l3">
-        <div class="card-panel white z-depth-1 hoverable" style="border-left: 5px solid #00897b; border-radius: 6px;">
-            <div class="row valign-wrapper" style="margin-bottom: 0;">
-                <div class="col s3">
-                    <i class="material-icons medium teal-text text-darken-1">people</i>
-                </div>
-                <div class="col s9 right-align">
-                    <h4 style="margin: 0; font-weight: 700; color: #00897b;"><?php echo $studentCount; ?></h4>
-                    <span class="grey-text text-darken-1">Active Students</span>
+        <a href="students.php" style="text-decoration: none; color: inherit;">
+            <div class="card-panel white z-depth-1 hoverable" style="border-left: 5px solid #00897b; border-radius: 6px;">
+                <div class="row valign-wrapper" style="margin-bottom: 0;">
+                    <div class="col s3">
+                        <i class="material-icons medium teal-text text-darken-1">people</i>
+                    </div>
+                    <div class="col s9 right-align">
+                        <h4 style="margin: 0; font-weight: 700; color: #00897b;"><?php echo $studentCount; ?></h4>
+                        <span class="grey-text text-darken-1">Active Students</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 
     <div class="col s12 m6 l3">
-        <div class="card-panel white z-depth-1 hoverable" style="border-left: 5px solid #ef6c00; border-radius: 6px;">
-            <div class="row valign-wrapper" style="margin-bottom: 0;">
-                <div class="col s3">
-                    <i class="material-icons medium orange-text text-darken-3">assessment</i>
-                </div>
-                <div class="col s9 right-align">
-                    <h4 style="margin: 0; font-weight: 700; color: #ef6c00;"><?php echo $resultsCount; ?></h4>
-                    <span class="grey-text text-darken-1">Marks Recorded</span>
+        <a href="results.php" style="text-decoration: none; color: inherit;">
+            <div class="card-panel white z-depth-1 hoverable" style="border-left: 5px solid #ef6c00; border-radius: 6px;">
+                <div class="row valign-wrapper" style="margin-bottom: 0;">
+                    <div class="col s3">
+                        <i class="material-icons medium orange-text text-darken-3">assessment</i>
+                    </div>
+                    <div class="col s9 right-align">
+                        <h4 style="margin: 0; font-weight: 700; color: #ef6c00;"><?php echo $resultsCount; ?></h4>
+                        <span class="grey-text text-darken-1">Marks Recorded</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 
     <div class="col s12 m6 l3">
@@ -222,6 +232,87 @@ $classAverage = $resultsCount > 0 ? round($totalAverageSum / $resultsCount, 1) :
                         <i class="material-icons left">edit</i>Open Marksheet
                     </a>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- My Enrolled Students Section -->
+<div class="row">
+    <div class="col s12">
+        <div class="card z-depth-1" style="border-radius: 8px;">
+            <div class="card-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <span class="card-title" style="font-weight: 600; margin: 0;">
+                            <i class="material-icons left indigo-text">people</i>My Enrolled Students
+                        </span>
+                        <p class="grey-text" style="margin: 4px 0 0 0;">Students enrolled in curricula containing your assigned modules.</p>
+                    </div>
+                    <a href="students.php" class="btn-small waves-effect waves-light indigo darken-3">
+                        <i class="material-icons left">groups</i>Manage All Students (<?php echo count($detailedStudents); ?>)
+                    </a>
+                </div>
+
+                <?php if (!empty($detailedStudents)): ?>
+                    <table class="highlight responsive-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Student Number</th>
+                                <th>Course</th>
+                                <th>Assigned Module</th>
+                                <th>Latest Average</th>
+                                <th>Marks Status</th>
+                                <th class="center-align">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                            $dashboardStudents = array_slice($detailedStudents, 0, 6);
+                            foreach ($dashboardStudents as $dst): 
+                                $hasMark = ($dst['average'] !== null);
+                            ?>
+                                <tr>
+                                    <td><strong><?php echo htmlspecialchars($dst['full_name']); ?></strong></td>
+                                    <td><span class="chip tiny grey lighten-3"><code><?php echo htmlspecialchars($dst['student_number'] ?: $dst['student_id_number']); ?></code></span></td>
+                                    <td><small class="grey-text text-darken-2 font-weight-bold"><?php echo htmlspecialchars($dst['course_name']); ?></small></td>
+                                    <td>
+                                        <span class="chip tiny teal lighten-5 teal-text text-darken-3 font-weight-bold">
+                                            <?php echo htmlspecialchars($dst['module_code']); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <strong style="color: #1565c0;">
+                                            <?php echo $hasMark ? number_format($dst['average'], 2) . '%' : '<span class="grey-text">Pending</span>'; ?>
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <?php if ($hasMark): ?>
+                                            <span class="chip green lighten-4 green-text text-darken-3 tiny">Recorded</span>
+                                        <?php else: ?>
+                                            <span class="chip orange lighten-4 orange-text text-darken-3 tiny">Awaiting Marks</span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td class="center-align" style="white-space: nowrap;">
+                                        <a href="results.php?module_id=<?php echo $dst['module_id']; ?>&student_id=<?php echo $dst['student_id']; ?>" 
+                                           class="btn-small waves-effect waves-light amber darken-3" 
+                                           title="Assign Marks">
+                                            <i class="material-icons tiny left">edit</i>Marks
+                                        </a>
+                                        <a href="student_profile.php?id=<?php echo $dst['student_id']; ?>" 
+                                           class="btn-small waves-effect waves-light indigo darken-3" 
+                                           title="View Profile">
+                                            <i class="material-icons tiny">person</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <p class="grey-text center-align" style="padding: 20px;">No students currently enrolled in courses offering your modules.</p>
+                <?php endif; ?>
             </div>
         </div>
     </div>
