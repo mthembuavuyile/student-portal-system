@@ -131,7 +131,30 @@ RULES:
     $userContent = "Please diagnose my quarterly academic performance transcript and provide my success roadmap:\n\n" . $promptData;
 }
 
-// 5. Real OpenRouter API Execution
+// 5. Construct conversation message payload
+$chatHistory = isset($data['history']) && is_array($data['history']) ? $data['history'] : [];
+$messagesList = [
+    ['role' => 'system', 'content' => $systemContent]
+];
+
+if (!empty($chatHistory)) {
+    // Include last 6 turns for conversational context
+    $recent = array_slice($chatHistory, -6);
+    foreach ($recent as $h) {
+        $r = (isset($h['role']) && $h['role'] === 'assistant') ? 'assistant' : 'user';
+        $c = trim((string)($h['content'] ?? ''));
+        if ($c !== '') {
+            $messagesList[] = ['role' => $r, 'content' => $c];
+        }
+    }
+}
+
+$lastMsg = end($messagesList);
+if (!empty($userContent) && (!$lastMsg || $lastMsg['content'] !== $userContent || $lastMsg['role'] !== 'user')) {
+    $messagesList[] = ['role' => 'user', 'content' => $userContent];
+}
+
+// 6. Real OpenRouter API Execution
 $aiContent = null;
 $usedModel = null;
 
@@ -146,10 +169,7 @@ $openRouterHeaders = [
 foreach ($modelChain as $candidateModel) {
     $payload = [
         'model' => $candidateModel,
-        'messages' => [
-            ['role' => 'system', 'content' => $systemContent],
-            ['role' => 'user', 'content' => $userContent]
-        ],
+        'messages' => $messagesList,
         'temperature' => 0.4,
         'max_tokens' => 2500
     ];
