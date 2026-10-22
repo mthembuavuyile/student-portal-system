@@ -212,11 +212,13 @@ classDiagram
         -string password
         -string role
         -string studentIdNumber
+        -int lecturerId
         +verifyPassword(plainPassword: string): bool
         +updatePassword(pdo: PDO, newPassword: string): bool
         +static findById(pdo: PDO, id: int): User
         +static findByUsername(pdo: PDO, username: string): User
         +static findByStudentNumber(pdo: PDO, num: string): User
+        +static findByLecturerId(pdo: PDO, lid: int): User
         +static changePassword(pdo: PDO, userId: int, curr: string, new: string, conf: string): array
         +static adminResetPassword(pdo: PDO, studentNumber: string, new: string): array
     }
@@ -228,6 +230,7 @@ classDiagram
     Student "1" --> "0..*" ModuleResult : obtains
     Module "1" --> "0..*" ModuleResult : evaluates
     Student "1" --> "0..1" User : authenticates as
+    Lecturer "1" --> "0..1" User : authenticates as
     RegistrationService ..> Student : registers & generates ID
     RegistrationService ..> Enrollment : creates initial active
     RegistrationService ..> User : provisions credentials

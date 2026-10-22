@@ -20,6 +20,7 @@ erDiagram
     STUDENTS ||--o{ MODULE_RESULTS : "obtains"
     MODULES ||--o{ MODULE_RESULTS : "evaluates"
     STUDENTS ||--o| USERS : "authenticates_as"
+    LECTURERS ||--o| USERS : "authenticates_as"
 
     STUDENTS {
         int id PK "AUTO_INCREMENT"
@@ -102,6 +103,7 @@ erDiagram
         int id PK "AUTO_INCREMENT"
         varchar username "UK, VARCHAR(100) UNIQUE"
         varchar password "VARCHAR(255), Bcrypt hashed secret"
-        enum role "ENUM('admin','student'), Default 'student'"
+        enum role "ENUM('admin','lecturer','student'), Default 'student'"
         varchar student_id_number FK "VARCHAR(50) -> students.student_id_number"
+        int lecturer_id FK "INT(11) -> lecturers.lecturer_id"
     }

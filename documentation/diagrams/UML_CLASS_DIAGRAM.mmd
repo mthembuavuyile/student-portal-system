@@ -201,17 +201,20 @@ classDiagram
         -string password
         -string role
         -string studentIdNumber
+        -int lecturerId
         +__construct(data: array)
         +getId(): int
         +getUsername(): string
         +getRole(): string
         +getStudentIdNumber(): string
+        +getLecturerId(): int
         +getPasswordHash(): string
         +verifyPassword(plainPassword: string): bool
         +updatePassword(pdo: PDO, newPassword: string): bool
         +static findById(pdo: PDO, id: int): User
         +static findByUsername(pdo: PDO, username: string): User
         +static findByStudentNumber(pdo: PDO, num: string): User
+        +static findByLecturerId(pdo: PDO, lid: int): User
         +static changePassword(pdo: PDO, userId: int, curr: string, new: string, conf: string): array
         +static adminResetPassword(pdo: PDO, studentNumber: string, new: string): array
     }
@@ -244,8 +247,9 @@ classDiagram
     Student "1" *-- "0..*" ModuleResult : obtains
     Module "1" o-- "0..*" ModuleResult : evaluated in
 
-    %% Authentication account for Student
+    %% Authentication account for Student & Lecturer
     Student "1" -- "0..1" User : authenticates as
+    Lecturer "1" -- "0..1" User : authenticates as
 
     %% Service orchestrations
     RegistrationService ..> Student : instantiates & numbers

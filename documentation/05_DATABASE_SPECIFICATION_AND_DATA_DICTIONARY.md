@@ -272,8 +272,9 @@ Manages institutional access credentials, password hashes, and Role-Based Access
 | `id` | `INT(11)` | **PK** | No | Auto Increment | Unique user account identifier. |
 | `username` | `VARCHAR(100)` | **UK** | No | - | Login handle (`'admin'` for staff, or student number for students). |
 | `password` | `VARCHAR(255)` | - | No | - | Cryptographically secure Bcrypt hash string (`$2y$10$...`). |
-| `role` | `ENUM('admin','student')` | - | No | `'student'` | Authorization privilege level. |
-| `student_id_number` | `VARCHAR(50)` | **FK** | Yes | `NULL` | References `students.student_id_number` (`ON DELETE CASCADE ON UPDATE CASCADE`). `NULL` for administrator accounts. |
+| `role` | `ENUM('admin','lecturer','student')` | - | No | `'student'` | Authorization privilege level (RBAC). |
+| `student_id_number` | `VARCHAR(50)` | **FK** | Yes | `NULL` | References `students.student_id_number` (`ON DELETE CASCADE ON UPDATE CASCADE`). `NULL` for staff/lecturer/admin accounts. |
+| `lecturer_id` | `INT(11)` | **FK** | Yes | `NULL` | References `lecturers.lecturer_id` (`ON DELETE SET NULL`). `NULL` for student and administrator accounts. |
 
 ---
 
@@ -290,6 +291,7 @@ Manages institutional access credentials, password hashes, and Role-Based Access
 | **7** | `students` | `module_results` | Student assessed and earns marks | **$1 : 0..N$** (`||--o{`) | `module_results.student_id` $\rightarrow$ `students.id` | `ON DELETE CASCADE` |
 | **8** | `modules` | `module_results` | Module yields assessment marks | **$1 : 0..N$** (`||--o{`) | `module_results.module_id` $\rightarrow$ `modules.module_id` | `ON DELETE CASCADE` |
 | **9** | `students` | `users` | Student account authenticated | **$0..1 : 0..1$** (`|o--o|`) | `users.student_id_number` $\rightarrow$ `students.student_id_number` | `ON DELETE CASCADE ON UPDATE CASCADE` |
+| **10** | `lecturers` | `users` | Lecturer staff account authenticated | **$0..1 : 0..1$** (`|o--o|`) | `users.lecturer_id` $\rightarrow$ `lecturers.lecturer_id` | `ON DELETE SET NULL` |
 
 ---
 
@@ -335,6 +337,7 @@ erDiagram
     STUDENTS ||--o{ MODULE_RESULTS : "obtains"
     MODULES ||--o{ MODULE_RESULTS : "evaluates"
     STUDENTS ||--o| USERS : "authenticates via"
+    LECTURERS ||--o| USERS : "authenticates via"
 
     STUDENTS {
         int id PK "AUTO_INCREMENT"
@@ -417,8 +420,9 @@ erDiagram
         int id PK "AUTO_INCREMENT"
         varchar username "UK, VARCHAR(100) UNIQUE"
         varchar password "VARCHAR(255), Bcrypt hash"
-        enum role "ENUM('admin','student')"
+        enum role "ENUM('admin','lecturer','student')"
         varchar student_id_number FK "VARCHAR(50) -> students.student_id_number"
+        int lecturer_id FK "INT(11) -> lecturers.lecturer_id"
     }
 ```
 
@@ -526,8 +530,9 @@ entity "users" as users {
     --
     * username : VARCHAR(100) <<UK>>
     * password : VARCHAR(255)
-    * role : ENUM('admin','student')
+    * role : ENUM('admin','lecturer','student')
     student_id_number : VARCHAR(50) <<FK>>
+    lecturer_id : INT(11) <<FK>>
 }
 
 ' Relationships
@@ -544,6 +549,7 @@ students ||--o{ module_results : "obtains (1:N)"
 modules ||--o{ module_results : "evaluates (1:N)"
 
 students ||--o| users : "authenticates (1:0..1)"
+lecturers ||--o| users : "authenticates (1:0..1)"
 @enduml
 ```
 
