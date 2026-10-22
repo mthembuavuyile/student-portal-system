@@ -1,6 +1,0 @@
-<?php
-/**
- * 404 Route Delegate
- * Forwards requests to the canonical 404 error page.
- */
-require_once __DIR__ . '/404.php';
