@@ -247,9 +247,12 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `student_id_number`, `lecturer_id`) VALUES
-(1, 'admin', '$2y$10$F/Xv7ZLquQCl4b6WVoIhfuaXFeazUD6eTcOL4yo6lc4lE9Xt3a066', 'admin', NULL, NULL),
+(1, 'admin', '$2y$10$5AkYDqvd0zZqkM5kEzYOpeBfQgevHi8ZJeiMsVoVTx1yJwpiw.Utu', 'admin', NULL, NULL),
 (2, '10ha2304014', '$2y$10$jL0n0ZpD3MFxvIJRxbPNzuo32cLKnm5W1ClHwnpvn9b.ASQKnHk2G', 'student', '10ha2304014', NULL),
-(3, 'lecturer', '$2y$10$jL0n0ZpD3MFxvIJRxbPNzuo32cLKnm5W1ClHwnpvn9b.ASQKnHk2G', 'lecturer', NULL, 1);
+(3, 'lecturer', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 1),
+(4, 'k.naidoo', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 2),
+(5, 'z.khumalo', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 3),
+(6, 't.baloyi', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 4);
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS = 1;
