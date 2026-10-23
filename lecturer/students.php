@@ -96,7 +96,36 @@ $filterModuleId = isset($_GET['module_id']) && (int)$_GET['module_id'] > 0 ? (in
 $modules = $lecturer->getModules($pdo);
 
 // Detailed student list
-$studentRows = $lecturer->getStudentsDetailed($pdo, $filterModuleId);
+if (method_exists($lecturer, 'getStudentsDetailed')) {
+    $studentRows = $lecturer->getStudentsDetailed($pdo, $filterModuleId);
+} else {
+    $lid = $lecturer->getLecturerId();
+    $sql = "
+        SELECT 
+            s.id AS student_id, s.full_name, s.student_number, s.student_id_number,
+            s.id_number, s.email, s.academic_status, s.date_of_birth, s.enrollment_date,
+            c.course_id, c.course_code, c.course_name,
+            m.module_id, m.module_code, m.module_name, m.credits, ml.is_primary,
+            r.mark_id, r.academic_year, r.quarter1, r.quarter2, r.quarter3, r.quarter4, r.average
+        FROM students s
+        JOIN enrollments e ON e.student_id = s.id AND e.status = 'Active'
+        JOIN courses c ON c.course_id = e.course_id
+        JOIN course_modules cm ON cm.course_id = c.course_id
+        JOIN modules m ON m.module_id = cm.module_id
+        JOIN module_lecturers ml ON ml.module_id = m.module_id
+        LEFT JOIN module_results r ON r.student_id = s.id AND r.module_id = m.module_id
+        WHERE ml.lecturer_id = :lid
+    ";
+    $params = [':lid' => $lid];
+    if ($filterModuleId !== null) {
+        $sql .= " AND m.module_id = :mid";
+        $params[':mid'] = $filterModuleId;
+    }
+    $sql .= " ORDER BY s.full_name ASC, m.module_code ASC";
+    $stmtDetailed = $pdo->prepare($sql);
+    $stmtDetailed->execute($params);
+    $studentRows = $stmtDetailed->fetchAll();
+}
 
 // Calculate metrics
 $uniqueStudentIds = array_unique(array_column($studentRows, 'student_id'));
