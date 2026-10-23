@@ -6,29 +6,49 @@ include '../includes/header.php';
 // Fetch lecturer details
 $lecturerId = $_SESSION['lecturer_id'] ?? null;
 $lecturer = null;
+$modules = [];
+$students = [];
+$results = [];
+$detailedStudents = [];
 
-if ($lecturerId) {
-    $lecturer = Lecturer::findById($pdo, (int)$lecturerId);
-}
-
-if (!$lecturer) {
-    // Fallback: look up by username
-    $user = User::findById($pdo, (int)$_SESSION['user_id']);
-    if ($user && $user->getLecturerId()) {
-        $lecturer = Lecturer::findById($pdo, $user->getLecturerId());
+try {
+    if ($lecturerId) {
+        $lecturer = Lecturer::findById($pdo, (int)$lecturerId);
     }
-}
 
-if (!$lecturer) {
-    echo '<div class="card-panel red white-text">Error: Lecturer profile not linked to this user account. Please contact the administrator.</div>';
+    if (!$lecturer && isset($_SESSION['user_id'])) {
+        // Fallback: look up by username
+        $user = User::findById($pdo, (int)$_SESSION['user_id']);
+        if ($user && $user->getLecturerId()) {
+            $lecturer = Lecturer::findById($pdo, $user->getLecturerId());
+        }
+    }
+
+    if (!$lecturer) {
+        echo '<div class="card-panel orange darken-2 white-text" style="border-radius: 8px; margin-top: 25px; padding: 24px;">
+                <h5 style="margin-top: 0;"><i class="material-icons left">account_circle</i>Lecturer Profile Unlinked</h5>
+                <p style="font-size: 1.05rem;">This login account is not linked to an educator record in the <code>lecturers</code> table (Lecturer ID missing).</p>
+                <p>Please run the database sync SQL in InfinityFree phpMyAdmin to link this account.</p>
+              </div>';
+        include '../includes/footer.php';
+        exit();
+    }
+
+    $modules = $lecturer->getModules($pdo);
+    $students = $lecturer->getStudents($pdo);
+    $results = $lecturer->getModuleResults($pdo);
+    $detailedStudents = $lecturer->getStudentsDetailed($pdo);
+
+} catch (Throwable $e) {
+    echo '<div class="card-panel red darken-2 white-text z-depth-2" style="border-radius: 8px; margin-top: 25px; padding: 24px;">
+            <h5 style="margin-top: 0;"><i class="material-icons left">storage</i>Database Configuration Required</h5>
+            <p style="font-size: 1.05rem;"><strong>Error Detail:</strong> ' . htmlspecialchars($e->getMessage()) . '</p>
+            <p>The Educator / Lecturer portal requires the <code>lecturers</code> and <code>module_lecturers</code> tables to exist in the database.</p>
+            <p>Please open <strong>phpMyAdmin</strong> on InfinityFree and execute the database migration script to create the missing tables.</p>
+          </div>';
     include '../includes/footer.php';
     exit();
 }
-
-$modules = $lecturer->getModules($pdo);
-$students = $lecturer->getStudents($pdo);
-$results = $lecturer->getModuleResults($pdo);
-$detailedStudents = $lecturer->getStudentsDetailed($pdo);
 
 // Calculate metrics
 $moduleCount = count($modules);

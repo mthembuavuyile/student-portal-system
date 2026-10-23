@@ -16,17 +16,30 @@ include '../includes/header.php';
 // Fetch lecturer details
 $lecturerId = $_SESSION['lecturer_id'] ?? null;
 $lecturer = null;
-if ($lecturerId) {
-    $lecturer = Lecturer::findById($pdo, (int)$lecturerId);
-}
-if (!$lecturer) {
-    $user = User::findById($pdo, (int)$_SESSION['user_id']);
-    if ($user && $user->getLecturerId()) {
-        $lecturer = Lecturer::findById($pdo, $user->getLecturerId());
+try {
+    if ($lecturerId) {
+        $lecturer = Lecturer::findById($pdo, (int)$lecturerId);
     }
+    if (!$lecturer && isset($_SESSION['user_id'])) {
+        $user = User::findById($pdo, (int)$_SESSION['user_id']);
+        if ($user && $user->getLecturerId()) {
+            $lecturer = Lecturer::findById($pdo, $user->getLecturerId());
+        }
+    }
+} catch (Throwable $e) {
+    echo '<div class="card-panel red white-text" style="border-radius: 8px; margin-top: 20px;">
+            <h5><i class="material-icons left">error</i>Database Configuration Error</h5>
+            <p>' . htmlspecialchars($e->getMessage()) . '</p>
+          </div>';
+    include '../includes/footer.php';
+    exit();
 }
+
 if (!$lecturer) {
-    echo '<div class="card-panel red white-text">Error: Lecturer profile not linked to this user account.</div>';
+    echo '<div class="card-panel orange darken-2 white-text" style="border-radius: 8px; margin-top: 20px;">
+            <h5><i class="material-icons left">account_circle</i>Lecturer Profile Unlinked</h5>
+            <p>Error: Lecturer profile not linked to this user account.</p>
+          </div>';
     include '../includes/footer.php';
     exit();
 }
