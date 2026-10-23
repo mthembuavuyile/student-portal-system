@@ -370,27 +370,27 @@
   <div class="sep"></div>
   <div class="two-col">
     <div>
-      <h3>Problem identified</h3>
-      <p>Academic records managed across separate spreadsheets and manual processes create:</p>
+      <h3>Problem Domain: Decentralised & Manual Records</h3>
+      <p>In academic administration environments that rely on disparate spreadsheets and manual coordination, core systemic challenges emerge:</p>
       <ul>
-        <li><strong>Duplicate data entry</strong> &mdash; student details captured in multiple places with no single source of truth</li>
-        <li><strong>Inconsistent records</strong> &mdash; marks, enrolment status, and course assignments updated independently, leading to mismatches</li>
-        <li><strong>No structured academic tracking</strong> &mdash; quarterly marks, averages, and pass/fail status calculated manually without validation</li>
-        <li><strong>No role-based access</strong> &mdash; administrators, lecturers, and students share the same uncontrolled access to all data</li>
+        <li><strong>Data Redundancy & Silos</strong> &mdash; Student details recorded in multiple files with no single authoritative source of truth.</li>
+        <li><strong>Integrity Inconsistencies</strong> &mdash; Marks, module assignments, and enrolment statuses updated independently, leading to data drift.</li>
+        <li><strong>Unvalidated Calculations</strong> &mdash; Quarterly marks, weighted averages, and pass/fail determinations calculated manually without input boundary rules.</li>
+        <li><strong>Absence of Access Boundaries</strong> &mdash; Spreadsheets lack role-based boundaries, exposing sensitive academic records across administrative and student tiers.</li>
       </ul>
-      <p class="small" style="margin-top: 12px;">These problems were assumed for the purpose of this prototype to demonstrate a working solution. The system was developed as an internship assessment project, not deployed into a live departmental environment.</p>
+      <p class="small" style="margin-top: 14px; background: #f1f5f9; padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--accent);"><strong>Context:</strong> This scenario serves as the baseline problem domain for this internship systems development assessment (HSYD300-1) &mdash; designed to demonstrate full-stack problem solving, relational modeling, and secure software architecture.</p>
     </div>
     <div>
-      <h3>Proposed solution</h3>
-      <p>A web-based Student Portal System that centralises academic data in a relational database, enforces business rules in PHP application logic, and provides role-based interfaces for administrators, lecturers, and students.</p>
-      <div class="card" style="margin-top: 16px;">
-        <h3>Before vs After</h3>
+      <h3>Proposed Solution: Centralised Web Architecture</h3>
+      <p>An object-oriented PHP and MySQL platform that centralises academic data, guarantees referential integrity, enforces business rules in application logic, and provides strict role-based views.</p>
+      <div class="card" style="margin-top: 14px;">
+        <h3>Paradigm Comparison</h3>
         <table>
-          <tr><th>Before</th><th>After</th></tr>
-          <tr><td>Separate spreadsheets per function</td><td>Single MySQL database with referential integrity</td></tr>
-          <tr><td>Manual mark calculation</td><td>Automated quarterly average with validation (0-100)</td></tr>
-          <tr><td>No access control</td><td>Role-based login: admin, lecturer, student</td></tr>
-          <tr><td>No enrolment rules</td><td>Business rule: one active enrolment per student</td></tr>
+          <tr><th>Manual / File-Based Paradigm</th><th>Centralised Web Application</th></tr>
+          <tr><td>Disconnected spreadsheets per department</td><td>Single MySQL relational database with foreign key constraints</td></tr>
+          <tr><td>Manual calculations prone to human error</td><td>Automated quarterly average calculation with 0&ndash;100 validation</td></tr>
+          <tr><td>Uncontrolled, shared file access</td><td>Role-based access control (Admin, Lecturer, Student) with bcrypt auth</td></tr>
+          <tr><td>No enrolment conflict prevention</td><td>Enforced business rule: strictly one active enrolment per student</td></tr>
         </table>
       </div>
     </div>
@@ -643,7 +643,7 @@
   <div class="sep"></div>
   <p>The relational database contains 8 tables. Junction tables <code>course_modules</code> and <code>module_lecturers</code> implement many-to-many relationships. Foreign keys enforce referential integrity with CASCADE rules. The <code>students</code> table maintains both normalised and legacy columns for backward compatibility.</p>
   <div class="diagram-container">
-    <img src="documentation/diagrams/erd.png" alt="Entity-Relationship Diagram showing 8 database tables and their relationships">
+    <img src="assets/images/erd.png" onerror="this.onerror=null; this.src='documentation/diagrams/erd.png';" alt="Entity-Relationship Diagram showing 8 database tables and their relationships">
   </div>
   <div class="stat-row">
     <div class="stat"><div class="val">8</div><div class="lbl">Tables</div></div>
@@ -662,7 +662,7 @@
   <div class="sep"></div>
   <p>Nine PHP classes. Entity classes (Student, Course, Module, Lecturer, Enrollment, ModuleResult) map to database tables with private attributes, getters/setters, and database interaction methods. <code>RegistrationService</code> contains business logic separated from entity classes. <code>User</code> handles authentication. Junction classes (ModuleLecturer, CourseModule) represent association tables.</p>
   <div class="diagram-container">
-    <img src="documentation/diagrams/classdiagram.png" alt="UML Class Diagram showing 9 PHP classes with attributes, methods, and relationships">
+    <img src="assets/images/classdiagram.png" onerror="this.onerror=null; this.src='documentation/diagrams/classdiagram.png';" alt="UML Class Diagram showing 9 PHP classes with attributes, methods, and relationships">
   </div>
 </div>
 
