@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Portal System - DFFE Presentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e2e4ea;
+    --text-secondary: #9ca0ad;
+    --accent: #3b82f6;
+    --accent-dim: #1e3a5f;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- Slide Container --- */
+  .deck { position: relative; width: 100%; height: 100vh; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    padding: 48px 72px;
+    overflow-y: auto;
+  }
+  .slide.active { display: flex; }
+
+  /* --- Typography --- */
+  h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; line-height: 1.25; }
+  h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 6px; color: var(--accent); line-height: 1.3; }
+  h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+  p, li { font-size: 0.95rem; line-height: 1.65; color: var(--text-secondary); }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  li strong { color: var(--text); font-weight: 500; }
+  .small { font-size: 0.82rem; color: var(--text-secondary); }
+
+  /* --- Slide label --- */
+  .slide-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  /* --- Title slide --- */
+  .title-slide {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .title-slide h1 { font-size: 2.4rem; margin-bottom: 12px; }
+  .title-slide .subtitle { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 32px; font-weight: 400; }
+  .title-slide .meta { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.8; }
+  .title-slide .meta strong { color: var(--text); }
+  .title-logo {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 24px;
+    border-radius: 16px;
+  }
+
+  /* --- Grid layouts --- */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; flex: 1; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .wide-left { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; flex: 1; }
+  .wide-right { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; flex: 1; }
+
+  /* --- Cards --- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .card h3 { margin-bottom: 10px; }
+
+  /* --- Tables --- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin-top: 8px;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--surface);
+  }
+  td { color: var(--text-secondary); }
+  tr:last-child td { border-bottom: none; }
+
+  /* --- Code --- */
+  code {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.82rem;
+    background: var(--surface);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent);
+  }
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  /* --- Diagram images --- */
+  .diagram-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  .diagram-container img {
+    max-width: 100%;
+    max-height: 55vh;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  /* --- Stat boxes --- */
+  .stat-row { display: flex; gap: 16px; margin: 12px 0; flex-wrap: wrap; }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 20px;
+    text-align: center;
+    flex: 1;
+    min-width: 100px;
+  }
+  .stat .val { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+  .stat .lbl { font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* --- Tag / badge --- */
+  .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .tag-blue { background: var(--accent-dim); color: var(--accent); }
+  .tag-green { background: #16372a; color: var(--green); }
+  .tag-amber { background: #3d2f10; color: var(--amber); }
+
+  /* --- Separator --- */
+  .sep { width: 48px; height: 3px; background: var(--accent); border-radius: 2px; margin: 16px 0; }
+
+  /* --- Flow / sequence --- */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+  .flow-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--text);
+  }
+  .flow-arrow { color: var(--accent); font-size: 1.1rem; }
+
+  /* --- Navigation bar --- */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 100;
+  }
+  .nav-bar .counter { font-size: 0.78rem; color: var(--text-secondary); }
+  .nav-bar .controls { display: flex; gap: 8px; }
+  .nav-btn {
+    background: var(--border);
+    border: none;
+    color: var(--text);
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-family: inherit;
+    transition: background 0.15s;
+  }
+  .nav-btn:hover { background: var(--accent); }
+  .nav-hint { font-size: 0.72rem; color: var(--text-secondary); }
+
+  /* --- Comparison table highlight --- */
+  .highlight-row td { color: var(--text); background: rgba(59,130,246,0.06); }
+
+  /* --- Fullscreen button --- */
+  .fs-btn {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-family: inherit;
+    z-index: 101;
+  }
+  .fs-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  /* --- Print --- */
+  @media print {
+    .nav-bar, .fs-btn { display: none; }
+    .slide { position: relative; display: flex !important; page-break-after: always; height: auto; min-height: 100vh; }
+    body { overflow: visible; background: #fff; color: #111; }
+    .slide-label { color: #333; }
+    h2 { color: #1a56db; }
+    .card { border-color: #ddd; }
+    th { background: #f5f5f5; }
+    td, p, li { color: #333; }
+    .stat .val { color: #1a56db; }
+    .nav-btn, .flow-arrow { color: #333; }
+  }
+</style>
+</head>
+<body>
+
+<button class="fs-btn" onclick="toggleFS()" title="Toggle fullscreen">Fullscreen</button>
+
+<div class="deck" id="deck">
+
+<!-- ============================================================ -->
+<!-- SLIDE 1: TITLE -->
+<!-- ============================================================ -->
+<div class="slide title-slide active" id="s1">
+  <img src="assets/images/logo.png" alt="Logo" class="title-logo">
+  <h1>Student Portal System</h1>
+  <div class="subtitle">Academic Management Platform<br>Object-Oriented Architecture and Full-Stack Implementation</div>
+  <div class="sep" style="margin: 0 auto 24px;"></div>
+  <div class="meta">
+    <strong>Prepared by:</strong> Mr Avuyile Mthembu<br>
+    <strong>Position:</strong> Intern: Software Developer<br>
+    <strong>Directorate:</strong> Information Technology Business Solutions (ITBS)<br>
+    <strong>Department:</strong> Department of Forestry, Fisheries and the Environment (DFFE)<br><br>
+    <strong>Module:</strong> HSYD300-1 &mdash; Systems Development<br>
+    <strong>Date:</strong> October 2026
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2: PROBLEM STATEMENT -->
+<!-- ============================================================ -->
+<div class="slide" id="s2">
+  <div class="slide-label">Slide 2</div>
+  <h2>Background and Problem Statement</h2>
+  <div class="sep"></div>
+  <div class="two-col">
+    <div>
+      <h3>Problem identified</h3>
+      <p>Academic records managed across separate spreadsheets and manual processes create:</p>
+      <ul>
+        <li><strong>Duplicate data entry</strong> &mdash; student details captured in multiple places with no single source of truth</li>
+        <li><strong>Inconsistent records</strong> &mdash; marks, enrolment status, and course assignments updated independently, leading to mismatches</li>
+        <li><strong>No structured academic tracking</strong> &mdash; quarterly marks, averages, and pass/fail status calculated manually without validation</li>
+        <li><strong>No role-based access</strong> &mdash; administrators, lecturers, and students share the same uncontrolled access to all data</li>
+      </ul>
+      <p class="small" style="margin-top: 12px;">These problems were assumed for the purpose of this prototype to demonstrate a working solution. The system was developed as an internship assessment project, not deployed into a live departmental environment.</p>
+    </div>
+    <div>
+      <h3>Proposed solution</h3>
+      <p>A web-based Student Portal System that centralises academic data in a relational database, enforces business rules in PHP application logic, and provides role-based interfaces for administrators, lecturers, and students.</p>
+      <div class="card" style="margin-top: 16px;">
+        <h3>Before vs After</h3>
+        <table>
+          <tr><th>Before</th><th>After</th></tr>
+          <tr><td>Separate spreadsheets per function</td><td>Single MySQL database with referential integrity</td></tr>
+          <tr><td>Manual mark calculation</td><td>Automated quarterly average with validation (0-100)</td></tr>
+          <tr><td>No access control</td><td>Role-based login: admin, lecturer, student</td></tr>
+          <tr><td>No enrolment rules</td><td>Business rule: one active enrolment per student</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3: AIM, OBJECTIVES, REQUIREMENTS -->
+<!-- ============================================================ -->
+<div class="slide" id="s3">
+  <div class="slide-label">Slide 3</div>
+  <h2>Aim, Objectives and Requirements</h2>
+  <div class="sep"></div>
+  <p style="margin-bottom: 16px;"><strong>Purpose:</strong> Develop a working web application that manages student registration, course enrolment, module assignments, quarterly marks, and academic performance tracking using object-oriented PHP and a MySQL relational database.</p>
+  <div class="two-col">
+    <div class="card">
+      <h3>Functional Requirements</h3>
+      <table>
+        <tr><th>ID</th><th>Requirement</th><th>Acceptance Criterion</th></tr>
+        <tr><td>FR-01</td><td>Register a student</td><td>Creates record with unique auto-generated student number</td></tr>
+        <tr><td>FR-02</td><td>Manage course enrolments</td><td>Only one active enrolment per student at a time</td></tr>
+        <tr><td>FR-03</td><td>Record quarterly marks</td><td>Marks outside 0-100 are rejected</td></tr>
+        <tr><td>FR-04</td><td>Calculate averages</td><td>Displayed average matches sum of entered quarters / count</td></tr>
+        <tr><td>FR-05</td><td>Manage courses and modules</td><td>Courses contain modules via many-to-many relationship</td></tr>
+        <tr><td>FR-06</td><td>Assign lecturers to modules</td><td>Lecturers see only their assigned students and marks</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Non-Functional Requirements</h3>
+      <table>
+        <tr><th>ID</th><th>Requirement</th><th>Acceptance Criterion</th></tr>
+        <tr><td>NFR-01</td><td>Role-based access control</td><td>Users cannot access pages outside their role</td></tr>
+        <tr><td>NFR-02</td><td>SQL injection prevention</td><td>All queries use PDO prepared statements</td></tr>
+        <tr><td>NFR-03</td><td>Password security</td><td>Passwords stored as bcrypt hashes</td></tr>
+        <tr><td>NFR-04</td><td>Input validation</td><td>Server-side validation on all form submissions</td></tr>
+        <tr><td>NFR-05</td><td>Data integrity</td><td>Foreign keys enforce referential integrity in MySQL</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4: SCOPE AND FEASIBILITY -->
+<!-- ============================================================ -->
+<div class="slide" id="s4">
+  <div class="slide-label">Slide 4</div>
+  <h2>Scope, Feasibility and Constraints</h2>
+  <div class="sep"></div>
+  <div class="two-col">
+    <div>
+      <h3>Included</h3>
+      <ul>
+        <li>Student registration with auto-generated student numbers</li>
+        <li>Course and module management (many-to-many relationships)</li>
+        <li>Lecturer assignment to modules</li>
+        <li>Course enrolment with single-active-enrolment rule</li>
+        <li>Quarterly mark entry, validation, and average calculation</li>
+        <li>Three role-based interfaces: Admin, Lecturer, Student</li>
+        <li>Authentication with bcrypt password hashing</li>
+        <li>Academic transcript generation</li>
+      </ul>
+      <h3 style="margin-top: 16px;">Excluded</h3>
+      <ul>
+        <li>Attendance tracking, timetable management</li>
+        <li>Mobile application, email notifications</li>
+        <li>Integration with existing DFFE or departmental systems</li>
+        <li>Multi-institution or multi-campus support</li>
+      </ul>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 16px;">
+        <h3>Feasibility Assessment</h3>
+        <table>
+          <tr><th>Area</th><th>Finding</th></tr>
+          <tr><td>Technical</td><td>PHP 7.4+, MySQL 5.7+, Apache via AMPPS &mdash; all available and working on development machine</td></tr>
+          <tr><td>Operational</td><td>System usable by non-technical administrators through web forms. No specialised training required</td></tr>
+          <tr><td>Economic</td><td>Developed using existing hardware and open-source software. No additional cash expenditure</td></tr>
+          <tr><td>Schedule</td><td>Development completed within the allocated internship assessment period</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>Risk Summary</h3>
+        <table>
+          <tr><th>Risk</th><th>Mitigation</th></tr>
+          <tr><td>Data loss</td><td>SQL schema includes seed data for restore; version-controlled on GitHub</td></tr>
+          <tr><td>SQL injection</td><td>PDO prepared statements used throughout</td></tr>
+          <tr><td>Scope creep</td><td>Feature list fixed before development started</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5: TIME, COST, PEOPLE -->
+<!-- ============================================================ -->
+<div class="slide" id="s5">
+  <div class="slide-label">Slide 5</div>
+  <h2>Time, Cost and People</h2>
+  <div class="sep"></div>
+  <div class="three-col">
+    <div class="card">
+      <h3>Time</h3>
+      <table>
+        <tr><th>Phase</th><th>Duration</th></tr>
+        <tr><td>Requirements and analysis</td><td>Week 1</td></tr>
+        <tr><td>Database and UML design</td><td>Week 1-2</td></tr>
+        <tr><td>PHP and frontend development</td><td>Weeks 2-4</td></tr>
+        <tr><td>Testing and bug fixes</td><td>Week 4-5</td></tr>
+        <tr><td>Documentation and presentation</td><td>Week 5-6</td></tr>
+      </table>
+      <p class="small" style="margin-top: 10px;">Development ran largely as planned. The main delay was in designing the many-to-many relationships between courses, modules, and lecturers.</p>
+    </div>
+    <div class="card">
+      <h3>Cost</h3>
+      <table>
+        <tr><th>Item</th><th>Cost</th></tr>
+        <tr><td>PHP, MySQL, Apache (open source)</td><td>R0</td></tr>
+        <tr><td>AMPPS local server</td><td>R0 (free tier)</td></tr>
+        <tr><td>InfinityFree hosting</td><td>R0 (free tier)</td></tr>
+        <tr><td>Domain name</td><td>R0 (subdomain)</td></tr>
+        <tr><td>Development hardware</td><td>Existing equipment</td></tr>
+        <tr class="highlight-row"><td><strong>Total cash expenditure</strong></td><td><strong>R0</strong></td></tr>
+      </table>
+      <p class="small" style="margin-top: 10px;">All development used existing equipment and free, open-source software. A low cost alone does not mean production readiness.</p>
+    </div>
+    <div class="card">
+      <h3>People</h3>
+      <table>
+        <tr><th>Role</th><th>Person</th><th>Responsibility</th></tr>
+        <tr><td>Developer</td><td>A. Mthembu</td><td>Analysis, design, PHP implementation, testing, documentation</td></tr>
+        <tr><td>Technical mentor</td><td>ITBS staff</td><td>Guidance and review</td></tr>
+        <tr><td>Academic assessors</td><td>DFFE committee</td><td>Evaluation and feedback</td></tr>
+      </table>
+      <p class="small" style="margin-top: 10px;">The application was developed individually. Mentors provided guidance and review but did not write code.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6: STAKEHOLDERS AND USE CASES -->
+<!-- ============================================================ -->
+<div class="slide" id="s6">
+  <div class="slide-label">Slide 6</div>
+  <h2>Stakeholders and Use Cases</h2>
+  <div class="sep"></div>
+  <div class="two-col">
+    <div>
+      <h3>System actors</h3>
+      <div class="card" style="margin-top: 10px; margin-bottom: 16px;">
+        <table>
+          <tr><th>Actor</th><th>Functions</th></tr>
+          <tr><td><strong>Administrator</strong></td><td>Register students, manage courses/modules, assign lecturers, manage enrolments, view all records, reset passwords</td></tr>
+          <tr><td><strong>Lecturer</strong></td><td>View assigned modules and students, enter/edit quarterly marks, view class performance</td></tr>
+          <tr><td><strong>Student</strong></td><td>View profile, view enrolled course and modules, view quarterly marks and averages, view transcript</td></tr>
+        </table>
+      </div>
+      <h3>Key use case: Student Registration</h3>
+      <ol style="padding-left: 20px;">
+        <li style="color: var(--text-secondary); margin-bottom: 4px;">Admin enters student details (name, ID, email, date of birth)</li>
+        <li style="color: var(--text-secondary); margin-bottom: 4px;">Admin selects a course</li>
+        <li style="color: var(--text-secondary); margin-bottom: 4px;">System validates input and checks for duplicates</li>
+        <li style="color: var(--text-secondary); margin-bottom: 4px;">RegistrationService generates a unique student number (format: ST + year + sequence)</li>
+        <li style="color: var(--text-secondary); margin-bottom: 4px;">System creates student record, user login account, and active enrolment in a single transaction</li>
+        <li style="color: var(--text-secondary); margin-bottom: 4px;">System returns the student number and temporary password</li>
+      </ol>
+    </div>
+    <div>
+      <h3>Use Case Diagram</h3>
+      <div class="card" style="margin-top: 10px; padding: 24px; text-align: center;">
+        <svg viewBox="0 0 600 420" style="max-width: 100%; height: auto;">
+          <!-- System boundary -->
+          <rect x="140" y="10" width="340" height="400" rx="12" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="6,3"/>
+          <text x="310" y="34" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">Student Portal System</text>
+
+          <!-- Admin actor -->
+          <circle cx="50" cy="100" r="14" fill="none" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="50" y1="114" x2="50" y2="150" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="30" y1="130" x2="70" y2="130" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="50" y1="150" x2="35" y2="175" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="50" y1="150" x2="65" y2="175" stroke="#e2e4ea" stroke-width="1.5"/>
+          <text x="50" y="192" text-anchor="middle" fill="#e2e4ea" font-size="10">Admin</text>
+
+          <!-- Student actor -->
+          <circle cx="50" cy="310" r="14" fill="none" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="50" y1="324" x2="50" y2="360" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="30" y1="340" x2="70" y2="340" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="50" y1="360" x2="35" y2="385" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="50" y1="360" x2="65" y2="385" stroke="#e2e4ea" stroke-width="1.5"/>
+          <text x="50" y="402" text-anchor="middle" fill="#e2e4ea" font-size="10">Student</text>
+
+          <!-- Lecturer actor -->
+          <circle cx="560" cy="200" r="14" fill="none" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="560" y1="214" x2="560" y2="250" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="540" y1="230" x2="580" y2="230" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="560" y1="250" x2="545" y2="275" stroke="#e2e4ea" stroke-width="1.5"/>
+          <line x1="560" y1="250" x2="575" y2="275" stroke="#e2e4ea" stroke-width="1.5"/>
+          <text x="560" y="292" text-anchor="middle" fill="#e2e4ea" font-size="10">Lecturer</text>
+
+          <!-- Use cases -->
+          <ellipse cx="280" cy="60" rx="85" ry="18" fill="none" stroke="#9ca0ad" stroke-width="1"/>
+          <text x="280" y="64" text-anchor="middle" fill="#e2e4ea" font-size="10">Register Student</text>
+
+          <ellipse cx="280" cy="110" rx="85" ry="18" fill="none" stroke="#9ca0ad" stroke-width="1"/>
+          <text x="280" y="114" text-anchor="middle" fill="#e2e4ea" font-size="10">Manage Courses/Modules</text>
+
+          <ellipse cx="280" cy="160" rx="85" ry="18" fill="none" stroke="#9ca0ad" stroke-width="1"/>
+          <text x="280" y="164" text-anchor="middle" fill="#e2e4ea" font-size="10">Manage Enrolments</text>
+
+          <ellipse cx="380" cy="210" rx="75" ry="18" fill="none" stroke="#9ca0ad" stroke-width="1"/>
+          <text x="380" y="214" text-anchor="middle" fill="#e2e4ea" font-size="10">Enter Marks</text>
+
+          <ellipse cx="380" cy="260" rx="85" ry="18" fill="none" stroke="#9ca0ad" stroke-width="1"/>
+          <text x="380" y="264" text-anchor="middle" fill="#e2e4ea" font-size="10">View Class Performance</text>
+
+          <ellipse cx="280" cy="310" rx="75" ry="18" fill="none" stroke="#9ca0ad" stroke-width="1"/>
+          <text x="280" y="314" text-anchor="middle" fill="#e2e4ea" font-size="10">View Profile</text>
+
+          <ellipse cx="280" cy="355" rx="80" ry="18" fill="none" stroke="#9ca0ad" stroke-width="1"/>
+          <text x="280" y="359" text-anchor="middle" fill="#e2e4ea" font-size="10">View Marks/Transcript</text>
+
+          <ellipse cx="280" cy="210" rx="75" ry="18" fill="none" stroke="#9ca0ad" stroke-width="1"/>
+          <text x="280" y="214" text-anchor="middle" fill="#e2e4ea" font-size="10">Assign Lecturers</text>
+
+          <!-- Lines: Admin -->
+          <line x1="75" y1="95" x2="195" y2="60" stroke="#9ca0ad" stroke-width="0.8"/>
+          <line x1="75" y1="100" x2="195" y2="110" stroke="#9ca0ad" stroke-width="0.8"/>
+          <line x1="75" y1="105" x2="195" y2="160" stroke="#9ca0ad" stroke-width="0.8"/>
+          <line x1="75" y1="115" x2="205" y2="210" stroke="#9ca0ad" stroke-width="0.8"/>
+
+          <!-- Lines: Student -->
+          <line x1="75" y1="310" x2="205" y2="310" stroke="#9ca0ad" stroke-width="0.8"/>
+          <line x1="75" y1="320" x2="200" y2="355" stroke="#9ca0ad" stroke-width="0.8"/>
+
+          <!-- Lines: Lecturer -->
+          <line x1="535" y1="200" x2="455" y2="210" stroke="#9ca0ad" stroke-width="0.8"/>
+          <line x1="535" y1="210" x2="465" y2="260" stroke="#9ca0ad" stroke-width="0.8"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7: ERD -->
+<!-- ============================================================ -->
+<div class="slide" id="s7">
+  <div class="slide-label">Slide 7</div>
+  <h2>Database Design: Entity-Relationship Diagram</h2>
+  <div class="sep"></div>
+  <p>The relational database contains 8 tables. Junction tables <code>course_modules</code> and <code>module_lecturers</code> implement many-to-many relationships. Foreign keys enforce referential integrity with CASCADE rules. The <code>students</code> table maintains both normalised and legacy columns for backward compatibility.</p>
+  <div class="diagram-container">
+    <img src="documentation/diagrams/erd.png" alt="Entity-Relationship Diagram showing 8 database tables and their relationships">
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="val">8</div><div class="lbl">Tables</div></div>
+    <div class="stat"><div class="val">10</div><div class="lbl">Foreign Keys</div></div>
+    <div class="stat"><div class="val">2</div><div class="lbl">Junction Tables</div></div>
+    <div class="stat"><div class="val">5</div><div class="lbl">Unique Constraints</div></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8: CLASS DIAGRAM -->
+<!-- ============================================================ -->
+<div class="slide" id="s8">
+  <div class="slide-label">Slide 8</div>
+  <h2>Object-Oriented Design: Class Diagram</h2>
+  <div class="sep"></div>
+  <p>Nine PHP classes. Entity classes (Student, Course, Module, Lecturer, Enrollment, ModuleResult) map to database tables with private attributes, getters/setters, and database interaction methods. <code>RegistrationService</code> contains business logic separated from entity classes. <code>User</code> handles authentication. Junction classes (ModuleLecturer, CourseModule) represent association tables.</p>
+  <div class="diagram-container">
+    <img src="documentation/diagrams/classdiagram.png" alt="UML Class Diagram showing 9 PHP classes with attributes, methods, and relationships">
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9: ARCHITECTURE -->
+<!-- ============================================================ -->
+<div class="slide" id="s9">
+  <div class="slide-label">Slide 9</div>
+  <h2>System Architecture and Technology Stack</h2>
+  <div class="sep"></div>
+  <div class="two-col">
+    <div>
+      <h3>Request flow</h3>
+      <div class="flow">
+        <div class="flow-step">Browser</div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step">Apache / PHP</div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step">Page Controller (.php)</div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step">Class (OOP logic)</div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step">PDO &rarr; MySQL</div>
+      </div>
+      <p style="margin-top: 12px;">Each page (e.g. <code>admin/register_student.php</code>) acts as both the controller and the view. It includes the relevant class files, processes form submissions, then renders HTML. Classes contain all database queries using prepared statements.</p>
+      <div class="card" style="margin-top: 16px;">
+        <h3>Technology stack</h3>
+        <table>
+          <tr><th>Layer</th><th>Technology</th></tr>
+          <tr><td>Frontend</td><td>HTML5, CSS3, vanilla JavaScript</td></tr>
+          <tr><td>Backend</td><td>PHP 7.4+ (object-oriented)</td></tr>
+          <tr><td>Database</td><td>MySQL 5.7+ with InnoDB engine</td></tr>
+          <tr><td>Server</td><td>Apache HTTP Server (AMPPS local, InfinityFree production)</td></tr>
+          <tr><td>Authentication</td><td>PHP sessions + bcrypt password hashing</td></tr>
+          <tr><td>Version control</td><td>Git + GitHub</td></tr>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>Project structure</h3>
+      <pre><code>university_system/
+  config.php              -- DB connection, session start
+  index.php               -- Login page (role-based tabs)
+  functions.php           -- Shared utilities
+
+  classes/
+    Student.php           -- Student entity + queries
+    Course.php            -- Course entity + module retrieval
+    Module.php            -- Module entity + lecturer assignment
+    Lecturer.php          -- Lecturer entity + student queries
+    Enrollment.php        -- Enrolment + single-active rule
+    ModuleResult.php      -- Marks + average calculation
+    RegistrationService.php -- Student number + registration
+    User.php              -- Auth + password management
+
+  admin/
+    dashboard.php         -- Admin overview
+    register_student.php  -- Student registration form
+    student_list.php      -- All students
+    student_profile.php   -- Individual student view
+    courses.php           -- Course management
+    modules.php           -- Module management
+    lecturers.php         -- Lecturer list
+
+  lecturer/
+    dashboard.php         -- Lecturer overview
+    students.php          -- Assigned students
+    results.php           -- Mark entry and editing
+
+  student/
+    dashboard.php         -- Student overview
+    results.php           -- Academic transcript
+    profile.php           -- Personal details
+
+  database/
+    database.sql          -- Full schema + seed data</code></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10: IMPLEMENTATION AND CODE -->
+<!-- ============================================================ -->
+<div class="slide" id="s10">
+  <div class="slide-label">Slide 10</div>
+  <h2>Implementation and Code Quality</h2>
+  <div class="sep"></div>
+  <div class="two-col">
+    <div>
+      <h3>OOP design decisions</h3>
+      <ul>
+        <li><strong>Encapsulation</strong> &mdash; All class attributes are <code>private</code>. External access goes through getters and setters only</li>
+        <li><strong>Separation of concerns</strong> &mdash; RegistrationService handles student number generation and multi-step registration logic, separate from the Student entity class</li>
+        <li><strong>Static finder methods</strong> &mdash; Each entity class provides <code>findById()</code>, <code>getAll()</code>, and domain-specific lookups (e.g. <code>findByStudentNumber()</code>)</li>
+        <li><strong>Business rules in PHP</strong> &mdash; Enrollment validates single-active-enrolment. ModuleResult validates mark ranges 0-100. RegistrationService checks for duplicate emails and student numbers</li>
+        <li><strong>Transactions</strong> &mdash; Student registration uses <code>beginTransaction()</code> / <code>commit()</code> / <code>rollBack()</code> to ensure student record, user account, and enrolment are created atomically</li>
+      </ul>
+      <h3 style="margin-top: 16px;">Security measures implemented</h3>
+      <ul>
+        <li>All SQL queries use PDO prepared statements with bound parameters</li>
+        <li>Passwords hashed with <code>password_hash()</code> (bcrypt) and verified with <code>password_verify()</code></li>
+        <li>Session-based authentication with role checks on every protected page</li>
+        <li>Input sanitisation with <code>filter_var()</code> and <code>trim()</code></li>
+        <li>Output encoding to prevent cross-site scripting</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Example: Mark validation (ModuleResult.php)</h3>
+      <pre><code>public static function validateMark(
+    ?float $mark, string $field = 'Mark'
+): void {
+    if ($mark === null) return;
+    if ($mark < 0 || $mark > 100) {
+        throw new InvalidArgumentException(
+            "{$field} must be between 0 and 100. 
+             Value provided: {$mark}"
+        );
+    }
+}</code></pre>
+      <h3 style="margin-top: 16px;">Example: Single-active-enrolment rule (Enrollment.php)</h3>
+      <pre><code>public function validateSingleActive(PDO $pdo): bool {
+    if (strcasecmp($this->status, 'Active') !== 0) {
+        return true;
+    }
+    $sql = "SELECT enrollment_id FROM enrollments 
+            WHERE student_id = :sid 
+            AND status = 'Active'";
+    // ... checks for existing active enrolment
+    if ($existing) {
+        throw new Exception(
+            "Student already has an active enrolment"
+        );
+    }
+    return true;
+}</code></pre>
+      <h3 style="margin-top: 16px;">Example: Average calculation</h3>
+      <pre><code>public function calculateAverage(): ?float {
+    $marks = array_filter(
+        [$this->quarter1, $this->quarter2, 
+         $this->quarter3, $this->quarter4],
+        fn($val) => $val !== null
+    );
+    if (count($marks) === 0) return null;
+    $this->average = round(
+        array_sum($marks) / count($marks), 2
+    );
+    return $this->average;
+}</code></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11: UI AND WORKFLOW -->
+<!-- ============================================================ -->
+<div class="slide" id="s11">
+  <div class="slide-label">Slide 11</div>
+  <h2>User Interface and System Workflow</h2>
+  <div class="sep"></div>
+  <p style="margin-bottom: 16px;">The application provides three role-based interfaces. Each role sees a different dashboard and has access to different functions. The interface uses a consistent dark theme with responsive HTML/CSS. All screenshots below will be demonstrated live.</p>
+  <div class="three-col">
+    <div class="card">
+      <h3>Admin interface</h3>
+      <ul>
+        <li>Dashboard with student count, course stats</li>
+        <li>Student registration form with validation</li>
+        <li>Student list with search and profile view</li>
+        <li>Course management with module assignment</li>
+        <li>Module management with lecturer assignment</li>
+        <li>Enrolment management and password resets</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Lecturer interface</h3>
+      <ul>
+        <li>Dashboard showing assigned modules and student count</li>
+        <li>Student roster filtered by assigned modules</li>
+        <li>Mark entry form with quarterly fields</li>
+        <li>Automatic average calculation on save</li>
+        <li>Class performance overview</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Student interface</h3>
+      <ul>
+        <li>Dashboard with active course and cumulative average</li>
+        <li>Academic transcript with quarterly marks per module</li>
+        <li>Module list with assigned lecturers</li>
+        <li>Profile view with personal and enrolment details</li>
+        <li>Registration slip generation</li>
+        <li>AI academic advisor (optional feature)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top: 16px;">
+    <h3>Workflow: From registration to transcript</h3>
+    <div class="flow">
+      <div class="flow-step">Admin registers student</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">System generates student number + login</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">Enrolment created (Active)</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">Lecturer enters quarterly marks</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">System validates + calculates average</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">Student views transcript</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12: TESTING -->
+<!-- ============================================================ -->
+<div class="slide" id="s12">
+  <div class="slide-label">Slide 12</div>
+  <h2>Testing and Results</h2>
+  <div class="sep"></div>
+  <div class="two-col">
+    <div>
+      <h3>Test cases and outcomes</h3>
+      <table>
+        <tr><th>Test</th><th>Input / Action</th><th>Expected</th><th>Result</th></tr>
+        <tr><td>Register valid student</td><td>All required fields, valid email, valid course</td><td>Record created, student number returned</td><td><span class="tag tag-green">Pass</span></td></tr>
+        <tr><td>Duplicate email</td><td>Email already in database</td><td>Registration rejected with error</td><td><span class="tag tag-green">Pass</span></td></tr>
+        <tr><td>Mark out of range</td><td>Quarter mark = 105</td><td>Rejected, error message shown</td><td><span class="tag tag-green">Pass</span></td></tr>
+        <tr><td>Mark in range</td><td>Quarter mark = 82.5</td><td>Saved, average recalculated</td><td><span class="tag tag-green">Pass</span></td></tr>
+        <tr><td>Duplicate active enrolment</td><td>Enrol student who already has active enrolment</td><td>Rejected with business rule message</td><td><span class="tag tag-green">Pass</span></td></tr>
+        <tr><td>Login with wrong password</td><td>Correct username, incorrect password</td><td>Login denied</td><td><span class="tag tag-green">Pass</span></td></tr>
+        <tr><td>Student access admin page</td><td>Student session tries /admin/dashboard.php</td><td>Redirected to own dashboard</td><td><span class="tag tag-green">Pass</span></td></tr>
+        <tr><td>Average with partial marks</td><td>Only Q1 and Q2 entered</td><td>Average of 2 marks displayed</td><td><span class="tag tag-green">Pass</span></td></tr>
+        <tr><td>SQL injection attempt</td><td>Username: <code>' OR 1=1 --</code></td><td>Login fails, no error leak</td><td><span class="tag tag-green">Pass</span></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Grade classification logic</h3>
+      <div class="card" style="margin-bottom: 16px;">
+        <table>
+          <tr><th>Average Range</th><th>Classification</th><th>Status</th></tr>
+          <tr><td>75 - 100</td><td>Distinction (A)</td><td><span class="tag tag-green">Pass</span></td></tr>
+          <tr><td>60 - 74</td><td>Merit (B)</td><td><span class="tag tag-green">Pass</span></td></tr>
+          <tr><td>50 - 59</td><td>Pass (C)</td><td><span class="tag tag-blue">Pass</span></td></tr>
+          <tr><td>0 - 49</td><td>Fail (F)</td><td><span class="tag tag-amber">Fail</span></td></tr>
+        </table>
+      </div>
+      <h3>Known limitations</h3>
+      <ul>
+        <li>No automated test suite &mdash; testing was manual and documented</li>
+        <li>No CSRF token protection on forms</li>
+        <li>Password complexity rules are minimal (6+ characters only)</li>
+        <li>No audit log for data changes</li>
+        <li>Error messages in some cases expose class names (development mode)</li>
+      </ul>
+      <h3 style="margin-top: 16px;">Defects found and fixed</h3>
+      <ul>
+        <li>Student number generation race condition &mdash; fixed with loop-until-unique check</li>
+        <li>Legacy <code>full_name</code> column not syncing with <code>first_name</code> + <code>surname</code> &mdash; fixed with auto-split in constructor</li>
+        <li>Enrollment history query returning wrong order &mdash; fixed with DESC sort on date and ID</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13: LIVE DEMO -->
+<!-- ============================================================ -->
+<div class="slide" id="s13">
+  <div class="slide-label">Slide 13</div>
+  <h2>Live Demonstration</h2>
+  <div class="sep"></div>
+  <p style="margin-bottom: 20px;">The following workflow will be demonstrated on the running application. Each step traces from the interface through PHP logic to the database.</p>
+  <div class="two-col">
+    <div>
+      <h3>Demonstration sequence (7 minutes)</h3>
+      <table>
+        <tr><th>Time</th><th>Step</th><th>What to show</th></tr>
+        <tr><td>0:00</td><td>Login page</td><td>Role-based tabs (Admin, Student, Lecturer). Log in as admin</td></tr>
+        <tr><td>0:45</td><td>Admin dashboard</td><td>Overview stats. Navigate the admin interface</td></tr>
+        <tr><td>1:30</td><td>Register a student</td><td>Fill form, submit, show generated student number and auto-created login</td></tr>
+        <tr><td>2:30</td><td>Course and module structure</td><td>Show courses, their modules, and assigned lecturers</td></tr>
+        <tr><td>3:30</td><td>Enrolment</td><td>Show active enrolment. Attempt duplicate active enrolment to show rejection</td></tr>
+        <tr><td>4:30</td><td>Lecturer view</td><td>Log in as lecturer. Show assigned students and mark entry form</td></tr>
+        <tr><td>5:30</td><td>Student view</td><td>Log in as student. Show dashboard, marks, and transcript</td></tr>
+        <tr><td>6:30</td><td>Validation</td><td>Enter invalid mark (>100) to show rejection. Show database table</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 16px;">
+        <h3>Demo credentials</h3>
+        <table>
+          <tr><th>Role</th><th>Username</th><th>Password</th></tr>
+          <tr><td>Admin</td><td><code>admin</code></td><td><code>TheAdmin@dffe</code></td></tr>
+          <tr><td>Student</td><td><code>10ha2304014</code></td><td><code>Student@dffe</code></td></tr>
+          <tr><td>Lecturer</td><td><code>lecturer</code></td><td><code>Lecturer@dffe</code></td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>What to watch for</h3>
+        <ul>
+          <li>Student number auto-generated on registration (format: ST + year + 5-digit sequence)</li>
+          <li>User login account created automatically alongside student record</li>
+          <li>Single-active-enrolment business rule enforcement</li>
+          <li>Mark validation rejecting values outside 0-100</li>
+          <li>Average recalculated automatically when marks are saved</li>
+          <li>Each role sees only its permitted pages and data</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top: 16px;">
+        <h3>Backup</h3>
+        <p>If the local server is unavailable, the application is also deployed at:<br><code>https://student-system.infinityfree.io</code></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14: CHALLENGES AND FUTURE WORK -->
+<!-- ============================================================ -->
+<div class="slide" id="s14">
+  <div class="slide-label">Slide 14</div>
+  <h2>Challenges, Limitations and Future Improvements</h2>
+  <div class="sep"></div>
+  <div class="two-col">
+    <div>
+      <h3>Challenges faced</h3>
+      <ul>
+        <li><strong>Many-to-many relationships</strong> &mdash; Designing the course-module and module-lecturer junction tables and writing the correct JOIN queries took the most design time</li>
+        <li><strong>Backward compatibility</strong> &mdash; The original database had a flat <code>students</code> table. Normalising it while keeping old columns working required dual mappings in the Student class constructor</li>
+        <li><strong>Student number uniqueness</strong> &mdash; Initial implementation could generate duplicates under concurrent inserts. Fixed with a loop-until-unique database check</li>
+        <li><strong>Transaction integrity</strong> &mdash; Registration involves three database operations (student, user, enrolment). Had to wrap in a transaction to prevent partial records on failure</li>
+      </ul>
+      <h3 style="margin-top: 16px;">Current limitations</h3>
+      <ul>
+        <li>No automated testing framework &mdash; all testing was manual</li>
+        <li>No CSRF protection on forms</li>
+        <li>No audit trail for data modifications</li>
+        <li>No file upload capability (e.g. student photos)</li>
+        <li>No email notifications for registration or mark updates</li>
+        <li>Single-server deployment, no horizontal scaling</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Future improvements</h3>
+      <div class="card" style="margin-bottom: 16px;">
+        <table>
+          <tr><th>Improvement</th><th>Purpose</th></tr>
+          <tr><td>PHPUnit automated tests</td><td>Repeatable testing for business rules and edge cases</td></tr>
+          <tr><td>CSRF token protection</td><td>Prevent cross-site request forgery on form submissions</td></tr>
+          <tr><td>MVC framework migration</td><td>Separate views from controllers for better maintainability</td></tr>
+          <tr><td>REST API layer</td><td>Enable mobile clients or external system integration</td></tr>
+          <tr><td>Attendance tracking</td><td>Record and report student attendance per module</td></tr>
+          <tr><td>Audit logging</td><td>Track who changed what data and when</td></tr>
+          <tr><td>Email notifications</td><td>Notify students of registration and mark updates</td></tr>
+          <tr><td>PDF transcript export</td><td>Generate downloadable official transcripts</td></tr>
+        </table>
+      </div>
+      <p>These items are listed as realistic next steps based on what the current implementation does not cover. They are not planned for this assessment period.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 15: CONCLUSION -->
+<!-- ============================================================ -->
+<div class="slide" id="s15">
+  <div class="slide-label">Slide 15</div>
+  <h2>Conclusion</h2>
+  <div class="sep"></div>
+  <div class="wide-left">
+    <div>
+      <h3>Problem addressed</h3>
+      <p>The Student Portal System replaces fragmented, manual academic record-keeping with a centralised web application. Student records, course enrolments, module assignments, quarterly marks, and academic performance are stored in a single relational database and accessed through role-based interfaces.</p>
+
+      <h3 style="margin-top: 20px;">Technical achievement</h3>
+      <ul>
+        <li>9 PHP classes with encapsulated attributes and separated responsibilities</li>
+        <li>8 MySQL tables with foreign keys, junction tables, and integrity constraints</li>
+        <li>3 role-based interfaces (admin, lecturer, student) with session-based authentication</li>
+        <li>Business rules enforced in both PHP and MySQL: single active enrolment, mark validation (0-100), unique student numbers, duplicate prevention</li>
+        <li>Transactional registration creating student, user, and enrolment records atomically</li>
+        <li>All database queries use PDO prepared statements</li>
+      </ul>
+
+      <h3 style="margin-top: 20px;">Lessons learned</h3>
+      <ul>
+        <li>Designing the database correctly before writing code saved significant rework</li>
+        <li>Business rules belong in the application logic, not just in the user interface</li>
+        <li>Backward compatibility adds complexity but prevents breaking existing data</li>
+        <li>Manual testing is useful but insufficient &mdash; automated tests are a clear next step</li>
+      </ul>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom: 20px;">
+        <h3>ERD vs Class Diagram</h3>
+        <table>
+          <tr><th></th><th>ERD</th><th>Class Diagram</th></tr>
+          <tr><td>Perspective</td><td>Database</td><td>Application</td></tr>
+          <tr><td>Shows</td><td>Tables, columns, keys, relationships</td><td>Classes, attributes, methods, responsibilities</td></tr>
+          <tr><td>Answers</td><td>How is data stored?</td><td>How is logic organised?</td></tr>
+        </table>
+        <p class="small" style="margin-top: 8px;">Both diagrams are consistent with each other and with the actual implementation. A database table stores data; the corresponding PHP class represents that data and contains behaviour.</p>
+      </div>
+
+      <div class="card">
+        <h3>Status</h3>
+        <p>This is a working internship assessment project. It demonstrates object-oriented design, relational database architecture, and full-stack PHP implementation. It is not claimed to be production-grade software.</p>
+        <div class="stat-row" style="margin-top: 12px;">
+          <div class="stat"><div class="val">9</div><div class="lbl">PHP Classes</div></div>
+          <div class="stat"><div class="val">8</div><div class="lbl">DB Tables</div></div>
+          <div class="stat"><div class="val">3</div><div class="lbl">User Roles</div></div>
+        </div>
+      </div>
+
+      <p style="margin-top: 24px; text-align: center; color: var(--text); font-weight: 500; font-size: 1.05rem;">Thank you. Questions?</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <span class="nav-hint">Arrow keys or click to navigate</span>
+  <span class="counter" id="counter">1 / 15</span>
+  <div class="controls">
+    <button class="nav-btn" onclick="go(-1)">Previous</button>
+    <button class="nav-btn" onclick="go(1)">Next</button>
+  </div>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const counter = document.getElementById('counter');
+
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, total - 1));
+    slides[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + total;
+  }
+
+  function go(d) { show(current + d); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); go(-1); }
+    if (e.key === 'Home') { e.preventDefault(); show(0); }
+    if (e.key === 'End') { e.preventDefault(); show(total - 1); }
+    if (e.key === 'f' || e.key === 'F') { toggleFS(); }
+  });
+
+  function toggleFS() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  // Touch support
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1);
+  });
+</script>
+
+</body>
+</html>
