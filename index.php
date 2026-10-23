@@ -420,13 +420,13 @@ $page_title = "Portal Login - Student Management System";
                     <i class="material-icons tiny">vpn_key</i> Quick Demo Credentials:
                 </div>
                 <div class="demo-chips-grid">
-                    <div class="demo-chip-btn" data-role="student" data-user="10ha2304014" data-pass="bitcoin" title="Click to autofill student demo">
+                    <div class="demo-chip-btn" data-role="student" data-user="10ha2304014" data-pass="Student@dffe" title="Click to autofill student demo">
                         🎓 <strong>Student:</strong> 10ha2304014
                     </div>
-                    <div class="demo-chip-btn" data-role="lecturer" data-user="lecturer" data-pass="password123" title="Click to autofill lecturer demo">
+                    <div class="demo-chip-btn" data-role="lecturer" data-user="lecturer" data-pass="Lecturer@dffe" title="Click to autofill lecturer demo">
                         👨‍🏫 <strong>Lecturer:</strong> lecturer
                     </div>
-                    <div class="demo-chip-btn" data-role="admin" data-user="admin" data-pass="admin123" title="Click to autofill admin demo">
+                    <div class="demo-chip-btn" data-role="admin" data-user="admin" data-pass="TheAdmin@dffe" title="Click to autofill admin demo">
                         🛡️ <strong>Admin:</strong> admin
                     </div>
                 </div>

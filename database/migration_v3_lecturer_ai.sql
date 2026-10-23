@@ -41,9 +41,9 @@ PREPARE alterFkIfNotExists FROM @preparedStatement;
 EXECUTE alterFkIfNotExists;
 DEALLOCATE PREPARE alterFkIfNotExists;
 
--- 4. Seed default lecturer login account (password: password123)
--- Hash for 'password123': $2y$10$w8.1UuB9n0n3m1r/9u6hOekm2N7E1fJ7xP8q1hQhN7v9m5lF8iC3u or generate via PHP
+-- 4. Seed default lecturer login account (password: Lecturer@dffe)
+-- Hash for 'Lecturer@dffe': $2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq or generate via PHP
 INSERT IGNORE INTO `users` (`username`, `password`, `role`, `lecturer_id`)
-VALUES ('lecturer', '$2y$10$w4rWjA9mR1p8Z5K1iK3wyeWw1yK5Y3E2bA7oF3b0A9i8J1l8O3i1K', 'lecturer', 1);
+VALUES ('lecturer', '$2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq', 'lecturer', 1);
 
 COMMIT;

@@ -424,8 +424,8 @@ Show Role Tabs & Auto-Fill    Show Auto-Numbering        Capture Q1-Q4 Marks    
 ### Step 1: Show the Login Page & Role Switcher (30 seconds)
 1. Open [http://localhost/university_system/index.php](http://localhost/university_system/index.php) (or the live cloud URL).
 2. Point out the three tabs: **Student**, **Lecturer**, **Admin**.
-3. Click the **Lecturer** tab $\rightarrow$ Notice how the fields auto-fill with username `lecturer` and password `password123`.
-4. Click the **Admin** tab $\rightarrow$ Auto-fills with `admin` and `admin123`.
+3. Click the **Lecturer** tab $\rightarrow$ Notice how the fields auto-fill with username `lecturer` and password `Lecturer@dffe`.
+4. Click the **Admin** tab $\rightarrow$ Auto-fills with `admin` and `TheAdmin@dffe`.
 5. Explain: *"We built this so assessors can test any role instantly with zero friction."*
 
 ### Step 2: Log in as Administrator (1 minute)
@@ -446,7 +446,7 @@ Show Role Tabs & Auto-Fill    Show Auto-Numbering        Capture Q1-Q4 Marks    
 7. Try typing `150` into a box $\rightarrow$ Show that the form prevents invalid marks over 100%.
 
 ### Step 4: Log in as Student (2 minutes)
-1. Log out, click the **Student** tab, and log in with student `10ha2304014` and password `bitcoin`.
+1. Log out, click the **Student** tab, and log in with student `10ha2304014` and password `Student@dffe`.
 2. You land on `student/dashboard.php`. Show the clean greeting, registered qualification, and average grade.
 3. Click **Academic Results / Transcript** (`student/results.php`).
 4. Point out the table showing all enrolled modules and the four quarter marks captured by the lecturer.
@@ -504,8 +504,8 @@ Here are the most common questions an evaluation panel will ask, along with hone
 Before walking into the assessment room:
 - [ ] Open the live cloud URL: [https://student-system.infinityfree.io/index.php](https://student-system.infinityfree.io/index.php) in one browser tab.
 - [ ] Open the localhost URL: [http://localhost/university_system/index.php](http://localhost/university_system/index.php) in a second tab as a backup.
-- [ ] Test that the Admin login works (`admin` / `admin123`).
-- [ ] Test that the Lecturer login works (`lecturer` / `password123`).
-- [ ] Test that the Student login works (`10ha2304014` / `bitcoin`).
+- [ ] Test that the Admin login works (`admin` / `TheAdmin@dffe`).
+- [ ] Test that the Lecturer login works (`lecturer` / `Lecturer@dffe`).
+- [ ] Test that the Student login works (`10ha2304014` / `Student@dffe`).
 - [ ] Click "Download Official Transcript (PDF)" once to make sure the PDF generates cleanly.
 - [ ] Have this guide open on a tablet or phone for quick reference during Q&A!

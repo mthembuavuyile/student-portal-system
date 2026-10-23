@@ -28,9 +28,9 @@ The system is operational across both cloud production and local workstation env
 
 | Portal View | Username | Password | Role Description |
 | :--- | :--- | :--- | :--- |
-| **Student Portal** | `10ha2304014` | `bitcoin` | Seeded demo student account with registered modules, results, and AI coach |
-| **Lecturer / Educator Portal** | `lecturer` | `password123` | Educator view to review teaching rosters and capture quarterly marks (Q1–Q4) |
-| **Administrator Portal** | `admin` | `admin123` | Administrative governance, student registration, and curriculum management |
+| **Student Portal** | `10ha2304014` | `Student@dffe` | Seeded demo student account with registered modules, results, and AI coach |
+| **Lecturer / Educator Portal** | `lecturer` | `Lecturer@dffe` | Educator view to review teaching rosters and capture quarterly marks (Q1–Q4) |
+| **Administrator Portal** | `admin` | `TheAdmin@dffe` | Administrative governance, student registration, and curriculum management |
 
 ---
 

@@ -928,19 +928,19 @@ if ($is_logged_in) {
                             <tr>
                                 <td><span class="chip blue white-text" style="height: 24px; line-height: 24px;">Administrator</span></td>
                                 <td><code>admin</code></td>
-                                <td><code>admin123</code></td>
+                                <td><code>TheAdmin@dffe</code></td>
                                 <td><strong>Live &amp; Local:</strong> Full governance, student registration, courses, modules, faculty.</td>
                             </tr>
                             <tr>
                                 <td><span class="chip teal white-text" style="height: 24px; line-height: 24px;">Lecturer</span></td>
-                                <td><code>jdoe</code> <span style="color: #64748b;">(Local)</span><br><code>lecturer</code> <span style="color: #64748b;">(Live Cloud)</span></td>
-                                <td><code>password123</code></td>
+                                <td><code>lecturer</code> <span style="color: #64748b;">(Demo Account)</span><br><code>k.naidoo</code> / <code>z.khumalo</code></td>
+                                <td><code>Lecturer@dffe</code></td>
                                 <td><strong>Live &amp; Local:</strong> Assigned classes, module rosters, quarterly marks capture (Q1–Q4).</td>
                             </tr>
                             <tr>
                                 <td><span class="chip green white-text" style="height: 24px; line-height: 24px;">Student</span></td>
-                                <td><code>10ha2304014</code> <span style="color: #64748b;">(Live Cloud)</span><br><code>ST20260001</code> <span style="color: #64748b;">(Localhost)</span></td>
-                                <td><code>bitcoin</code> <span style="color: #64748b;">(Live)</span><br><code>password123</code> <span style="color: #64748b;">(Local)</span></td>
+                                <td><code>10ha2304014</code> <span style="color: #64748b;">(Demo Student)</span><br><code>ST2600001+</code> <span style="color: #64748b;">(Registered)</span></td>
+                                <td><code>Student@dffe</code></td>
                                 <td><strong>Live &amp; Local:</strong> Academic transcript, GPA metrics, AI Success Advisor, PDF transcript export.</td>
                             </tr>
                         </tbody>

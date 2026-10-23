@@ -54,10 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'course_id' => $course_id,
                 'enroll_date' => $enroll_date,
                 'customStudentNumber' => !$auto_generate ? $custom_student_id : null,
-                'password' => 'password123'
+                'password' => 'Student@dffe'
             ]);
 
-            $_SESSION['success_message'] = "Student registered successfully! Student Number: " . $registrationResult['studentNumber'] . " (Default Password: 'password123')";
+            $_SESSION['success_message'] = "Student registered successfully! Student Number: " . $registrationResult['studentNumber'] . " (Default Password: 'Student@dffe')";
             redirect('admin/student_list.php');
 
         } catch (Exception $e) {

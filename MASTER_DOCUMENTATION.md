@@ -137,9 +137,9 @@ The login interface (`index.php`) features an interactive, tabbed role switcher 
 
 | Portal View | Username | Password | Access Privileges & Functional Scope |
 | :--- | :--- | :--- | :--- |
-| **Student Portal** | `10ha2304014` | `bitcoin` | Seeded demo student account. Self-service profile, registered modules inspection, quarterly marks (Q1–Q4), real-time composite average, official jsPDF academic transcript export, and OpenRouter AI Success Coach diagnostics. |
-| **Lecturer / Educator Portal** | `lecturer` | `password123` | Educator view. Review allocated teaching modules, inspect enrolled student rosters, and capture/update quarterly marks (Q1 to Q4) with client-side range validation. |
-| **Administrator Portal** | `admin` | `admin123` | Central administrative governance. Student registration with automated student number generation (`ST2600001`), course curriculum mapping, module credit management, lecturer staffing, and global student directory filtering. |
+| **Student Portal** | `10ha2304014` | `Student@dffe` | Seeded demo student account. Self-service profile, registered modules inspection, quarterly marks (Q1–Q4), real-time composite average, official jsPDF academic transcript export, and OpenRouter AI Success Coach diagnostics. |
+| **Lecturer / Educator Portal** | `lecturer` | `Lecturer@dffe` | Educator view. Review allocated teaching modules, inspect enrolled student rosters, and capture/update quarterly marks (Q1 to Q4) with client-side range validation. |
+| **Administrator Portal** | `admin` | `TheAdmin@dffe` | Central administrative governance. Student registration with automated student number generation (`ST2600001`), course curriculum mapping, module credit management, lecturer staffing, and global student directory filtering. |
 
 ---
 

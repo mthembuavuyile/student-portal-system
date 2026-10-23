@@ -31,12 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 $username = $usernameBase . $counter;
                 $counter++;
             }
-            $hash = password_hash('password123', PASSWORD_DEFAULT);
+            $hash = password_hash('Lecturer@dffe', PASSWORD_DEFAULT);
             $userStmt = $pdo->prepare("INSERT INTO users (username, password, role, lecturer_id) VALUES (:u, :pwd, 'lecturer', :lid)");
             $userStmt->execute([':u' => $username, ':pwd' => $hash, ':lid' => $newLecturerId]);
 
             $pdo->commit();
-            $_SESSION['success_message'] = "Lecturer '{$firstName} {$surname}' registered successfully! Educator login created: Username '{$username}' | Default Password 'password123'.";
+            $_SESSION['success_message'] = "Lecturer '{$firstName} {$surname}' registered successfully! Educator login created: Username '{$username}' | Default Password 'Lecturer@dffe'.";
             redirect('admin/lecturers.php');
         } catch (PDOException $e) {
             if ($pdo->inTransaction()) {

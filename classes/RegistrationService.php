@@ -79,7 +79,7 @@ class RegistrationService {
      *   - courseId / course_id OR course_name (required)
      *   - enrollmentDate / enroll_date (optional, defaults to today)
      *   - customStudentNumber (optional override for legacy migration)
-     *   - password (optional, defaults to 'password123')
+     *   - password (optional, defaults to 'Student@dffe')
      * 
      * @return array [student => Student, username => string, studentNumber => string]
      * @throws Exception On validation or database error
@@ -172,7 +172,7 @@ class RegistrationService {
             $studentId = (int)$pdo->lastInsertId();
 
             // 2. Insert into users table for authentication
-            $plainPassword = $data['password'] ?? 'password123';
+            $plainPassword = $data['password'] ?? 'Student@dffe';
             $passwordHash = password_hash($plainPassword, PASSWORD_DEFAULT);
             $userStmt = $pdo->prepare("
                 INSERT INTO users (username, password, role, student_id_number) 

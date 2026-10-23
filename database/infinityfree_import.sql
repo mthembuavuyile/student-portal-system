@@ -289,20 +289,20 @@ CREATE TABLE `users` (
 -- DATA: `users`
 -- 
 -- Credentials Summary:
--- 1. Administrator:   username 'admin'       | password 'admin123'
--- 2. Demo Student:    username '10ha2304014' | password 'bitcoin'
--- 3. Lead Lecturer:   username 'lecturer'    | password 'password123' (Lecturer ID: 1, Nkosinathi Sithole)
--- 4. Faculty Member:  username 'k.naidoo'    | password 'password123' (Lecturer ID: 2, Kaveshan Naidoo)
--- 5. Faculty Member:  username 'z.khumalo'   | password 'password123' (Lecturer ID: 3, Zandile Khumalo)
--- 6. Faculty Member:  username 't.baloyi'    | password 'password123' (Lecturer ID: 4, Thabo Baloyi)
+-- 1. Administrator:   username 'admin'       | password 'TheAdmin@dffe'
+-- 2. Demo Student:    username '10ha2304014' | password 'Student@dffe'
+-- 3. Lead Lecturer:   username 'lecturer'    | password 'Lecturer@dffe' (Lecturer ID: 1, Nkosinathi Sithole)
+-- 4. Faculty Member:  username 'k.naidoo'    | password 'Lecturer@dffe' (Lecturer ID: 2, Kaveshan Naidoo)
+-- 5. Faculty Member:  username 'z.khumalo'   | password 'Lecturer@dffe' (Lecturer ID: 3, Zandile Khumalo)
+-- 6. Faculty Member:  username 't.baloyi'    | password 'Lecturer@dffe' (Lecturer ID: 4, Thabo Baloyi)
 -- -----------------------------------------------------------------------------
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `student_id_number`, `lecturer_id`) VALUES
-(1, 'admin', '$2y$10$5AkYDqvd0zZqkM5kEzYOpeBfQgevHi8ZJeiMsVoVTx1yJwpiw.Utu', 'admin', NULL, NULL),
-(2, '10ha2304014', '$2y$10$jL0n0ZpD3MFxvIJRxbPNzuo32cLKnm5W1ClHwnpvn9b.ASQKnHk2G', 'student', '10ha2304014', NULL),
-(3, 'lecturer', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 1),
-(4, 'k.naidoo', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 2),
-(5, 'z.khumalo', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 3),
-(6, 't.baloyi', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 4);
+(1, 'admin', '$2y$10$b6Mh80HB9bAwZnbyUfhiEexxRJzz5K7M26EWopY3jL9gyq1V/JEuC', 'admin', NULL, NULL),
+(2, '10ha2304014', '$2y$10$Td2eB3enx.9MKzHF/fuXrOAurKrH6/CVm/UMlTC28EgQYFl8sdbWa', 'student', '10ha2304014', NULL),
+(3, 'lecturer', '$2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq', 'lecturer', NULL, 1),
+(4, 'k.naidoo', '$2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq', 'lecturer', NULL, 2),
+(5, 'z.khumalo', '$2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq', 'lecturer', NULL, 3),
+(6, 't.baloyi', '$2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq', 'lecturer', NULL, 4);
 
 -- -----------------------------------------------------------------------------
 -- Re-enable foreign key checks and commit transaction

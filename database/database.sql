@@ -246,13 +246,17 @@ CREATE TABLE `users` (
   CONSTRAINT `fk_user_lecturer` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturers` (`lecturer_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- User Credentials:
+-- 1. admin:       password 'TheAdmin@dffe'
+-- 2. 10ha2304014: password 'Student@dffe'
+-- 3-6. lecturers: password 'Lecturer@dffe'
 INSERT INTO `users` (`id`, `username`, `password`, `role`, `student_id_number`, `lecturer_id`) VALUES
-(1, 'admin', '$2y$10$5AkYDqvd0zZqkM5kEzYOpeBfQgevHi8ZJeiMsVoVTx1yJwpiw.Utu', 'admin', NULL, NULL),
-(2, '10ha2304014', '$2y$10$jL0n0ZpD3MFxvIJRxbPNzuo32cLKnm5W1ClHwnpvn9b.ASQKnHk2G', 'student', '10ha2304014', NULL),
-(3, 'lecturer', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 1),
-(4, 'k.naidoo', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 2),
-(5, 'z.khumalo', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 3),
-(6, 't.baloyi', '$2y$10$0fU143bVrjczW25gYYYmIOUBtVxfCAnqUkbVdeeVL1og/fHiX4RxO', 'lecturer', NULL, 4);
+(1, 'admin', '$2y$10$b6Mh80HB9bAwZnbyUfhiEexxRJzz5K7M26EWopY3jL9gyq1V/JEuC', 'admin', NULL, NULL),
+(2, '10ha2304014', '$2y$10$Td2eB3enx.9MKzHF/fuXrOAurKrH6/CVm/UMlTC28EgQYFl8sdbWa', 'student', '10ha2304014', NULL),
+(3, 'lecturer', '$2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq', 'lecturer', NULL, 1),
+(4, 'k.naidoo', '$2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq', 'lecturer', NULL, 2),
+(5, 'z.khumalo', '$2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq', 'lecturer', NULL, 3),
+(6, 't.baloyi', '$2y$10$dpkOtSAl7113W8toFnN49.Zxl29r1ECZ3mhEDrKXxCWZ5ejGy7Mbq', 'lecturer', NULL, 4);
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS = 1;
