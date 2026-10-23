@@ -10,16 +10,16 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --border: #2a2d3a;
-    --text: #e2e4ea;
-    --text-secondary: #9ca0ad;
-    --accent: #3b82f6;
-    --accent-dim: #1e3a5f;
-    --green: #22c55e;
-    --amber: #f59e0b;
-    --red: #ef4444;
+    --bg: #f8f9fb;
+    --surface: #ffffff;
+    --border: #e2e5eb;
+    --text: #1a1d27;
+    --text-secondary: #5a5f6d;
+    --accent: #2563eb;
+    --accent-dim: #eff4ff;
+    --green: #16a34a;
+    --amber: #d97706;
+    --red: #dc2626;
   }
 
   html, body {
@@ -155,6 +155,12 @@
     object-fit: contain;
     border-radius: 8px;
     border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .diagram-container img:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   }
 
   /* --- Stat boxes --- */
@@ -181,9 +187,9 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
-  .tag-blue { background: var(--accent-dim); color: var(--accent); }
-  .tag-green { background: #16372a; color: var(--green); }
-  .tag-amber { background: #3d2f10; color: var(--amber); }
+  .tag-blue { background: #eff4ff; color: var(--accent); }
+  .tag-green { background: #ecfdf5; color: var(--green); }
+  .tag-amber { background: #fffbeb; color: var(--amber); }
 
   /* --- Separator --- */
   .sep { width: 48px; height: 3px; background: var(--accent); border-radius: 2px; margin: 16px 0; }
@@ -234,11 +240,11 @@
     font-family: inherit;
     transition: background 0.15s;
   }
-  .nav-btn:hover { background: var(--accent); }
+  .nav-btn:hover { background: var(--accent); color: #fff; }
   .nav-hint { font-size: 0.72rem; color: var(--text-secondary); }
 
   /* --- Comparison table highlight --- */
-  .highlight-row td { color: var(--text); background: rgba(59,130,246,0.06); }
+  .highlight-row td { color: var(--text); font-weight: 600; background: rgba(37,99,235,0.05); }
 
   /* --- Fullscreen button --- */
   .fs-btn {
@@ -257,24 +263,83 @@
   }
   .fs-btn:hover { color: var(--text); border-color: var(--accent); }
 
+  /* --- Lightbox --- */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+  .lightbox.open {
+    opacity: 1;
+    visibility: visible;
+  }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    transform: scale(0.95);
+    transition: transform 0.2s ease;
+  }
+  .lightbox.open img {
+    transform: scale(1);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 28px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.25); }
+  .lightbox-hint {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.6);
+    font-size: 0.75rem;
+    font-family: 'Inter', sans-serif;
+  }
+
   /* --- Print --- */
   @media print {
-    .nav-bar, .fs-btn { display: none; }
+    .nav-bar, .fs-btn, .lightbox { display: none; }
     .slide { position: relative; display: flex !important; page-break-after: always; height: auto; min-height: 100vh; }
-    body { overflow: visible; background: #fff; color: #111; }
-    .slide-label { color: #333; }
-    h2 { color: #1a56db; }
-    .card { border-color: #ddd; }
-    th { background: #f5f5f5; }
-    td, p, li { color: #333; }
-    .stat .val { color: #1a56db; }
-    .nav-btn, .flow-arrow { color: #333; }
+    body { overflow: visible; }
   }
 </style>
 </head>
 <body>
 
 <button class="fs-btn" onclick="toggleFS()" title="Toggle fullscreen">Fullscreen</button>
+
+<!-- Lightbox overlay -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()" title="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-hint">Click anywhere or press Esc to close</div>
+</div>
 
 <div class="deck" id="deck">
 
@@ -1045,6 +1110,10 @@
   function go(d) { show(current + d); }
 
   document.addEventListener('keydown', e => {
+    // Close lightbox on Escape
+    if (e.key === 'Escape') { closeLightbox(); return; }
+    // Don't navigate slides while lightbox is open
+    if (document.getElementById('lightbox').classList.contains('open')) return;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
     if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); go(-1); }
     if (e.key === 'Home') { e.preventDefault(); show(0); }
@@ -1066,6 +1135,22 @@
   document.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - tx;
     if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1);
+  });
+
+  // Lightbox for images
+  function openLightbox(src, alt) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = src;
+    img.alt = alt || '';
+    lb.classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  // Attach click handlers to all diagram images
+  document.querySelectorAll('.diagram-container img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img.src, img.alt));
   });
 </script>
 
