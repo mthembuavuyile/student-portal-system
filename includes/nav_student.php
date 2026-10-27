@@ -7,6 +7,7 @@
         </a>
         <ul class="right hide-on-med-and-down">
             <li><a href="<?php echo BASE_URL; ?>student/dashboard.php"><i class="material-icons left">dashboard</i>Dashboard</a></li>
+            <li><a href="<?php echo BASE_URL; ?>student/fees.php" style="color: #80d8ff; font-weight: 600;"><i class="material-icons left" style="color: #80d8ff;">account_balance_wallet</i>Fees (R50)</a></li>
             <li><a href="<?php echo BASE_URL; ?>student/profile.php"><i class="material-icons left">person</i>Profile</a></li>
             <li><a href="<?php echo BASE_URL; ?>student/modules.php"><i class="material-icons left">book</i>My Modules</a></li>
             <li><a href="<?php echo BASE_URL; ?>student/results.php"><i class="material-icons left">assessment</i>Academic Results</a></li>
@@ -26,6 +27,7 @@
         <a href="#email"><span class="white-text email">Department of Forestry, Fisheries & the Environment</span></a>
     </div></li>
     <li><a href="<?php echo BASE_URL; ?>student/dashboard.php"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="<?php echo BASE_URL; ?>student/fees.php"><i class="material-icons light-blue-text text-darken-2">account_balance_wallet</i>School Fees & PayFast</a></li>
     <li><a href="<?php echo BASE_URL; ?>student/results.php#aiCoachCard"><i class="material-icons amber-text text-darken-3">auto_awesome</i>AI Academic Coach</a></li>
     <li><a href="<?php echo BASE_URL; ?>student/profile.php"><i class="material-icons">person</i>My Profile</a></li>
     <li><a href="<?php echo BASE_URL; ?>student/modules.php"><i class="material-icons">book</i>My Enrolled Modules</a></li>

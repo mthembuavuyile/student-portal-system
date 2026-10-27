@@ -8,6 +8,7 @@
         <ul class="right hide-on-med-and-down">
             <li><a href="<?php echo BASE_URL; ?>admin/dashboard.php"><i class="material-icons left">dashboard</i>Dashboard</a></li>
             <li><a href="<?php echo BASE_URL; ?>admin/student_list.php"><i class="material-icons left">people</i>Students</a></li>
+            <li><a href="<?php echo BASE_URL; ?>admin/fees.php" style="color: #80d8ff; font-weight: 600;"><i class="material-icons left" style="color: #80d8ff;">account_balance</i>Finance & Fees</a></li>
             <li><a href="<?php echo BASE_URL; ?>admin/courses.php"><i class="material-icons left">school</i>Courses</a></li>
             <li><a href="<?php echo BASE_URL; ?>admin/modules.php"><i class="material-icons left">book</i>Modules</a></li>
             <li><a href="<?php echo BASE_URL; ?>admin/lecturers.php"><i class="material-icons left">supervisor_account</i>Lecturers</a></li>
@@ -25,6 +26,7 @@
         <a href="#email"><span class="white-text email">Corporate Management Services</span></a>
     </div></li>
     <li><a href="<?php echo BASE_URL; ?>admin/dashboard.php"><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="<?php echo BASE_URL; ?>admin/fees.php"><i class="material-icons light-blue-text text-darken-2">account_balance</i>Finance & School Fees</a></li>
     <li><a href="<?php echo BASE_URL; ?>admin/register_student.php"><i class="material-icons">person_add</i>Register Student</a></li>
     <li><a href="<?php echo BASE_URL; ?>admin/student_list.php"><i class="material-icons">people</i>Student Directory</a></li>
     <li><div class="divider"></div></li>

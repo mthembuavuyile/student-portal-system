@@ -29,6 +29,9 @@ foreach ($moduleResults as $res) {
     }
 }
 $cumulativeAverage = $avgCount > 0 ? round($totalAvg / $avgCount, 2) : null;
+
+// School Fee summary
+$feeSummary = $student ? FeeService::getFeeSummary($pdo, (int)$student->getId()) : null;
 ?>
 
 <div class="row">
@@ -97,6 +100,52 @@ $cumulativeAverage = $avgCount > 0 ? round($totalAvg / $avgCount, 2) : null;
     </div>
     <?php endif; ?>
 </div>
+
+<!-- School Fee Status Banner -->
+<?php if ($feeSummary): ?>
+<div class="row">
+    <div class="col s12">
+        <div class="card white" style="border-radius: 12px; border-left: 6px solid <?php echo $feeSummary['is_fully_paid'] ? '#2e7d32' : '#f57c00'; ?>; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <div class="card-content" style="padding: 18px 24px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 50px; height: 50px; border-radius: 10px; background: <?php echo $feeSummary['is_fully_paid'] ? '#e8f5e9' : '#fff3e0'; ?>; display: flex; align-items: center; justify-content: center;">
+                            <i class="material-icons <?php echo $feeSummary['is_fully_paid'] ? 'green-text text-darken-2' : 'orange-text text-darken-3'; ?>" style="font-size: 28px;">
+                                <?php echo $feeSummary['is_fully_paid'] ? 'verified' : 'account_balance_wallet'; ?>
+                            </i>
+                        </div>
+                        <div>
+                            <h6 style="margin: 0; font-weight: 700; color: #1a237e;">
+                                School Fees: <?php echo $feeSummary['is_fully_paid'] ? 'Good Standing &bull; All Fees Settled' : 'R' . number_format($feeSummary['balance_due'], 2) . ' Outstanding'; ?>
+                            </h6>
+                            <p class="grey-text text-darken-1" style="margin: 3px 0 0 0; font-size: 0.88rem;">
+                                Standard Tuition: <strong>R50.00 / month</strong> &bull; Settled: <strong><?php echo $feeSummary['paid_count']; ?> of <?php echo $feeSummary['fee_count']; ?> months</strong>
+                                <?php if ($feeSummary['next_unpaid_fee']): ?>
+                                    &bull; Next Due: <strong><?php echo htmlspecialchars($feeSummary['next_unpaid_fee']['fee_title']); ?></strong>
+                                <?php endif; ?>
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <?php if ($feeSummary['next_unpaid_fee']): ?>
+                            <form action="<?php echo BASE_URL; ?>student/pay_fee.php" method="POST" style="display: inline-block; margin-right: 6px;">
+                                <?php csrf_token_field(); ?>
+                                <input type="hidden" name="fee_id" value="<?php echo (int)$feeSummary['next_unpaid_fee']['fee_id']; ?>">
+                                <button type="submit" class="btn blue darken-3 waves-effect waves-light" style="border-radius: 6px; text-transform: none; font-weight: 600;">
+                                    <i class="material-icons left tiny">flash_on</i> Pay R50 with PayFast
+                                </button>
+                            </form>
+                        <?php endif; ?>
+                        <a href="<?php echo BASE_URL; ?>student/fees.php" class="btn-flat waves-effect" style="border: 1px solid #1565c0; color: #1565c0; border-radius: 6px; text-transform: none; font-weight: 600;">
+                            View Fee Schedule & Receipts
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 
 <!-- AI Academic Success Advisor Banner -->
 <div class="row">
