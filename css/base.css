@@ -1,0 +1,370 @@
+/* ==========================================================================
+   css/base.css - Tier 1: Theme Foundations, Resets & Global Layout
+   Student Management System
+   ========================================================================== */
+
+/* --------------------------------------------------
+   1. Design Tokens & Theme Foundations
+   -------------------------------------------------- */
+:root {
+    --primary-color: #1565c0;
+    --primary-color-dark: #0d47a1;
+    --primary-color-light: #1e88e5;
+    --accent-color: #26a69a;
+    --surface-color: #ffffff;
+    --background-color: #f0f2f5;
+    --text-color: #212121;
+    --text-secondary: #757575;
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+    --shadow-1: 0 2px 4px rgba(0, 0, 0, 0.08);
+    --shadow-2: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-3: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --error-color: #c62828;
+    --success-color: #2e7d32;
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* --------------------------------------------------
+   2. Base Resets & Global Layout
+   -------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--text-color);
+}
+
+main {
+    flex: 1 0 auto;
+    padding-bottom: 30px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+main.container {
+    box-sizing: border-box;
+    padding-left: 12px;
+    padding-right: 12px;
+    animation: pageLoad 0.4s ease;
+}
+
+@keyframes pageLoad {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------------------
+   3. Responsive Container Widths
+   -------------------------------------------------- */
+@media only screen and (max-width: 600px) {
+    main.container {
+        width: 100% !important;
+        padding: 0 8px;
+    }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+    main.container {
+        width: 95% !important;
+        padding: 0 10px;
+    }
+}
+
+@media only screen and (min-width: 993px) {
+    main.container {
+        width: 90% !important;
+        max-width: 1280px;
+    }
+}
+
+/* --------------------------------------------------
+   4. Navigation Bar & Mobile Sidenav
+   -------------------------------------------------- */
+nav {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    position: relative;
+    z-index: 100;
+}
+
+nav .nav-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 1.5rem;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+nav .brand-logo,
+nav #logo-container {
+    position: static !important;
+    display: inline-flex !important;
+    align-items: center;
+    font-size: 1.3rem !important;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #ffffff !important;
+    white-space: nowrap;
+    text-decoration: none;
+    flex-shrink: 0;
+    margin-right: 1.5rem;
+    transform: none !important;
+    left: auto !important;
+    height: 100%;
+}
+
+nav .brand-logo i.material-icons,
+nav #logo-container i.material-icons {
+    float: none !important;
+    margin-right: 10px !important;
+    font-size: 1.6rem !important;
+    height: auto !important;
+    line-height: 1 !important;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+nav ul.right {
+    display: flex;
+    align-items: center;
+    float: none !important;
+    margin: 0 !important;
+    margin-left: auto;
+    height: 100%;
+    gap: 0;
+    flex-wrap: nowrap;
+}
+
+nav ul.right li {
+    float: none !important;
+    height: 100%;
+}
+
+nav ul.right li a {
+    display: inline-flex !important;
+    align-items: center;
+    height: 100% !important;
+    padding: 0 13px !important;
+    font-size: 0.92rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background-color var(--transition-fast), opacity var(--transition-fast);
+}
+
+nav ul.right li a i.material-icons,
+nav ul.right li a i.material-icons.left {
+    float: none !important;
+    margin-right: 6px !important;
+    font-size: 1.2rem !important;
+    height: auto !important;
+    line-height: 1 !important;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+nav a.sidenav-trigger {
+    display: none;
+    align-items: center;
+    height: 100%;
+    margin: 0 12px 0 0 !important;
+    float: none !important;
+    order: -1;
+}
+
+nav a.sidenav-trigger i {
+    height: auto !important;
+    line-height: 1 !important;
+    font-size: 1.6rem !important;
+}
+
+@media only screen and (min-width: 993px) and (max-width: 1280px) {
+    nav .nav-wrapper {
+        padding: 0 1rem;
+    }
+    nav .brand-logo,
+    nav #logo-container {
+        font-size: 1.1rem !important;
+        margin-right: 0.75rem;
+    }
+    nav ul.right li a {
+        padding: 0 8px !important;
+        font-size: 0.85rem;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    nav .nav-wrapper {
+        padding: 0 0.75rem;
+        justify-content: flex-start;
+    }
+    nav ul.right,
+    nav ul.right.hide-on-med-and-down,
+    .hide-on-med-and-down {
+        display: none !important;
+    }
+    nav a.sidenav-trigger {
+        display: inline-flex !important;
+    }
+    nav .brand-logo,
+    nav #logo-container {
+        position: static !important;
+        transform: none !important;
+        left: auto !important;
+        font-size: 1.1rem !important;
+        margin: 0;
+        max-width: calc(100% - 48px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+/* Sidenav Container */
+.sidenav {
+    width: 280px;
+    z-index: 1005 !important;
+}
+.sidenav-overlay {
+    z-index: 1004 !important;
+}
+.sidenav .user-view {
+    padding: 24px 16px 12px 16px;
+}
+.sidenav li {
+    position: relative;
+    z-index: 1006 !important;
+}
+.sidenav li > a {
+    display: flex !important;
+    align-items: center;
+    padding: 0 24px;
+    height: 48px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    z-index: 1007 !important;
+    pointer-events: auto !important;
+    transition: background-color var(--transition-fast);
+}
+.sidenav li > a:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+.sidenav li > a > i.material-icons {
+    margin-right: 16px !important;
+    width: 24px;
+    text-align: center;
+}
+.sidenav .subheader {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #94a3b8;
+    padding-left: 24px;
+}
+.sidenav .divider {
+    margin: 8px 0;
+}
+
+/* --------------------------------------------------
+   5. Footer
+   -------------------------------------------------- */
+footer.page-footer {
+    padding-top: 0;
+    background-color: #0d47a1;
+}
+footer .footer-copyright {
+    padding: 10px 0;
+}
+@media only screen and (max-width: 600px) {
+    footer .footer-copyright .container {
+        text-align: center;
+    }
+    footer .footer-copyright .container a.right {
+        float: none !important;
+        display: block;
+        margin-top: 4px;
+    }
+}
+
+/* --------------------------------------------------
+   6. Typography & Responsive Utilities
+   -------------------------------------------------- */
+h4 { font-weight: 600; }
+@media only screen and (max-width: 600px) {
+    h4 { font-size: 1.4rem !important; }
+    h5 { font-size: 1.15rem !important; }
+    h6 { font-size: 0.95rem !important; }
+}
+@media only screen and (min-width: 601px) and (max-width: 992px) {
+    h4 { font-size: 1.6rem !important; }
+}
+
+/* --------------------------------------------------
+   7. Accessibility & Motion
+   -------------------------------------------------- */
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    a, button, .btn, .btn-flat, .btn-small, .btn-large,
+    .collection-item, input[type="submit"] {
+        min-height: 44px;
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
+}
+
+/* Print Styles */
+@media print {
+    nav, footer, .no-print, .sidenav, .sidenav-overlay,
+    .btn, .btn-flat, .btn-large, .btn-small,
+    #aiCoachCard, .modal-overlay {
+        display: none !important;
+    }
+    body { background: white; }
+    main.container { width: 100% !important; max-width: 100% !important; }
+    .card { box-shadow: none !important; border: 1px solid #ddd; }
+}

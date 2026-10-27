@@ -33,6 +33,10 @@ require_login($allowed_roles);
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/material-design.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/dashboard.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>css/forms.css">
+    <?php foreach ($page_stylesheets ?? [] as $stylesheet): ?>
+        <?php $stylesheetUrl = strpos($stylesheet, '://') === false ? BASE_URL . ltrim($stylesheet, '/') : $stylesheet; ?>
+        <link rel="stylesheet" href="<?php echo htmlspecialchars($stylesheetUrl, ENT_QUOTES, 'UTF-8'); ?>">
+    <?php endforeach; ?>
 </head>
 <body>
     <header>

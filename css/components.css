@@ -1,0 +1,324 @@
+/* ==========================================================================
+   css/components.css - Tier 2: Shared UI Components & Form Mechanics
+   Student Management System
+   ========================================================================== */
+
+/* --------------------------------------------------
+   1. Cards & Panels
+   -------------------------------------------------- */
+.card {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    transition: box-shadow var(--transition-normal, 0.3s ease), transform var(--transition-fast, 0.2s ease);
+    margin: 0.75rem 0;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.card .card-content {
+    padding: 24px;
+}
+
+.card .card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.3;
+    color: #1e293b;
+}
+
+.card .card-action {
+    background-color: transparent;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 14px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.card.hoverable {
+    transition: transform var(--transition-fast, 0.2s ease), box-shadow var(--transition-normal, 0.3s ease);
+}
+.card.hoverable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card-panel {
+    border-radius: var(--border-radius, 8px);
+    box-shadow: none;
+}
+
+@media only screen and (max-width: 600px) {
+    .card .card-content { padding: 16px 14px; }
+    .card .card-title { font-size: 1.15rem; margin-bottom: 12px; }
+    .card .card-action {
+        padding: 12px 14px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .card .card-action .btn,
+    .card .card-action .btn-small {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+}
+
+/* --------------------------------------------------
+   2. Buttons & Actions
+   -------------------------------------------------- */
+.btn, .btn-large, .btn-small {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    text-transform: none;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn:hover, .btn-large:hover, .btn-small:hover {
+    background-color: var(--primary-color-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.btn:active, .btn-large:active, .btn-small:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-flat {
+    box-shadow: none;
+    background-color: transparent;
+    color: var(--primary-color);
+    border-radius: 6px;
+}
+
+.btn-group-responsive {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+@media only screen and (max-width: 600px) {
+    .btn-group-responsive { flex-direction: column; }
+    .btn-group-responsive .btn,
+    .btn-group-responsive .btn-small,
+    .btn-group-responsive .btn-large {
+        width: 100%;
+    }
+}
+
+/* --------------------------------------------------
+   3. Chips & Badges
+   -------------------------------------------------- */
+.chip {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    height: 28px !important;
+    line-height: 1 !important;
+    padding: 0 12px !important;
+    border-radius: 14px !important;
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+    margin: 2px 4px 2px 0 !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+}
+
+.chip i.material-icons,
+.chip i.material-icons.left,
+.chip i.material-icons.tiny {
+    float: none !important;
+    margin: 0 6px 0 0 !important;
+    font-size: 15px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* --------------------------------------------------
+   4. Tables (Dense & Responsive)
+   -------------------------------------------------- */
+table.striped tbody tr:nth-child(odd) {
+    background-color: #f8fafc;
+}
+
+table th {
+    font-weight: 700;
+    color: #334155;
+    font-size: 0.88rem;
+    padding: 12px 14px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+table td {
+    padding: 12px 14px;
+    font-size: 0.90rem;
+    color: #1e293b;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dense-table th,
+.dense-table td {
+    padding: 8px 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .dense-table th,
+    .dense-table td {
+        padding: 6px 6px !important;
+        font-size: 0.78rem;
+    }
+    .dense-table {
+        font-size: 0.8rem;
+    }
+}
+
+/* --------------------------------------------------
+   5. Forms & Inputs
+   -------------------------------------------------- */
+.input-field {
+    position: relative;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.input-field input[type=text],
+.input-field input[type=email],
+.input-field input[type=password],
+.input-field input[type=date],
+.input-field input[type=number],
+.input-field input[type=tel],
+.input-field input[type=search],
+.input-field textarea {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1rem;
+    border: none;
+    border-bottom: 1px solid #9e9e9e;
+    outline: none;
+    background-color: transparent;
+    transition: border-bottom-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.input-field input:focus {
+    border-bottom: 2px solid var(--primary-color);
+    box-shadow: 0 1px 0 0 var(--primary-color);
+}
+
+/* Controlled Floating Labels */
+.input-field label {
+    color: #9e9e9e;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    font-size: 1rem;
+    cursor: text;
+    transition: transform 0.2s ease-out, color 0.2s ease-out;
+}
+
+.input-field input:focus + label,
+.input-field input:valid + label,
+.input-field input.valid + label,
+.input-field input.invalid + label,
+.input-field label.active {
+    transform: translateY(-20px) scale(0.8);
+    color: var(--primary-color);
+    transform-origin: 0 0;
+}
+
+/* Prefix Icons */
+.input-field .prefix {
+    position: absolute;
+    top: 10px;
+    font-size: 2rem;
+    color: #9e9e9e;
+    transition: color 0.3s;
+}
+
+.input-field:focus-within .prefix {
+    color: var(--primary-color, #1565c0) !important;
+}
+
+.input-field .prefix ~ input,
+.input-field .prefix ~ textarea,
+.input-field .prefix ~ label {
+    margin-left: 3rem;
+}
+
+/* Select Dropdown & Wrapper Fix (Prevents Overlap) */
+.select-wrapper input.select-dropdown {
+    border-bottom: 1px solid #9e9e9e;
+}
+
+.input-field .select-wrapper + label,
+.input-field .select-wrapper ~ label,
+.input-field select + label,
+.input-field select ~ label,
+.select-wrapper + label,
+.select-wrapper ~ label {
+    position: absolute !important;
+    top: -24px !important;
+    font-size: 0.85rem !important;
+    color: #64748b;
+    pointer-events: none;
+    transform: none !important;
+    transform-origin: 0 0;
+    width: auto;
+}
+
+.input-field .prefix ~ .select-wrapper + label,
+.input-field .prefix ~ .select-wrapper ~ label {
+    margin-left: 3rem;
+}
+
+.input-field:focus-within > label,
+.input-field:focus-within .select-wrapper + label,
+.input-field:focus-within .select-wrapper ~ label,
+.input-field:focus-within select + label,
+.input-field:focus-within select ~ label {
+    color: var(--primary-color, #1565c0) !important;
+}
+
+/* Error & Success Messages */
+.card-panel.red {
+    background-color: #fef2f2 !important;
+    color: #991b1b !important;
+    border-radius: var(--border-radius, 8px);
+    padding: 14px 16px;
+    border: 1px solid #fecaca;
+}
+
+.card-panel.green {
+    background-color: #f0fdf4 !important;
+    color: #166534 !important;
+    border-radius: var(--border-radius, 8px);
+    padding: 14px 16px;
+    border: 1px solid #bbf7d0;
+}
+
+@media only screen and (max-width: 600px) {
+    .input-field { margin-top: 1rem; margin-bottom: 1rem; }
+    .input-field input[type=text],
+    .input-field input[type=email],
+    .input-field input[type=password],
+    .input-field input[type=date],
+    .input-field input[type=number] {
+        font-size: 16px;
+    }
+}
