@@ -114,26 +114,26 @@ $nextFee = $summary['next_unpaid_fee'];
     <div class="col s12">
         <div class="card white" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #e0e0e0;">
             <div class="card-content" style="padding: 24px 28px;">
-                <div class="row" style="margin-bottom: 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
-                    <div class="col s12 m7" style="padding: 0;">
-                        <span class="card-title" style="font-weight: 700; color: #1a237e; font-size: 1.25rem; margin-bottom: 6px;">
-                            <i class="material-icons left blue-text text-darken-3" style="vertical-align: middle;">payment</i>
-                            Tuition Payment
-                        </span>
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin: 0;">
+                    <div style="flex: 1 1 300px; min-width: 0; margin: 0;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <i class="material-icons blue-text text-darken-3" style="font-size: 1.5rem; line-height: 1;">payment</i>
+                            <span style="font-weight: 700; color: #1a237e; font-size: 1.25rem; line-height: 1.2;">Tuition Payment</span>
+                        </div>
                         <?php if ($nextFee): ?>
-                            <p class="grey-text text-darken-2" style="font-size: 0.95rem; margin: 0;">
+                            <p class="grey-text text-darken-2" style="font-size: 0.95rem; margin: 0; line-height: 1.5;">
                                 Next installment: <strong><?php echo htmlspecialchars($nextFee['fee_title']); ?></strong> &bull; 
                                 <strong class="green-text text-darken-2">R<?php echo number_format($nextFee['amount'], 2); ?></strong> 
                                 (Due: <?php echo date("d M Y", strtotime($nextFee['due_date'])); ?>)
                             </p>
                         <?php else: ?>
-                            <p class="grey-text text-darken-2" style="font-size: 0.95rem; margin: 0;">
+                            <p class="grey-text text-darken-2" style="font-size: 0.95rem; margin: 0; line-height: 1.5;">
                                 All tuition installments for the 2026 academic year have been fully settled.
                             </p>
                         <?php endif; ?>
                     </div>
                     
-                    <div class="col s12 m5" style="padding: 0; display: flex; gap: 12px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 12px; align-items: center; justify-content: flex-end; flex-wrap: wrap; margin: 0;">
                         <?php if ($nextFee): ?>
                             <form action="<?php echo BASE_URL; ?>student/pay_fee.php" method="POST" style="margin: 0;">
                                 <?php csrf_token_field(); ?>

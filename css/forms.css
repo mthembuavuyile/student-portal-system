@@ -78,6 +78,40 @@
     border-bottom: 1px solid #9e9e9e;
 }
 
+/* Ensure select dropdown labels sit cleanly above the input and never collide with selected text */
+.input-field .select-wrapper + label,
+.input-field .select-wrapper ~ label,
+.input-field select + label,
+.input-field select ~ label,
+.select-wrapper + label,
+.select-wrapper ~ label {
+    position: absolute !important;
+    top: -24px !important;
+    font-size: 0.85rem !important;
+    color: #64748b;
+    pointer-events: none;
+    transform: none !important;
+    transform-origin: 0 0;
+    width: auto;
+}
+
+.input-field .prefix ~ .select-wrapper + label,
+.input-field .prefix ~ .select-wrapper ~ label {
+    margin-left: 3rem;
+}
+
+.input-field:focus-within > label,
+.input-field:focus-within .select-wrapper + label,
+.input-field:focus-within .select-wrapper ~ label,
+.input-field:focus-within select + label,
+.input-field:focus-within select ~ label {
+    color: var(--primary-color, #1565c0) !important;
+}
+
+.input-field:focus-within .prefix {
+    color: var(--primary-color, #1565c0) !important;
+}
+
 /* --- Error & Success Messages --- */
 .card-panel.red {
     background-color: #fef2f2 !important;

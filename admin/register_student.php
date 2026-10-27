@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <label>Course of Study (Active Enrollment)</label>
+                            <label class="active" for="course_id">Course of Study (Active Enrollment)</label>
                             <span class="helper-text">Business Rule: Student will have this as their single active course enrollment.</span>
                         </div>
                     </div>

@@ -210,7 +210,7 @@ include '../includes/header.php';
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <label>Course of Study</label>
+                            <label class="active" for="course">Course of Study</label>
                         </div>
                         <div class="input-field col s12 m6">
                             <i class="material-icons prefix">info</i>
@@ -220,7 +220,7 @@ include '../includes/header.php';
                                 <option value="<?php echo STATUS_GRADUATED; ?>" <?php echo ($student['academic_status'] == STATUS_GRADUATED) ? 'selected' : ''; ?>><?php echo STATUS_GRADUATED; ?></option>
                                 <option value="<?php echo STATUS_DROPPED; ?>" <?php echo ($student['academic_status'] == STATUS_DROPPED) ? 'selected' : ''; ?>><?php echo STATUS_DROPPED; ?></option>
                             </select>
-                            <label>Academic Status</label>
+                            <label class="active" for="academic_status">Academic Status</label>
                         </div>
                     </div>
 
