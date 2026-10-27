@@ -150,26 +150,63 @@ $feeSummary = $student ? FeeService::getFeeSummary($pdo, (int)$student->getId())
 <!-- AI Academic Success Advisor Banner -->
 <div class="row">
     <div class="col s12">
-        <div class="card hoverable z-depth-2" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); color: white; border-radius: 14px; overflow: hidden; position: relative;">
-            <div style="position: absolute; top: -50%; right: -30%; width: 60%; height: 200%; background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%); pointer-events: none;"></div>
-            <div class="card-content" style="padding: 24px; position: relative; z-index: 1;">
-                <div class="row valign-wrapper" style="margin-bottom: 0; flex-wrap: wrap;">
-                    <div class="col s12 m8">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;">
-                            <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: white;">
-                                <i class="material-icons" style="font-size: 14px;">auto_awesome</i>Smart AI Engine
+        <div class="card ai-advisor-banner z-depth-3">
+            <!-- Aurora ambient glowing mesh -->
+            <div class="ai-aurora-glow"></div>
+            <!-- Large subtle decorative watermark -->
+            <i class="material-icons ai-watermark-icon">psychology</i>
+
+            <div class="card-content" style="padding: 28px 32px; position: relative; z-index: 2;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
+                    <div style="flex: 1 1 540px; min-width: 0;">
+                        <!-- Category Badges & Live Status -->
+                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <span class="ai-badge-engine">
+                                <i class="material-icons">auto_awesome</i>Smart AI Engine
                             </span>
-                            <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.8);">OpenRouter Powered</span>
+                            <span class="ai-badge-openrouter">
+                                <i class="material-icons" style="font-size: 13px; color: #38bdf8;">bolt</i>OpenRouter Powered
+                            </span>
+                            <span class="ai-badge-status">
+                                <span class="ai-pulse-dot"></span>24/7 Academic Coach Active
+                            </span>
                         </div>
-                        <h5 style="margin: 4px 0 8px 0; font-weight: 700; font-size: 1.25rem;">Personalized AI Performance Advisor & Study Coach</h5>
-                        <p style="color: rgba(255,255,255,0.7); font-size: 0.88rem; margin: 0; line-height: 1.5;">
+
+                        <!-- Hero Title with Gradient Accent -->
+                        <h4 class="ai-hero-title">
+                            Personalized AI Performance Advisor &amp; <span class="ai-gradient-text">Study Coach</span>
+                        </h4>
+
+                        <!-- Description -->
+                        <p class="ai-hero-desc">
                             Get instant diagnostic feedback on your quarterly marks! Find out which modules need intervention, receive custom revision timetables, and chat live with an academic coach.
                         </p>
+
+                        <!-- Micro-Feature Chips (Visual Hierarchy & Quick Highlights) -->
+                        <div class="ai-features-grid">
+                            <span class="ai-feature-chip">
+                                <i class="material-icons purple-text text-lighten-3">insights</i>Diagnostic Gap Analysis
+                            </span>
+                            <span class="ai-feature-chip">
+                                <i class="material-icons cyan-text text-accent-2">event_repeat</i>Custom Revision Timetables
+                            </span>
+                            <span class="ai-feature-chip">
+                                <i class="material-icons amber-text text-accent-2">forum</i>Interactive Transcript Chat
+                            </span>
+                        </div>
                     </div>
-                    <div class="col s12 m4" style="text-align: right; margin-top: 15px;">
-                        <a href="results.php#aiCoachCard" class="btn-large waves-effect waves-light z-depth-2" style="border-radius: 10px; font-weight: 700; background: linear-gradient(135deg, #6366f1, #4f46e5); text-transform: none; letter-spacing: 0.2px; box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);">
-                            <i class="material-icons left">psychology</i>Analyze Performance
+
+                    <!-- Action Area -->
+                    <div class="ai-actions-container" style="display: flex; flex-direction: column; gap: 12px; align-items: stretch; justify-content: center; min-width: 220px;">
+                        <a href="results.php#aiCoachCard" class="ai-btn-primary waves-effect waves-light">
+                            <i class="material-icons">psychology</i>Analyze Performance
                         </a>
+                        <a href="results.php#aiCoachCard" class="ai-btn-secondary waves-effect waves-light">
+                            <i class="material-icons" style="font-size: 18px; color: #818cf8;">chat</i>Chat with AI Coach
+                        </a>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 5px; color: rgba(203, 213, 225, 0.75); font-size: 0.74rem; margin-top: 2px;">
+                            <i class="material-icons" style="font-size: 13px; color: #34d399;">verified</i> Instant Academic Diagnostics
+                        </div>
                     </div>
                 </div>
             </div>
