@@ -32,6 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($first_name)) $errors[] = "First Name cannot be empty.";
     if (empty($surname)) $errors[] = "Surname cannot be empty.";
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "A valid email is required.";
+    if (empty($dob)) $errors[] = "Date of birth is required.";
+    
+    if (empty($id_number)) {
+        $errors[] = "National ID Number is required.";
+    } else {
+        list($idValid, $idErrMsg) = validate_sa_id_and_dob($id_number, $dob);
+        if (!$idValid) {
+            $errors[] = $idErrMsg;
+        }
+    }
     
     $new_password     = $_POST['new_password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
@@ -148,7 +158,7 @@ include '../includes/header.php';
                     </div>
                 <?php endif; ?>
 
-                <form method="POST" action="update_student.php?id=<?php echo $student_id; ?>">
+                <form method="POST" action="update_student.php?id=<?php echo $student_id; ?>" id="studentUpdateForm">
                     <?php csrf_token_field(); ?>
                     <div class="row">
                         <div class="input-field col s12 m6">
@@ -166,8 +176,9 @@ include '../includes/header.php';
                     <div class="row">
                         <div class="input-field col s12 m6">
                             <i class="material-icons prefix">fingerprint</i>
-                            <input type="text" id="id_number" name="id_number" value="<?php echo htmlspecialchars($student['id_number'] ?? ''); ?>">
+                            <input type="text" id="id_number" name="id_number" required maxlength="13" value="<?php echo htmlspecialchars($student['id_number'] ?? ''); ?>">
                             <label for="id_number">National ID Number</label>
+                            <span class="helper-text" id="idMatchHelper">First 6 digits must match Date of Birth (YYMMDD)</span>
                         </div>
                         <div class="input-field col s12 m6">
                             <i class="material-icons prefix">email</i>
@@ -248,11 +259,64 @@ include '../includes/header.php';
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    var idInput = document.getElementById('id_number');
+    var dobInput = document.getElementById('dob');
+    var idHelper = document.getElementById('idMatchHelper');
+    var form = document.getElementById('studentUpdateForm');
+
+    function checkIdDobMatch() {
+        var idVal = idInput.value.replace(/\D/g, '');
+        var dobVal = dobInput.value.trim();
+
+        if (dobVal && dobVal.length >= 10) {
+            var parts = dobVal.split('-');
+            if (parts.length === 3) {
+                var yymmdd = parts[0].substring(2, 4) + parts[1] + parts[2];
+                if (idVal.length >= 6) {
+                    var idPrefix = idVal.substring(0, 6);
+                    if (idPrefix !== yymmdd) {
+                        idHelper.textContent = 'Mismatch: ID starts with ' + idPrefix + ' but DOB requires ' + yymmdd;
+                        idHelper.style.color = '#d32f2f';
+                        idHelper.style.fontWeight = 'bold';
+                        return false;
+                    } else {
+                        idHelper.textContent = 'Verified: First 6 digits match Date of Birth (' + yymmdd + ')';
+                        idHelper.style.color = '#388e3c';
+                        idHelper.style.fontWeight = '500';
+                        return true;
+                    }
+                }
+            }
+        }
+        idHelper.textContent = 'First 6 digits must match Date of Birth (YYMMDD)';
+        idHelper.style.color = '';
+        idHelper.style.fontWeight = 'normal';
+        return true;
+    }
+
     var datepickers = document.querySelectorAll('.datepicker');
     M.Datepicker.init(datepickers, {
         format: 'yyyy-mm-dd',
-        yearRange: [1970, 2030]
+        yearRange: [1970, 2030],
+        onSelect: function() {
+            setTimeout(checkIdDobMatch, 100);
+        }
     });
+
+    idInput.addEventListener('input', checkIdDobMatch);
+    dobInput.addEventListener('change', checkIdDobMatch);
+
+    // Initial check on page load
+    setTimeout(checkIdDobMatch, 200);
+
+    form.addEventListener('submit', function(e) {
+        if (!checkIdDobMatch()) {
+            e.preventDefault();
+            alert('The first 6 digits of the National ID number must match the Date of Birth (YYMMDD).');
+            idInput.focus();
+        }
+    });
+
     var selects = document.querySelectorAll('select');
     M.FormSelect.init(selects);
 });

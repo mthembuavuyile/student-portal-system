@@ -107,6 +107,12 @@ class RegistrationService {
         if (empty($surname)) throw new InvalidArgumentException("Surname is required.");
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new InvalidArgumentException("A valid email address is required.");
         if (empty($dob)) throw new InvalidArgumentException("Date of birth is required.");
+        if (empty($idNumber)) throw new InvalidArgumentException("National ID Number is required.");
+
+        list($idValid, $idErrMsg) = validate_sa_id_and_dob($idNumber, $dob);
+        if (!$idValid) {
+            throw new InvalidArgumentException($idErrMsg);
+        }
 
         // Resolve course
         $course = null;

@@ -59,6 +59,36 @@ function sanitize_input($data) {
 }
 
 /**
+ * Validates that a South African 13-digit National ID matches the Date of Birth.
+ * The first 6 digits of the ID must be YYMMDD corresponding to the birth date.
+ *
+ * @param string $idNumber 13-digit ID number
+ * @param string $dob Date of Birth string (YYYY-MM-DD)
+ * @return array [bool $isValid, string $errorMessage]
+ */
+function validate_sa_id_and_dob($idNumber, $dob) {
+    $cleanId = preg_replace('/\D/', '', (string)$idNumber);
+    if (strlen($cleanId) !== 13) {
+        return [false, "National ID number must be exactly 13 digits."];
+    }
+
+    $time = strtotime($dob);
+    if (!$time) {
+        return [false, "A valid Date of Birth is required."];
+    }
+
+    $expectedYymmdd = date('ymd', $time);
+    $actualYymmdd = substr($cleanId, 0, 6);
+
+    if ($actualYymmdd !== $expectedYymmdd) {
+        $formattedDob = date('Y-m-d', $time);
+        return [false, "ID Number first 6 digits ({$actualYymmdd}) must match Date of Birth {$formattedDob} ({$expectedYymmdd})."];
+    }
+
+    return [true, ''];
+}
+
+/**
  * Generates or retrieves a CSRF token stored in the session.
  *
  * @return string The CSRF token.

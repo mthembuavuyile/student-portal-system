@@ -38,6 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($course_id <= 0) $errors[] = "Course selection is required.";
     if (!$auto_generate && empty($custom_student_id)) $errors[] = "Please provide a Student ID Number or enable Auto-generation.";
 
+    if (!empty($id_number) && !empty($dob)) {
+        list($idValid, $idErrMsg) = validate_sa_id_and_dob($id_number, $dob);
+        if (!$idValid) {
+            $errors[] = $idErrMsg;
+        }
+    }
+
     if (empty($errors)) {
         try {
             // Use RegistrationService to register student, enforcing:
@@ -108,8 +115,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="row">
                         <div class="input-field col s12 m6">
                             <i class="material-icons prefix">fingerprint</i>
-                            <input type="text" id="id_number" name="id_number" required value="<?php echo htmlspecialchars($_POST['id_number'] ?? ''); ?>" placeholder="e.g. 0504205812083">
+                            <input type="text" id="id_number" name="id_number" required maxlength="13" value="<?php echo htmlspecialchars($_POST['id_number'] ?? ''); ?>" placeholder="e.g. 0504205812083">
                             <label for="id_number">National ID Number</label>
+                            <span class="helper-text" id="idMatchHelper">First 6 digits must match Date of Birth (YYMMDD)</span>
                         </div>
                         <div class="input-field col s12 m6">
                             <i class="material-icons prefix">email</i>
@@ -205,11 +213,61 @@ function toggleStudentIdInput() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    var idInput = document.getElementById('id_number');
+    var dobInput = document.getElementById('dob');
+    var idHelper = document.getElementById('idMatchHelper');
+    var form = document.getElementById('studentRegForm');
+
+    function checkIdDobMatch() {
+        var idVal = idInput.value.replace(/\D/g, '');
+        var dobVal = dobInput.value.trim();
+
+        if (dobVal && dobVal.length >= 10) {
+            var parts = dobVal.split('-');
+            if (parts.length === 3) {
+                var yymmdd = parts[0].substring(2, 4) + parts[1] + parts[2];
+                if (idVal.length >= 6) {
+                    var idPrefix = idVal.substring(0, 6);
+                    if (idPrefix !== yymmdd) {
+                        idHelper.textContent = 'Mismatch: ID starts with ' + idPrefix + ' but DOB requires ' + yymmdd;
+                        idHelper.style.color = '#d32f2f';
+                        idHelper.style.fontWeight = 'bold';
+                        return false;
+                    } else {
+                        idHelper.textContent = 'Verified: First 6 digits match Date of Birth (' + yymmdd + ')';
+                        idHelper.style.color = '#388e3c';
+                        idHelper.style.fontWeight = '500';
+                        return true;
+                    }
+                }
+            }
+        }
+        idHelper.textContent = 'First 6 digits must match Date of Birth (YYMMDD)';
+        idHelper.style.color = '';
+        idHelper.style.fontWeight = 'normal';
+        return true;
+    }
+
     var datepickers = document.querySelectorAll('.datepicker');
     M.Datepicker.init(datepickers, {
         format: 'yyyy-mm-dd',
-        yearRange: [1970, 2030]
+        yearRange: [1970, 2030],
+        onSelect: function() {
+            setTimeout(checkIdDobMatch, 100);
+        }
     });
+
+    idInput.addEventListener('input', checkIdDobMatch);
+    dobInput.addEventListener('change', checkIdDobMatch);
+
+    form.addEventListener('submit', function(e) {
+        if (!checkIdDobMatch()) {
+            e.preventDefault();
+            alert('The first 6 digits of the National ID number must match the Date of Birth (YYMMDD).');
+            idInput.focus();
+        }
+    });
+
     var selects = document.querySelectorAll('select');
     M.FormSelect.init(selects);
 });
