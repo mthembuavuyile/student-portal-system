@@ -20,21 +20,21 @@ if (!empty($ref)) {
 
             <h4 style="margin: 0 0 10px 0; font-weight: 700; color: #e65100;">Payment Cancelled</h4>
             <p class="grey-text text-darken-1" style="font-size: 1.05rem; margin-bottom: 25px;">
-                Your PayFast transaction was cancelled or interrupted. No funds were deducted from your account.
+                Your payment transaction was cancelled or interrupted. No funds were deducted from your account.
             </p>
 
             <?php if (!empty($ref)): ?>
                 <p class="grey-text text-darken-1" style="font-size: 0.88rem; margin-bottom: 25px;">
-                    Session Reference: <code><?php echo htmlspecialchars($ref); ?></code>
+                    Reference: <code><?php echo htmlspecialchars($ref); ?></code>
                 </p>
             <?php endif; ?>
 
             <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                <a href="<?php echo BASE_URL; ?>student/fees.php" class="btn-large blue darken-3 waves-effect waves-light" style="border-radius: 8px; text-transform: none; font-weight: 600;">
-                    <i class="material-icons left">refresh</i> Return to School Fees
+                <a href="<?php echo BASE_URL; ?>student/fees.php" class="btn blue darken-3 waves-effect waves-light" style="border-radius: 6px; text-transform: none; font-weight: 500; height: 38px; line-height: 38px; padding: 0 20px;">
+                    Return to Fees
                 </a>
-                <a href="<?php echo BASE_URL; ?>student/dashboard.php" class="btn-large grey lighten-3 grey-text text-darken-3 waves-effect waves-grey" style="border-radius: 8px; text-transform: none; font-weight: 600;">
-                    Go to Dashboard
+                <a href="<?php echo BASE_URL; ?>student/dashboard.php" class="btn grey lighten-3 grey-text text-darken-3 waves-effect waves-grey" style="border-radius: 6px; text-transform: none; font-weight: 500; height: 38px; line-height: 38px; padding: 0 20px;">
+                    Dashboard
                 </a>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <?php
-$page_title = "School Fees & Payment Gateway";
+$page_title = "Tuition Fees";
 $allowed_roles = ['student'];
 include '../includes/header.php';
 
@@ -34,16 +34,16 @@ $nextFee = $summary['next_unpaid_fee'];
             <div>
                 <h4 style="margin: 0; font-weight: 700; color: #0d47a1;">
                     <i class="material-icons left medium" style="vertical-align: middle;">account_balance_wallet</i>
-                    School Fees & PayFast Gateway
+                    Tuition Fees
                 </h4>
                 <p class="grey-text text-darken-1" style="margin: 5px 0 0 0;">
-                    Department of Forestry, Fisheries & the Environment &bull; Standard Tuition: <strong>R50.00 / month</strong>
+                    Department of Forestry, Fisheries & the Environment &bull; Student Portal System
                 </p>
             </div>
             <div style="margin-top: 10px;">
                 <?php if ($summary['is_fully_paid']): ?>
                     <span class="chip green white-text" style="font-weight: 600; font-size: 0.95rem; padding: 0 16px; height: 36px; line-height: 36px;">
-                        <i class="material-icons left" style="line-height: 36px;">verified</i> All Fees Paid &bull; Good Standing
+                        <i class="material-icons left" style="line-height: 36px;">verified</i> All Fees Settled &bull; Good Standing
                     </span>
                 <?php else: ?>
                     <span class="chip orange darken-2 white-text" style="font-weight: 600; font-size: 0.95rem; padding: 0 16px; height: 36px; line-height: 36px;">
@@ -55,22 +55,6 @@ $nextFee = $summary['next_unpaid_fee'];
         
         <?php display_session_message('success_message'); ?>
         <?php display_session_message('error_message', 'red'); ?>
-
-        <?php if (PAYFAST_IS_SANDBOX): ?>
-            <div class="card-panel blue-grey lighten-5" style="border-left: 5px solid #0288d1; border-radius: 8px; padding: 12px 18px; margin: 15px 0;">
-                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-                    <div>
-                        <strong class="blue-text text-darken-3"><i class="material-icons tiny left" style="vertical-align: middle;">shield</i> PayFast Sandbox Active</strong>
-                        <span class="grey-text text-darken-2" style="font-size: 0.9rem; margin-left: 8px;">
-                            Zero-cost testing mode enabled. You can safely simulate real payments using PayFast test cards or Instant EFT.
-                        </span>
-                    </div>
-                    <span class="chip white blue-text text-darken-2" style="margin: 5px 0; border: 1px solid #90caf9;">
-                        Merchant: <?php echo htmlspecialchars(PAYFAST_MERCHANT_ID); ?>
-                    </span>
-                </div>
-            </div>
-        <?php endif; ?>
     </div>
 </div>
 
@@ -125,45 +109,45 @@ $nextFee = $summary['next_unpaid_fee'];
     </div>
 </div>
 
-<!-- PayFast Quick Action Banner -->
+<!-- Quick Payment Action -->
 <div class="row">
     <div class="col s12">
         <div class="card white" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #e0e0e0;">
             <div class="card-content" style="padding: 24px 28px;">
-                <div class="row" style="margin-bottom: 0; display: flex; align-items: center; flex-wrap: wrap;">
-                    <div class="col s12 m8">
-                        <span class="card-title" style="font-weight: 700; color: #1a237e; font-size: 1.3rem; margin-bottom: 6px;">
-                            <i class="material-icons left red-text text-darken-1" style="vertical-align: middle;">payment</i>
-                            PayFast Online Payment
+                <div class="row" style="margin-bottom: 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                    <div class="col s12 m7" style="padding: 0;">
+                        <span class="card-title" style="font-weight: 700; color: #1a237e; font-size: 1.25rem; margin-bottom: 6px;">
+                            <i class="material-icons left blue-text text-darken-3" style="vertical-align: middle;">payment</i>
+                            Tuition Payment
                         </span>
                         <?php if ($nextFee): ?>
                             <p class="grey-text text-darken-2" style="font-size: 0.95rem; margin: 0;">
-                                Your next fee to settle is <strong><?php echo htmlspecialchars($nextFee['fee_title']); ?></strong> for 
+                                Next installment: <strong><?php echo htmlspecialchars($nextFee['fee_title']); ?></strong> &bull; 
                                 <strong class="green-text text-darken-2">R<?php echo number_format($nextFee['amount'], 2); ?></strong> 
-                                (Due: <?php echo date("d M Y", strtotime($nextFee['due_date'])); ?>).
+                                (Due: <?php echo date("d M Y", strtotime($nextFee['due_date'])); ?>)
                             </p>
                         <?php else: ?>
                             <p class="grey-text text-darken-2" style="font-size: 0.95rem; margin: 0;">
-                                Congratulations! All school fee installments for the 2026 academic year have been fully settled.
+                                All tuition installments for the 2026 academic year have been fully settled.
                             </p>
                         <?php endif; ?>
                     </div>
-                    <div class="col s12 m4 right-align" style="margin-top: 10px;">
+                    
+                    <div class="col s12 m5" style="padding: 0; display: flex; gap: 12px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
                         <?php if ($nextFee): ?>
-                            <!-- Form for 1-Click Pay Next Month -->
-                            <form action="<?php echo BASE_URL; ?>student/pay_fee.php" method="POST" style="display: inline-block; margin-right: 8px;">
+                            <form action="<?php echo BASE_URL; ?>student/pay_fee.php" method="POST" style="margin: 0;">
                                 <?php csrf_token_field(); ?>
                                 <input type="hidden" name="fee_id" value="<?php echo (int)$nextFee['fee_id']; ?>">
-                                <button type="submit" class="btn-large waves-effect waves-light blue darken-3" style="border-radius: 8px; font-weight: 600; text-transform: none;">
-                                    <i class="material-icons left">flash_on</i> Pay R50 Now
+                                <button type="submit" class="btn blue darken-3 waves-effect waves-light" style="border-radius: 6px; font-weight: 500; height: 40px; line-height: 40px; padding: 0 24px; text-transform: none;">
+                                    Pay
                                 </button>
                             </form>
-                            <a href="#multiMonthModal" class="btn-large modal-trigger waves-effect waves-teal btn-flat" style="border: 1px solid #1565c0; color: #1565c0; border-radius: 8px; font-weight: 600; text-transform: none;">
-                                <i class="material-icons left">layers</i> Pay Multiple
+                            <a href="#multiMonthModal" class="btn modal-trigger waves-effect waves-teal btn-flat" style="border: 1px solid #1565c0; color: #1565c0; border-radius: 6px; font-weight: 500; height: 40px; line-height: 40px; padding: 0 16px; text-transform: none; margin: 0;">
+                                Pay Multiple Months
                             </a>
                         <?php else: ?>
-                            <a href="<?php echo BASE_URL; ?>student/results.php" class="btn-large waves-effect waves-light green darken-1" style="border-radius: 8px; text-transform: none; font-weight: 600;">
-                                <i class="material-icons left">school</i> View Academic Results
+                            <a href="<?php echo BASE_URL; ?>student/results.php" class="btn waves-effect waves-light green darken-1" style="border-radius: 6px; text-transform: none; font-weight: 500; height: 40px; line-height: 40px;">
+                                View Academic Results
                             </a>
                         <?php endif; ?>
                     </div>
@@ -180,7 +164,7 @@ $nextFee = $summary['next_unpaid_fee'];
             <div class="card-content">
                 <span class="card-title" style="font-weight: 700; color: #0d47a1; margin-bottom: 20px;">
                     <i class="material-icons left" style="vertical-align: middle;">calendar_month</i>
-                    2026 Academic Fee Schedule (R50.00 / month)
+                    Academic Fee Schedule
                 </span>
                 
                 <div class="responsive-table-wrapper" style="overflow-x: auto;">
@@ -188,9 +172,9 @@ $nextFee = $summary['next_unpaid_fee'];
                         <thead class="blue lighten-5">
                             <tr>
                                 <th style="padding: 14px 18px;">Billing Period</th>
-                                <th>Invoice Item</th>
+                                <th>Item</th>
                                 <th>Due Date</th>
-                                <th>Billed (ZAR)</th>
+                                <th>Amount (ZAR)</th>
                                 <th>Amount Paid</th>
                                 <th>Status</th>
                                 <th class="center-align">Action</th>
@@ -242,16 +226,16 @@ $nextFee = $summary['next_unpaid_fee'];
                                         </td>
                                         <td class="center-align">
                                             <?php if (!$isPaid): ?>
-                                                <form action="<?php echo BASE_URL; ?>student/pay_fee.php" method="POST" style="display: inline-block;">
+                                                <form action="<?php echo BASE_URL; ?>student/pay_fee.php" method="POST" style="display: inline-block; margin: 0;">
                                                     <?php csrf_token_field(); ?>
                                                     <input type="hidden" name="fee_id" value="<?php echo (int)$fee['fee_id']; ?>">
-                                                    <button type="submit" class="btn-small waves-effect waves-light blue darken-2" style="border-radius: 6px; text-transform: none; font-weight: 500;">
-                                                        <i class="material-icons left tiny">payment</i> Pay R50
+                                                    <button type="submit" class="btn-small waves-effect waves-light blue darken-2" style="border-radius: 6px; text-transform: none; font-weight: 500; padding: 0 16px;">
+                                                        Pay
                                                     </button>
                                                 </form>
                                             <?php else: ?>
-                                                <a href="<?php echo BASE_URL; ?>student/fee_receipt.php?fee_id=<?php echo (int)$fee['fee_id']; ?>" class="btn-small waves-effect waves-teal btn-flat" style="border: 1px solid #2e7d32; color: #2e7d32; border-radius: 6px; text-transform: none; font-weight: 500;">
-                                                    <i class="material-icons left tiny">receipt</i> Receipt
+                                                <a href="<?php echo BASE_URL; ?>student/fee_receipt.php?fee_id=<?php echo (int)$fee['fee_id']; ?>" class="btn-small waves-effect waves-teal btn-flat" style="border: 1px solid #2e7d32; color: #2e7d32; border-radius: 6px; text-transform: none; font-weight: 500; padding: 0 14px;">
+                                                    Receipt
                                                 </a>
                                             <?php endif; ?>
                                         </td>
@@ -266,14 +250,14 @@ $nextFee = $summary['next_unpaid_fee'];
     </div>
 </div>
 
-<!-- Payment History / Audit Trail -->
+<!-- Payment History -->
 <div class="row">
     <div class="col s12">
         <div class="card white" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #e0e0e0;">
             <div class="card-content">
                 <span class="card-title" style="font-weight: 700; color: #263238; margin-bottom: 20px;">
                     <i class="material-icons left" style="vertical-align: middle;">history</i>
-                    Payment History & PayFast Audit Log
+                    Payment History
                 </span>
 
                 <?php if (empty($paymentHistory)): ?>
@@ -283,12 +267,12 @@ $nextFee = $summary['next_unpaid_fee'];
                         <table class="striped responsive-table">
                             <thead class="blue-grey lighten-5">
                                 <tr>
-                                    <th style="padding: 12px 18px;">Transaction Reference</th>
-                                    <th>PayFast Payment ID</th>
-                                    <th>Fee Description</th>
+                                    <th style="padding: 12px 18px;">Reference</th>
+                                    <th>Payment ID</th>
+                                    <th>Description</th>
                                     <th>Amount Paid</th>
-                                    <th>Gateway Method</th>
-                                    <th>Date Completed</th>
+                                    <th>Method</th>
+                                    <th>Date</th>
                                     <th>Status</th>
                                     <th class="center-align">Receipt</th>
                                 </tr>
@@ -300,16 +284,16 @@ $nextFee = $summary['next_unpaid_fee'];
                                             <?php echo htmlspecialchars($pay['transaction_ref']); ?>
                                         </td>
                                         <td style="font-family: monospace; font-size: 0.85rem; color: #546e7a;">
-                                            <?php echo htmlspecialchars($pay['payfast_pf_payment_id'] ?? 'Pending Gateway'); ?>
+                                            <?php echo htmlspecialchars($pay['payfast_pf_payment_id'] ?? '—'); ?>
                                         </td>
                                         <td>
-                                            <?php echo htmlspecialchars($pay['fee_title'] ?? 'School Fee Settlement'); ?>
+                                            <?php echo htmlspecialchars($pay['fee_title'] ?? 'Tuition Fee Settlement'); ?>
                                         </td>
                                         <td style="font-weight: 600; color: #2e7d32;">
                                             R<?php echo number_format($pay['amount'], 2); ?>
                                         </td>
                                         <td>
-                                            <span class="chip tiny white blue-text" style="border: 1px solid #bbdefb;">
+                                            <span class="chip tiny white blue-text" style="border: 1px solid #bbdefb; margin: 0;">
                                                 <?php echo htmlspecialchars($pay['payment_method']); ?>
                                             </span>
                                         </td>
@@ -333,8 +317,8 @@ $nextFee = $summary['next_unpaid_fee'];
                                         </td>
                                         <td class="center-align">
                                             <?php if ($pay['payment_status'] === 'COMPLETE'): ?>
-                                                <a href="<?php echo BASE_URL; ?>student/fee_receipt.php?payment_id=<?php echo (int)$pay['payment_id']; ?>" class="btn-small waves-effect waves-light teal lighten-1" style="border-radius: 6px; text-transform: none; font-size: 0.82rem;">
-                                                    <i class="material-icons left tiny">print</i> Print
+                                                <a href="<?php echo BASE_URL; ?>student/fee_receipt.php?payment_id=<?php echo (int)$pay['payment_id']; ?>" class="btn-small waves-effect waves-light teal lighten-1" style="border-radius: 6px; text-transform: none; font-size: 0.82rem; padding: 0 14px;">
+                                                    Print
                                                 </a>
                                             <?php else: ?>
                                                 <span class="grey-text">&mdash;</span>
@@ -352,16 +336,15 @@ $nextFee = $summary['next_unpaid_fee'];
 </div>
 
 <!-- Modal: Multi-Month Payment -->
-<div id="multiMonthModal" class="modal" style="border-radius: 14px; max-width: 600px;">
+<div id="multiMonthModal" class="modal" style="border-radius: 12px; max-width: 550px;">
     <form action="<?php echo BASE_URL; ?>student/pay_fee.php" method="POST">
         <?php csrf_token_field(); ?>
         <div class="modal-content" style="padding: 24px 28px;">
             <h5 style="margin: 0 0 10px 0; font-weight: 700; color: #1565c0;">
-                <i class="material-icons left" style="vertical-align: middle;">layers</i>
                 Pay Multiple Months
             </h5>
             <p class="grey-text text-darken-1" style="font-size: 0.9rem; margin-bottom: 20px;">
-                Select the months you would like to settle in advance. Each month is <strong>R50.00</strong>.
+                Select the months you would like to settle:
             </p>
 
             <div style="max-height: 260px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px 15px;">
@@ -370,7 +353,6 @@ $nextFee = $summary['next_unpaid_fee'];
                     foreach ($fees as $fee): 
                         if ($fee['status'] !== 'paid'):
                             $hasUnpaid = true;
-                            $monthName = date('F', mktime(0, 0, 0, (int)$fee['billing_month'], 10));
                             $feeBal = (float)$fee['amount'] - (float)$fee['amount_paid'];
                 ?>
                     <p style="margin: 10px 0;">
@@ -387,19 +369,19 @@ $nextFee = $summary['next_unpaid_fee'];
                     endforeach; 
                 ?>
                 <?php if (!$hasUnpaid): ?>
-                    <p class="grey-text center-align">All months are already paid!</p>
+                    <p class="grey-text center-align">All months are already paid.</p>
                 <?php endif; ?>
             </div>
 
             <div style="margin-top: 20px; padding: 12px 16px; background: #e3f2fd; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
-                <span style="font-weight: 600; color: #0d47a1;">Total Amount to Pay:</span>
-                <span id="multiMonthTotal" style="font-size: 1.5rem; font-weight: 700; color: #0d47a1;">R0.00</span>
+                <span style="font-weight: 600; color: #0d47a1;">Total:</span>
+                <span id="multiMonthTotal" style="font-size: 1.4rem; font-weight: 700; color: #0d47a1;">R0.00</span>
             </div>
         </div>
         <div class="modal-footer" style="padding: 10px 24px; background: #fafafa;">
             <a href="#!" class="modal-close waves-effect waves-grey btn-flat" style="font-weight: 500;">Cancel</a>
-            <button type="submit" id="multiPaySubmitBtn" class="btn blue darken-3 waves-effect waves-light" style="border-radius: 6px; font-weight: 600;" disabled>
-                <i class="material-icons left">lock</i> Proceed with PayFast
+            <button type="submit" id="multiPaySubmitBtn" class="btn blue darken-3 waves-effect waves-light" style="border-radius: 6px; font-weight: 500; text-transform: none;" disabled>
+                Pay
             </button>
         </div>
     </form>

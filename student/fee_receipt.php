@@ -174,14 +174,14 @@ if ($_SESSION['role'] === 'student') {
                     </tr>
                     <tr>
                         <td>Payment Method:</td>
-                        <td><?php echo htmlspecialchars($payment['payment_method']); ?> Online Gateway</td>
+                        <td><?php echo htmlspecialchars($payment['payment_method']); ?></td>
                     </tr>
                     <tr>
                         <td>Transaction Reference:</td>
                         <td><code><?php echo htmlspecialchars($payment['transaction_ref']); ?></code></td>
                     </tr>
                     <tr>
-                        <td>PayFast Payment ID:</td>
+                        <td>Payment ID:</td>
                         <td><code><?php echo htmlspecialchars($payment['payfast_pf_payment_id'] ?? 'N/A'); ?></code></td>
                     </tr>
                     <tr>

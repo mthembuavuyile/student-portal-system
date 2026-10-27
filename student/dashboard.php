@@ -116,28 +116,28 @@ $feeSummary = $student ? FeeService::getFeeSummary($pdo, (int)$student->getId())
                         </div>
                         <div>
                             <h6 style="margin: 0; font-weight: 700; color: #1a237e;">
-                                School Fees: <?php echo $feeSummary['is_fully_paid'] ? 'Good Standing &bull; All Fees Settled' : 'R' . number_format($feeSummary['balance_due'], 2) . ' Outstanding'; ?>
+                                Tuition Fees: <?php echo $feeSummary['is_fully_paid'] ? 'Up to date' : 'R' . number_format($feeSummary['balance_due'], 2) . ' Outstanding'; ?>
                             </h6>
                             <p class="grey-text text-darken-1" style="margin: 3px 0 0 0; font-size: 0.88rem;">
-                                Standard Tuition: <strong>R50.00 / month</strong> &bull; Settled: <strong><?php echo $feeSummary['paid_count']; ?> of <?php echo $feeSummary['fee_count']; ?> months</strong>
+                                <?php echo $feeSummary['paid_count']; ?> of <?php echo $feeSummary['fee_count']; ?> installments settled
                                 <?php if ($feeSummary['next_unpaid_fee']): ?>
-                                    &bull; Next Due: <strong><?php echo htmlspecialchars($feeSummary['next_unpaid_fee']['fee_title']); ?></strong>
+                                    &bull; Next due: <?php echo htmlspecialchars($feeSummary['next_unpaid_fee']['fee_title']); ?>
                                 <?php endif; ?>
                             </p>
                         </div>
                     </div>
-                    <div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                         <?php if ($feeSummary['next_unpaid_fee']): ?>
-                            <form action="<?php echo BASE_URL; ?>student/pay_fee.php" method="POST" style="display: inline-block; margin-right: 6px;">
+                            <form action="<?php echo BASE_URL; ?>student/pay_fee.php" method="POST" style="margin: 0;">
                                 <?php csrf_token_field(); ?>
                                 <input type="hidden" name="fee_id" value="<?php echo (int)$feeSummary['next_unpaid_fee']['fee_id']; ?>">
-                                <button type="submit" class="btn blue darken-3 waves-effect waves-light" style="border-radius: 6px; text-transform: none; font-weight: 600;">
-                                    <i class="material-icons left tiny">flash_on</i> Pay R50 with PayFast
+                                <button type="submit" class="btn blue darken-3 waves-effect waves-light" style="border-radius: 6px; text-transform: none; font-weight: 500; height: 38px; line-height: 38px; padding: 0 20px;">
+                                    Pay
                                 </button>
                             </form>
                         <?php endif; ?>
-                        <a href="<?php echo BASE_URL; ?>student/fees.php" class="btn-flat waves-effect" style="border: 1px solid #1565c0; color: #1565c0; border-radius: 6px; text-transform: none; font-weight: 600;">
-                            View Fee Schedule & Receipts
+                        <a href="<?php echo BASE_URL; ?>student/fees.php" class="btn-flat waves-effect" style="border: 1px solid #1565c0; color: #1565c0; border-radius: 6px; text-transform: none; font-weight: 500; height: 38px; line-height: 38px; padding: 0 16px;">
+                            View Details
                         </a>
                     </div>
                 </div>

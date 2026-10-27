@@ -49,9 +49,9 @@ if ($payment && $payment['payment_status'] === 'PENDING') {
                 <i class="material-icons green-text text-darken-1" style="font-size: 48px;">check_circle</i>
             </div>
 
-            <h4 style="margin: 0 0 10px 0; font-weight: 700; color: #1b5e20;">Payment Received!</h4>
+            <h4 style="margin: 0 0 10px 0; font-weight: 700; color: #1b5e20;">Payment Received</h4>
             <p class="grey-text text-darken-1" style="font-size: 1.05rem; margin-bottom: 25px;">
-                Your school fee payment has been successfully processed through PayFast.
+                Your tuition fee payment has been successfully received.
             </p>
 
             <?php if ($payment): ?>
@@ -67,9 +67,9 @@ if ($payment && $payment['payment_status'] === 'PENDING') {
                         <strong style="font-family: monospace;"><?php echo htmlspecialchars($payment['transaction_ref']); ?></strong>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                        <span class="grey-text text-darken-2">PayFast ID:</span>
+                        <span class="grey-text text-darken-2">Payment ID:</span>
                         <span style="font-family: monospace; color: #37474f;">
-                            <?php echo htmlspecialchars($payment['payfast_pf_payment_id'] ?? 'Sandbox Verified'); ?>
+                            <?php echo htmlspecialchars($payment['payfast_pf_payment_id'] ?? 'Verified'); ?>
                         </span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
@@ -79,11 +79,11 @@ if ($payment && $payment['payment_status'] === 'PENDING') {
                 </div>
 
                 <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                    <a href="<?php echo BASE_URL; ?>student/fee_receipt.php?payment_id=<?php echo (int)$payment['payment_id']; ?>" class="btn-large green darken-2 waves-effect waves-light" style="border-radius: 8px; text-transform: none; font-weight: 600;">
-                        <i class="material-icons left">receipt</i> View Official Receipt
+                    <a href="<?php echo BASE_URL; ?>student/fee_receipt.php?payment_id=<?php echo (int)$payment['payment_id']; ?>" class="btn green darken-2 waves-effect waves-light" style="border-radius: 6px; text-transform: none; font-weight: 500; height: 38px; line-height: 38px; padding: 0 20px;">
+                        <i class="material-icons left">receipt</i> Receipt
                     </a>
-                    <a href="<?php echo BASE_URL; ?>student/fees.php" class="btn-large blue darken-3 waves-effect waves-light" style="border-radius: 8px; text-transform: none; font-weight: 600;">
-                        <i class="material-icons left">account_balance_wallet</i> Back to School Fees
+                    <a href="<?php echo BASE_URL; ?>student/fees.php" class="btn blue darken-3 waves-effect waves-light" style="border-radius: 6px; text-transform: none; font-weight: 500; height: 38px; line-height: 38px; padding: 0 20px;">
+                        Back to Fees
                     </a>
                 </div>
             <?php else: ?>

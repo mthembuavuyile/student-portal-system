@@ -181,14 +181,8 @@ $processUrl = $payFastService->getProcessUrl();
 <body>
 
 <div class="gateway-card">
-    <?php if ($payFastService->isSandbox()): ?>
-        <div class="badge-sandbox">
-            <i class="material-icons tiny left" style="vertical-align: middle;">build</i> PayFast Sandbox Testing Mode
-        </div>
-    <?php endif; ?>
-
     <h5 style="margin: 0 0 8px 0; font-weight: 700; color: #1a237e;">Department of Forestry, Fisheries & the Environment</h5>
-    <p class="grey-text" style="font-size: 0.88rem; margin: 0 0 15px 0;">Student Portal &bull; Official Fee Settlement</p>
+    <p class="grey-text" style="font-size: 0.88rem; margin: 0 0 15px 0;">Student Portal &bull; Fee Settlement</p>
 
     <div class="divider" style="margin-bottom: 20px;"></div>
 
@@ -213,11 +207,11 @@ $processUrl = $payFastService->getProcessUrl();
             </div>
         </div>
         <p style="font-weight: 500; margin-top: 15px; color: #546e7a;">
-            Transferring securely to PayFast payment gateway...
+            Transferring securely to payment portal...
         </p>
     </div>
 
-    <!-- Hidden PayFast auto-submit form -->
+    <!-- Hidden auto-submit form -->
     <form id="payfastForm" action="<?php echo htmlspecialchars($processUrl); ?>" method="POST">
         <?php foreach ($checkoutData as $name => $value): ?>
             <input type="hidden" name="<?php echo htmlspecialchars($name); ?>" value="<?php echo htmlspecialchars((string)$value); ?>">
@@ -225,17 +219,17 @@ $processUrl = $payFastService->getProcessUrl();
         
         <noscript>
             <p>JavaScript is disabled in your browser. Please click the button below to proceed:</p>
-            <button type="submit" class="btn blue darken-2 waves-effect waves-light">Proceed to PayFast</button>
+            <button type="submit" class="btn blue darken-2 waves-effect waves-light">Proceed to Payment</button>
         </noscript>
     </form>
 
     <div style="margin-top: 25px; font-size: 0.82rem; color: #78909c;">
-        <i class="material-icons tiny" style="vertical-align: middle;">lock</i> 256-bit TLS Encrypted &bull; Instant EFT &bull; Visa &bull; Mastercard &bull; SnapScan
+        <i class="material-icons tiny" style="vertical-align: middle;">lock</i> 256-bit TLS Encrypted &bull; Instant EFT &bull; Card
     </div>
 
     <div style="margin-top: 15px;">
         <a href="<?php echo BASE_URL; ?>student/fees.php" class="grey-text text-darken-1" style="font-size: 0.82rem; text-decoration: underline;">
-            Cancel and return to Fee Portal
+            Cancel and return to Fees
         </a>
     </div>
 </div>

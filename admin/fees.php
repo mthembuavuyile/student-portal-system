@@ -1,5 +1,5 @@
 <?php
-$page_title = "Finance & School Fee Management";
+$page_title = "Tuition Fees";
 $allowed_roles = ['admin'];
 include '../includes/header.php';
 
@@ -117,17 +117,17 @@ $unpaidFees = $pdo->query("
             <div>
                 <h4 style="margin: 0; font-weight: 700; color: #0d47a1;">
                     <i class="material-icons left medium" style="vertical-align: middle;">account_balance</i>
-                    Finance & School Fee Management
+                    Tuition Fees
                 </h4>
                 <p class="grey-text text-darken-1" style="margin: 5px 0 0 0;">
-                    Department of Forestry, Fisheries & the Environment &bull; Standard Fee: <strong>R50.00 / month</strong>
+                    Department of Forestry, Fisheries & the Environment &bull; Student Portal System
                 </p>
             </div>
             <div style="margin-top: 10px; display: flex; gap: 8px;">
-                <a href="#billingRunModal" class="btn modal-trigger waves-effect waves-light blue darken-3" style="border-radius: 8px; font-weight: 500; text-transform: none;">
-                    <i class="material-icons left">play_arrow</i> Generate Monthly Billing Run
+                <a href="#billingRunModal" class="btn modal-trigger waves-effect waves-light blue darken-3" style="border-radius: 6px; font-weight: 500; text-transform: none;">
+                    <i class="material-icons left">play_arrow</i> Monthly Billing Run
                 </a>
-                <a href="#manualPaymentModal" class="btn modal-trigger waves-effect waves-light green darken-2" style="border-radius: 8px; font-weight: 500; text-transform: none;">
+                <a href="#manualPaymentModal" class="btn modal-trigger waves-effect waves-light green darken-2" style="border-radius: 6px; font-weight: 500; text-transform: none;">
                     <i class="material-icons left">add_circle</i> Record Manual / EFT Payment
                 </a>
             </div>
@@ -193,14 +193,14 @@ $unpaidFees = $pdo->query("
     </div>
 </div>
 
-<!-- Main Tabs: Student Ledger vs PayFast Audit Log -->
+<!-- Main Tabs: Student Ledger vs Transactions -->
 <div class="row">
     <div class="col s12">
         <div class="card white" style="border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #e0e0e0;">
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
-                    <li class="tab"><a class="active" href="#tabLedger"><i class="material-icons tiny" style="vertical-align: middle;">people</i> Student Fee Directory</a></li>
-                    <li class="tab"><a href="#tabAudit"><i class="material-icons tiny" style="vertical-align: middle;">history</i> PayFast Gateway Audit Log</a></li>
+                    <li class="tab"><a class="active" href="#tabLedger"><i class="material-icons tiny" style="vertical-align: middle;">people</i> Student Directory</a></li>
+                    <li class="tab"><a href="#tabAudit"><i class="material-icons tiny" style="vertical-align: middle;">history</i> Payment Transactions</a></li>
                 </ul>
             </div>
 
@@ -276,15 +276,15 @@ $unpaidFees = $pdo->query("
                 </div>
             </div>
 
-            <!-- Tab 2: PayFast Audit Log -->
+            <!-- Tab 2: Payment Transactions -->
             <div id="tabAudit" class="card-content">
                 <div class="responsive-table-wrapper" style="overflow-x: auto;">
                     <table class="striped responsive-table">
                         <thead class="blue-grey lighten-5">
                             <tr>
-                                <th style="padding: 12px 18px;">Transaction Reference</th>
+                                <th style="padding: 12px 18px;">Reference</th>
                                 <th>Student</th>
-                                <th>PayFast PF ID</th>
+                                <th>Payment ID</th>
                                 <th>Fee Item</th>
                                 <th>Amount</th>
                                 <th>Method</th>
