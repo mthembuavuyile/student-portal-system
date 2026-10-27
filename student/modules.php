@@ -34,61 +34,77 @@ if ($activeEnrollment) {
     </div>
 </div>
 
-<div class="row">
-    <?php if (!empty($courseModules)): ?>
+<?php if (!empty($courseModules)): ?>
+    <div class="modules-grid-container">
         <?php foreach ($courseModules as $mData): ?>
             <?php 
                 $modObj = new Module($mData);
                 $lecturers = $modObj->getLecturers($pdo);
             ?>
-            <div class="col s12 m6 l4">
-                <div class="card hoverable">
-                    <div class="card-content">
-                        <span class="chip teal lighten-4 teal-text text-darken-3 bold">
+            <div class="module-card">
+                <div>
+                    <!-- Code & Credits Badges -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                        <span style="background: #e0f2fe; color: #0284c7; font-weight: 700; font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; letter-spacing: 0.3px;">
                             <?php echo htmlspecialchars($modObj->getModuleCode()); ?>
                         </span>
-                        <span class="chip grey lighten-3 right">
+                        <span style="background: #f1f5f9; color: #475569; font-weight: 600; font-size: 0.78rem; padding: 4px 10px; border-radius: 6px;">
                             <?php echo htmlspecialchars($modObj->getCredits()); ?> Credits
                         </span>
-                        <h5 style="margin-top: 10px; font-size: 1.15rem; font-weight: 600;">
-                            <?php echo htmlspecialchars($modObj->getModuleName()); ?>
-                        </h5>
-                        <p class="grey-text text-darken-1" style="font-size: 0.85rem;">
-                            <i class="material-icons tiny left">schedule</i><?php echo htmlspecialchars($mData['semester'] ?? 'Semester 1'); ?>
-                        </p>
-
-                        <div class="divider" style="margin: 12px 0;"></div>
-
-                        <p style="font-weight: 500; font-size: 0.85rem; color: #555;">
-                            <i class="material-icons tiny left">supervisor_account</i>Teaching Lecturers:
-                        </p>
-                        <?php if (!empty($lecturers)): ?>
-                            <ul style="margin: 5px 0 0 0; padding-left: 20px; font-size: 0.85rem;">
-                                <?php foreach ($lecturers as $lec): ?>
-                                    <li>
-                                        <strong><?php echo htmlspecialchars($lec['first_name'] . ' ' . $lec['surname']); ?></strong>
-                                        <?php if ($lec['is_primary']): ?>
-                                            <span class="badge new green" data-badge-caption="Primary" style="float:none; display:inline-block; margin-left: 5px;"></span>
-                                        <?php else: ?>
-                                            <span class="grey-text">(Co-Lecturer)</span>
-                                        <?php endif; ?>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php else: ?>
-                            <p class="grey-text" style="font-size: 0.85rem;">Faculty assignments pending.</p>
-                        <?php endif; ?>
                     </div>
+
+                    <!-- Module Title -->
+                    <h5 style="margin: 14px 0 6px 0; font-size: 1.15rem; font-weight: 700; color: #0f172a; line-height: 1.35;">
+                        <?php echo htmlspecialchars($modObj->getModuleName()); ?>
+                    </h5>
+
+                    <!-- Semester -->
+                    <div style="display: flex; align-items: center; gap: 5px; color: #64748b; font-size: 0.84rem; font-weight: 500;">
+                        <i class="material-icons" style="font-size: 16px; color: #94a3b8;">schedule</i>
+                        <?php echo htmlspecialchars($mData['semester'] ?? 'Semester 1'); ?>
+                    </div>
+                </div>
+
+                <!-- Teaching Lecturers Section Pinned to Bottom -->
+                <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid #f1f5f9;">
+                    <div style="font-size: 0.76rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                        <i class="material-icons" style="font-size: 16px; color: #94a3b8;">supervisor_account</i>Teaching Lecturers
+                    </div>
+                    <?php if (!empty($lecturers)): ?>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <?php foreach ($lecturers as $lec): ?>
+                                <div style="display: flex; align-items: center; justify-content: space-between; background: #f8fafc; padding: 6px 10px; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 0.85rem;">
+                                    <span style="font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 6px;">
+                                        <i class="material-icons" style="font-size: 15px; color: #64748b;">person</i>
+                                        <?php echo htmlspecialchars($lec['first_name'] . ' ' . $lec['surname']); ?>
+                                    </span>
+                                    <?php if ($lec['is_primary']): ?>
+                                        <span style="font-size: 0.7rem; font-weight: 700; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 12px;">Primary</span>
+                                    <?php else: ?>
+                                        <span style="font-size: 0.7rem; font-weight: 500; color: #64748b;">Co-Lecturer</span>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 6px; padding: 8px 12px; font-size: 0.82rem; color: #94a3b8; font-style: italic; text-align: center;">
+                            Faculty assignments pending
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         <?php endforeach; ?>
-    <?php else: ?>
+    </div>
+<?php else: ?>
+    <div class="row">
         <div class="col s12">
-            <div class="card-panel grey lighten-4 center-align">
-                <p class="grey-text">No curriculum modules currently mapped for your enrolled course.</p>
+            <div class="card-panel grey lighten-4 center-align" style="border-radius: 12px; padding: 30px;">
+                <i class="material-icons large grey-text text-lighten-1">book</i>
+                <h6 style="font-weight: 600; color: #475569; margin-top: 10px;">No Modules Found</h6>
+                <p class="grey-text" style="margin: 5px 0 0 0;">No curriculum modules currently mapped for your enrolled course.</p>
             </div>
         </div>
-    <?php endif; ?>
-</div>
+    </div>
+<?php endif; ?>
 
 <?php include '../includes/footer.php'; ?>
