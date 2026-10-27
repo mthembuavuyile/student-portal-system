@@ -937,54 +937,44 @@ $studentPayloadJson = json_encode([
         color: #64748b;
     }
 
-    /* Clean Suggested AI Prompts Bar (No ugly scrollbar) */
-    .ai-prompts-bar {
-        background: #f8fafc;
-        border-bottom: 1px solid var(--mat-border);
-        padding: 8px 24px;
+    /* Suggested Prompt Bubbles near Chat Input */
+    .ai-suggested-bubbles {
         display: flex;
         align-items: center;
         gap: 8px;
+        margin-bottom: 12px;
         overflow-x: auto;
         scrollbar-width: none;
         -ms-overflow-style: none;
+        padding: 2px 0;
+        flex-wrap: wrap;
     }
-    .ai-prompts-bar::-webkit-scrollbar {
+    .ai-suggested-bubbles::-webkit-scrollbar {
         display: none;
     }
 
-    .prompts-label {
-        font-size: 0.72rem;
-        font-weight: 600;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        white-space: nowrap;
-        margin-right: 2px;
-    }
-
-    .prompt-pill-clean {
-        background: #ffffff;
+    .ai-prompt-bubble {
+        background: #f1f5f9;
         border: 1px solid #cbd5e1;
         color: #334155;
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         font-weight: 500;
-        height: 28px;
-        line-height: 26px;
-        padding: 0 12px;
-        border-radius: 6px;
-        white-space: nowrap;
+        padding: 6px 14px;
+        border-radius: 20px;
         cursor: pointer;
+        white-space: nowrap;
         display: inline-flex;
         align-items: center;
-        gap: 5px;
+        gap: 6px;
         transition: all 0.15s ease;
         box-sizing: border-box;
     }
-    .prompt-pill-clean:hover {
+    .ai-prompt-bubble:hover {
         background: #eff6ff;
         border-color: #93c5fd;
         color: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.12);
     }
 
     /* Conversation Thread Stream & Dynamic Messages Spacing */
@@ -2113,10 +2103,6 @@ $studentPayloadJson = json_encode([
                 </div>
 
                 <div class="ai-coach-header-controls">
-                    <span class="ai-status-pill">
-                        <span class="status-dot-subtle"></span>
-                        <span id="aiLiveModelLabel">AI Engine Active</span>
-                    </span>
                     <button id="runAiAdvisorBtn" onclick="runAiCoach('')" class="btn btn-run-diagnosis waves-effect waves-light">
                         <i class="material-icons tiny">analytics</i> Full Diagnostic
                     </button>
@@ -2124,26 +2110,6 @@ $studentPayloadJson = json_encode([
                         <i class="material-icons tiny">delete_sweep</i> Clear
                     </button>
                 </div>
-            </div>
-
-            <!-- Clean Suggested Prompts Bar -->
-            <div class="ai-prompts-bar">
-                <span class="prompts-label">Suggested:</span>
-                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('How can I boost my marks in my lowest performing module?')">
-                    Boost Lowest Module
-                </button>
-                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('Create a structured 2-week daily revision schedule tailored to my enrolled modules')">
-                    2-Week Study Plan
-                </button>
-                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('What active recall and spaced repetition techniques work best for technical modules like SQL and OOP?')">
-                    Active Recall Tactics
-                </button>
-                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('What specific target scores do I need on upcoming assessments to maintain my Distinction status?')">
-                    Distinction Targets
-                </button>
-                <button type="button" class="prompt-pill-clean" onclick="askAiQuestion('Give me 5 practical tips to manage exam time pressure and solve complex coding questions')">
-                    Exam Strategy
-                </button>
             </div>
 
             <!-- Conversational Chat Stream Feed -->
@@ -2159,27 +2125,10 @@ $studentPayloadJson = json_encode([
                             <span class="coach-bubble-title">
                                 <i class="material-icons tiny" style="color: #4f46e5;">smart_toy</i> AI Academic Coach
                             </span>
-                            <span class="coach-model-tag">Diagnostic Ready</span>
                         </div>
                         <div class="coach-bubble-body">
-                            <p style="margin-top: 0;">
-                                Hello <strong><?php echo htmlspecialchars($student->getFirstName() ?: 'Avuyile'); ?></strong>! I have analyzed your official quarterly academic transcript:
-                            </p>
-                            <div class="ai-action-card" style="margin: 10px 0;">
-                                <div class="ai-action-header">
-                                    <i class="material-icons tiny">insights</i> Current Academic Summary
-                                </div>
-                                <div class="ai-action-body">
-                                    &bull; <strong>Cumulative Running Average:</strong> <?php echo $termAverage !== null ? $termAverage . '%' : '85.00%'; ?> (<?php echo htmlspecialchars($academicHonors); ?>)<br>
-                                    &bull; <strong>Top Performing Module:</strong> <?php echo $highestModule ? htmlspecialchars($highestModule['module_code']) . ' (' . number_format($highestModule['average'], 1) . '%)' : 'WAA203'; ?><br>
-                                    &bull; <strong>Key Coaching Focus:</strong> <?php echo $lowestModule ? htmlspecialchars($lowestModule['module_code']) . ' (' . number_format($lowestModule['average'], 1) . '%)' : 'OOP101'; ?>
-                                </div>
-                            </div>
-                            <p>
-                                I can generate revision timetables, diagnose quarter-over-quarter trends, explain difficult technical concepts, or calculate the exact marks needed on upcoming assessments.
-                            </p>
-                            <p style="margin-bottom: 0;">
-                                <em>Ask a question below or click any suggested prompt to begin!</em>
+                            <p style="margin: 0; line-height: 1.6; font-size: 0.95rem; color: #334155;">
+                                Hello <strong><?php echo htmlspecialchars($student->getFirstName() ?: 'Avuyile'); ?></strong>! I'm your AI Academic Coach. Ask me anything about your modules, revision strategies, or exam preparation below.
                             </p>
                         </div>
                     </div>
@@ -2209,6 +2158,25 @@ $studentPayloadJson = json_encode([
 
             <!-- Material 3 Floating Chat Input Capsule -->
             <div class="ai-chat-input-area">
+                <!-- Suggested Prompt Bubbles near input field -->
+                <div class="ai-suggested-bubbles">
+                    <button type="button" class="ai-prompt-bubble" onclick="askAiQuestion('How can I boost my marks in my lowest performing module?')">
+                        Boost Lowest Module
+                    </button>
+                    <button type="button" class="ai-prompt-bubble" onclick="askAiQuestion('Create a structured 2-week daily revision schedule tailored to my enrolled modules')">
+                        2-Week Study Plan
+                    </button>
+                    <button type="button" class="ai-prompt-bubble" onclick="askAiQuestion('What active recall and spaced repetition techniques work best for technical modules like SQL and OOP?')">
+                        Active Recall Tactics
+                    </button>
+                    <button type="button" class="ai-prompt-bubble" onclick="askAiQuestion('What specific target scores do I need on upcoming assessments to maintain my Distinction status?')">
+                        Distinction Targets
+                    </button>
+                    <button type="button" class="ai-prompt-bubble" onclick="askAiQuestion('Give me 5 practical tips to manage exam time pressure and solve complex coding questions')">
+                        Exam Strategy
+                    </button>
+                </div>
+
                 <form id="aiChatForm" onsubmit="handleAiFormSubmit(event)" style="margin: 0;">
                     <div class="ai-input-capsule">
                         <i class="material-icons ai-sparkle-icon">auto_awesome</i>
